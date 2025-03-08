@@ -10,7 +10,7 @@ import 'main_page.dart';
 
 //States
 import '../state/main_state.dart';
-import '../state/subjects_state.dart';
+import '../state/subject_list_state.dart';
 
 //External packges
 import 'package:provider/provider.dart';
@@ -34,7 +34,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     //States
     final mainState = Provider.of<MainState>(context);
-    final subjectState = Provider.of<SubjectState>(context, listen: false);
+    final subjectState = Provider.of<SubjectListState>(context, listen: false);
     final bool rememberUser = mainState.rememberUser;
 
     void logIn() async {

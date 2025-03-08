@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 
 //State
 import 'state/main_state.dart';
-import 'state/subjects_state.dart';
-import 'state/subject_add_state.dart';
+import 'state/subject_list_state.dart';
 
 //Packages
 import 'package:provider/provider.dart';
@@ -22,15 +21,14 @@ Future<void> main() async {
   await mainState.init();
 
   //Create subject state
-  final subjectState = SubjectState();
-  subjectState.userId = mainState.userId;
+  final subjectState = SubjectListState();
+  subjectState.userId = mainState.userId!;
 
   //Init shared preffernces instance
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider<MainState>.value(value: mainState),
-      ChangeNotifierProvider<SubjectState>.value(value: subjectState),
-      ChangeNotifierProvider(create: (_) => SubjectAddState())
+      ChangeNotifierProvider<SubjectListState>.value(value: subjectState)
     ],
     child: const MyApp(),
   ));

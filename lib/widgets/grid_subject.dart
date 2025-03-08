@@ -5,8 +5,7 @@ import 'package:flutter/material.dart';
 import '../models/subject_model.dart';
 
 //State
-import '../state/subject_add_state.dart';
-import '../state/subjects_state.dart';
+import '../state/subject_list_state.dart';
 
 //External Packges
 import 'package:provider/provider.dart';
@@ -150,15 +149,13 @@ class HelperMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final subjectAddState =
+        Provider.of<SubjectListState>(context, listen: false);
     void deleteSubject() {
-      Provider.of<SubjectState>(context, listen: false)
-          .deleteSubject(subjectId: subject.subjectId);
+      subjectAddState.deleteSubject(subjectId: subject.subjectId);
     }
 
     void editSubject() async {
-      final subjectAddState =
-          Provider.of<SubjectAddState>(context, listen: false);
-
       subjectAddState.subjectName = subject.subjectName;
       subjectAddState.subjectId = subject.subjectId;
       subjectAddState.isEditing = true;

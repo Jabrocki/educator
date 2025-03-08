@@ -7,7 +7,7 @@ import 'package:educator/widgets/grid_subject.dart';
 import 'package:educator/models/subject_model.dart';
 
 //State
-import '../state/subjects_state.dart';
+import '../state/subject_list_state.dart';
 
 //Packages
 import 'package:provider/provider.dart';
@@ -20,11 +20,11 @@ class SubjectPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: Provider.of<SubjectState>(context).subjectInit(),
+      future: Provider.of<SubjectListState>(context).subjectInit(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           List<SubjectModel> subjectList =
-              Provider.of<SubjectState>(context).subjects;
+              Provider.of<SubjectListState>(context).subjects;
           return _body(
           context,
           subjectList);

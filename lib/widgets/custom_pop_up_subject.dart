@@ -1,11 +1,16 @@
-import 'package:educator/state/subject_add_state.dart';
+//Material
 import 'package:flutter/material.dart';
 
-import '../state/subjects_state.dart';
+//Custom widgets
+import 'image_picker.dart';
 
+//State
+import '../state/subject_list_state.dart';
+
+//External packages
 import 'package:provider/provider.dart';
 
-import 'image_picker.dart';
+
 
 class CustomPopUpSubject extends StatelessWidget {
   const CustomPopUpSubject({
@@ -14,30 +19,28 @@ class CustomPopUpSubject extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final subjectAddState = Provider.of<SubjectAddState>(context);
-    final subjectsState = Provider.of<SubjectState>(context, listen: false);
+    final subjectListState = Provider.of<SubjectListState>(context, listen: false);
 
     void addSubject() async {
-      int? imgId = await subjectAddState.saveImage();
-      subjectsState.addSubject(
-        userId: subjectsState.userId!,
-        subjectName: subjectAddState.subjectNameController.text,
+      int? imgId = await subjectListState.saveAddImage();
+      subjectListState.addSubject(
+        subjectName: subjectListState.subjectNameController.text,
         imgId: imgId,
       );
-      subjectAddState.clearData();
+      subjectListState.clearAddData();
     }
 
     void editSubject() async {
-      int? imgId = await subjectAddState.saveImage();
-      subjectsState.editSubject(
-          subjectId: subjectAddState.subjectId,
-          subjectName: subjectAddState.subjectNameController.text,
+      int? imgId = await subjectListState.saveAddImage();
+      subjectListState.editSubject(
+          subjectId: subjectListState.subjectId,
+          subjectName: subjectListState.subjectNameController.text,
           imgId: imgId);
-      subjectAddState.clearData();
+      subjectListState.clearAddData();
     }
 
     void clearImage() async {
-      subjectAddState.clearImage();
+      subjectListState.clearAddImage();
     }
 
     return AlertDialog(
@@ -51,7 +54,7 @@ class CustomPopUpSubject extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
-                controller: subjectAddState.subjectNameController,
+                controller: subjectListState.subjectNameController,
                 decoration: InputDecoration(
                   labelText: "Subject Name",
                   hintText: "Enter subject name",
@@ -88,7 +91,7 @@ class CustomPopUpSubject extends StatelessWidget {
                 children: [
                   TextButton(
                     onPressed: () {
-                      subjectAddState.clearData();
+                      subjectListState.clearAddData();
                       Navigator.of(context).pop();
                     },
                     child: const Text("Cancel"),
@@ -96,7 +99,7 @@ class CustomPopUpSubject extends StatelessWidget {
                   TextButton(
                     onPressed: () async {
                       Navigator.of(context).pop();
-                      if (subjectAddState.isEditing) {
+                      if (subjectListState.isEditing) {
                         editSubject();
                       } else {
                         addSubject();

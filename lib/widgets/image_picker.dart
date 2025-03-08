@@ -1,5 +1,5 @@
-//Material
-import 'package:educator/state/subject_add_state.dart';
+//State
+import 'package:educator/state/subject_list_state.dart';
 
 //Material
 import 'package:flutter/material.dart';
@@ -18,7 +18,7 @@ class ImagePicker extends StatelessWidget {
 
   Widget _imagePreview(BuildContext context) {
     final _theme = Theme.of(context);
-    final _image = Provider.of<SubjectAddState>(context).imgFile;
+    final _image = Provider.of<SubjectListState>(context).imgFile;
 
     return Container(
       width: 150,
@@ -63,7 +63,7 @@ class ImagePicker extends StatelessWidget {
         _imagePreview(context),
         const SizedBox(height: 8),
         TextButton(
-            onPressed: () => Provider.of<SubjectAddState>(context, listen: false).pickImage(ImageSource.gallery),
+            onPressed: () => Provider.of<SubjectListState>(context, listen: false).pickAddImage(ImageSource.gallery),
             child: Text("Pick image"))
       ],
     );
