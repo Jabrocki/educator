@@ -1,0 +1,81 @@
+import 'package:flutter/material.dart';
+
+// Custom widgets
+import 'package:educator/widgets/grid_subject.dart';
+
+// Models
+import 'package:educator/models/subject_model.dart';
+
+//State
+import '../state/subjects_state.dart';
+
+//Packages
+import 'package:provider/provider.dart';
+
+class SubjectPage extends StatelessWidget {
+  const SubjectPage({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: Provider.of<SubjectState>(context).subjectInit(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          List<SubjectModel> subjectList =
+              Provider.of<SubjectState>(context).subjects;
+          return _body(
+          context,
+          subjectList);
+        } else {
+          return const CircularProgressIndicator();
+        }
+      },
+    );
+  }
+
+  Widget _body(
+    BuildContext context,
+    List<SubjectModel> subjectList
+    ) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    
+    // Dynamically calculate crossAxisCount based on screen width
+    int crossAxisCount = (screenWidth / 200).floor().clamp(2, 6); 
+    // Ensures a minimum of 2 columns and a maximum of 6 columns
+    return CustomScrollView(
+      slivers: [
+        const SliverToBoxAdapter(
+          child: Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Text(
+              "Subjects",
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+          ),
+        ),
+        SliverPadding(
+          padding: const EdgeInsets.all(8),
+          sliver: SliverGrid(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: crossAxisCount,
+              crossAxisSpacing: 10.0,
+              mainAxisSpacing: 10.0,
+              childAspectRatio: 1.0,
+            ),
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                return AnimatedGridSubject(
+                  subject: subjectList[index],
+                  index: index,
+                  );
+              },
+              childCount: subjectList.length,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}

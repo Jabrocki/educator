@@ -1,0 +1,27 @@
+Implement Images
+ * Make separte handler for subject related tesk in database
+ * Ustawianie kadru w obrazkach
+
+Implement log in page page + register page prototype
+* do some sha coding
+* connect it to the backend
+* add shared preffernces to rember if user wants to be remembered
+
+Fix animations on subject page
+
+Zaimplmentuj gita
+
+Refactor code
+
+remeber you have succesful dialog in register page file, move it to the dialog folder and make it more universal
+
+Implement menu for subjects
+*flashcards
+*quizes;
+*storage of files (prefeably online but files should be stored ofline if needed);
+*notes;
+
+Implement main page
+    *   Implement tasks
+    *    Implement calendar
+
