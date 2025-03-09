@@ -2,13 +2,13 @@
 
 import 'package:flutter/material.dart';
 
-class FlashcardsPage extends StatelessWidget {
-  const FlashcardsPage({
+class DecksPage extends StatelessWidget {
+  const DecksPage({
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Text("FlashCards");
+    return Text("Decks");
   }
 }

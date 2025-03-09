@@ -1,5 +1,6 @@
 //Material
-import 'package:educator/layouts/flashcards_page.dart';
+import 'package:educator/layouts/deck_add_page.dart';
+import 'package:educator/layouts/decks_page.dart';
 import 'package:educator/layouts/login_page.dart';
 import 'package:educator/layouts/navigation_obeservers/subject_navigator_observer.dart';
 import 'package:flutter/material.dart';
@@ -9,14 +10,16 @@ import '../layouts/home_page.dart';
 import '../layouts/subject_page.dart';
 import '../layouts/menu_subject_page.dart';
 
-//FABS
-import '../widgets/add_subject_button.dart';
-
 //External packges
 //import 'package:provider/provider.dart';
 
 //State
 //import '../state/main_state.dart';
+
+// Navigators key
+final GlobalKey<NavigatorState> homeNavigatorKey = GlobalKey<NavigatorState>();
+final GlobalKey<NavigatorState> subjectsNavigatorKey =
+    GlobalKey<NavigatorState>();
 
 class MainPage extends StatefulWidget {
   const MainPage({
@@ -37,11 +40,9 @@ class _MainPageState extends State<MainPage> {
   // This flag will determine if a back arrow should be shown for Subjects
   bool _showSubjectsBackButton = false;
 
-  // Navigators key
-  final GlobalKey<NavigatorState> _homeNavigatorKey =
-      GlobalKey<NavigatorState>();
-  final GlobalKey<NavigatorState> _subjectsNavigatorKey =
-      GlobalKey<NavigatorState>();
+  Widget? _subjectFab;
+  Widget? _homeFab;
+  Widget? _searchFab;
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +52,7 @@ class _MainPageState extends State<MainPage> {
         return IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            _subjectsNavigatorKey.currentState?.pop();
+            subjectsNavigatorKey.currentState?.pop();
           },
         );
       }
@@ -92,6 +93,19 @@ class _MainPageState extends State<MainPage> {
         ));
   }
 
+  Widget? _buildFab() {
+    switch(_selectedIndex) {
+      case 0:
+          return _homeFab;
+      case 1:
+          return _subjectFab;
+      case 2:
+          return _searchFab;
+      default:
+          return null;
+    }
+  }
+
   Widget _buildBody(BuildContext context) {
     return Row(
       children: [
@@ -110,7 +124,9 @@ class _MainPageState extends State<MainPage> {
                 NavigationRailDestination(
                     icon: Icon(Icons.book), label: Text("Subjects")),
                 NavigationRailDestination(
-                    icon: Icon(Icons.language), label: Text("Search"))
+                    icon: Icon(Icons.language), label: Text("Search")),
+                NavigationRailDestination(
+                    icon: Icon(Icons.settings), label: Text("Settings"))
               ],
               selectedIndex: _selectedIndex,
               onDestinationSelected: (value) {
@@ -128,7 +144,7 @@ class _MainPageState extends State<MainPage> {
           children: [
             // Home Tab Navigator
             Navigator(
-              key: _homeNavigatorKey,
+              key: homeNavigatorKey,
               initialRoute: '/home',
               onGenerateRoute: (RouteSettings settings) {
                 late Widget page;
@@ -147,12 +163,16 @@ class _MainPageState extends State<MainPage> {
             ),
             // Subjects Tab Navigator
             Navigator(
-              key: _subjectsNavigatorKey,
+              key: subjectsNavigatorKey,
               initialRoute: '/subjects',
               observers: [
-                SubjectNavigatorObserver(onNavigationChanged: (bool canPop) {
+                SubjectNavigatorObserver(backButtonValChanged: (bool canPop) {
                   setState(() {
                     _showSubjectsBackButton = canPop;
+                  });
+                }, addButtonValChanged: (Widget? addButton) {
+                  setState(() {
+                    _subjectFab = addButton;
                   });
                 })
               ],
@@ -165,8 +185,12 @@ class _MainPageState extends State<MainPage> {
                   case '/subjects/menu':
                     page = const MenuSubjectPage();
                     break;
-                  case '/subjects/menu/flashcards_menu':
-                    page = const FlashcardsPage();
+                  case '/subjects/menu/decks':
+                    page = const DecksPage();
+                    break;
+                  case '/subjects/menu/decks/deck_add':
+                    page = const DeckAddPage();
+                    break;
                   default:
                     page = const SubjectPage();
                 }
@@ -177,21 +201,14 @@ class _MainPageState extends State<MainPage> {
               },
             ),
             //Search tab
-            const Text("Search")
+            //TODO:
+            const Text("Search"),
+            //TODO:
+            const Text("Settings")
           ],
         ))
       ],
     );
-  }
-
-  Widget? _buildFab() {
-    switch (_selectedIndex) {
-      case 1:
-        return const AddSubjectButton();
-      case 0:
-      default:
-        return null;
-    }
   }
 
   void _logOut() {
@@ -231,7 +248,8 @@ class _MainPageState extends State<MainPage> {
               onPressed: () {
                 // TODO: Perform the actual logout logic here
                 Navigator.of(context).pop();
-                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => LoginPage()));
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (_) => LoginPage()));
               },
               child: const Text('Yes'),
             ),

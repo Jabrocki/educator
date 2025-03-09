@@ -5,13 +5,23 @@ Implement Images
 Implement log in page page + register page prototype
 * do some sha coding
 * connect it to the backend
-* add shared preffernces to rember if user wants to be remembered
+
+Implement flashcard menu 
+* make a file for global naviagtion keys that will allow me to access them in whole project,
+* 
+* create database for flashcards and decks;
+* store number of flashcards you add to deck daily;
+* allow to edit number of flashcards you add daily;
+
+Play some anki and see how it works
+
+
 
 Fix animations on subject page
 
-Zaimplmentuj gita
-
 Refactor code
+
+Add some kind of intro idk something shiny
 
 remeber you have succesful dialog in register page file, move it to the dialog folder and make it more universal
 

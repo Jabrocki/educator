@@ -15,10 +15,10 @@ class MenuSubjectPage extends StatelessWidget {
 
     //List of menu items
     final List<MenuItemModel> menuItems = [
-      const MenuItemModel(label: "FlashCards", icon: Icons.web_stories, navigation: "/subjects/menu/flashcards_menu"),
-      const MenuItemModel(label: "Quizes", icon: Icons.quiz, navigation: "/subjects/menu/quizes_menu"),
-      const MenuItemModel(label: "Notes", icon: Icons.note, navigation: "/subjects/menu/notes_menu"),
-      const MenuItemModel(label: "Files", icon: Icons.file_open, navigation: "/subjects/menu/files_menu")
+      const MenuItemModel(label: "FlashCards", icon: Icons.web_stories, navigation: "/subjects/menu/decks"),
+      const MenuItemModel(label: "Quizes", icon: Icons.quiz, navigation: "/subjects/menu/quizes"),
+      const MenuItemModel(label: "Notes", icon: Icons.note, navigation: "/subjects/menu/notes"),
+      const MenuItemModel(label: "Files", icon: Icons.file_open, navigation: "/subjects/menu/files")
     ];
 
     return CustomScrollView(

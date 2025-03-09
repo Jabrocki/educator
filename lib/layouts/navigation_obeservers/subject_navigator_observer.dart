@@ -1,19 +1,56 @@
 //Material
-
 import 'package:flutter/material.dart';
 
-class SubjectNavigatorObserver extends NavigatorObserver {
-  final ValueChanged<bool> onNavigationChanged;
+//PopUP window
+import '../../widgets/custom_pop_up_subject.dart';
 
-  SubjectNavigatorObserver({required this.onNavigationChanged});
+//Navigator key
+import '../main_page.dart';
+
+class SubjectNavigatorObserver extends NavigatorObserver {
+  final ValueChanged<bool> backButtonValChanged;
+  final ValueChanged<Widget?> addButtonValChanged;
+
+  SubjectNavigatorObserver(
+      {required this.backButtonValChanged, required this.addButtonValChanged});
 
   void _notifyRoute(Route? route) {
     final routeName = route?.settings.name;
-    // Only show the back arrow if we are NOT on the root '/subjects'
-    bool shouldShow = routeName != null && routeName != '/subjects';
-    // Defer the callback until after the frame is built.
+
+    //If they want to show bak button
+    bool shouldShowBackButton = routeName != null && routeName != '/subjects';
+    Widget? addButton;
+    //FAB
+    if (routeName != null) {
+      switch (routeName) {
+        case '/subjects':
+          addButton = const AddSubjectButton();
+          break;
+        case '/subjects/menu':
+          addButton = null;
+          break;
+        case '/subjects/menu/decks':
+          addButton = FloatingActionButton(
+            onPressed: () {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                subjectsNavigatorKey.currentState!
+                    .pushNamed('/subjects/menu/decks/deck_add');
+              });
+            },
+            child: const Icon(Icons.add),
+          );
+          break;
+        case '/subjects/menu/decks/deck_add':
+          addButton = null;
+          break;
+        default:
+          addButton = null;
+      }
+    }
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      onNavigationChanged(shouldShow);
+      backButtonValChanged(shouldShowBackButton);
+      addButtonValChanged(addButton);
     });
   }
 
@@ -39,5 +76,25 @@ class SubjectNavigatorObserver extends NavigatorObserver {
   void didRemove(Route route, Route? previousRoute) {
     super.didRemove(route, previousRoute);
     _notifyRoute(previousRoute);
+  }
+}
+
+class AddSubjectButton extends StatelessWidget {
+  const AddSubjectButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+      onPressed: () {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return const CustomPopUpSubject();
+            });
+      },
+      child: const Icon(Icons.add),
+    );
   }
 }
