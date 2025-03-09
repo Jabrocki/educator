@@ -2,15 +2,13 @@
 import 'package:flutter/material.dart';
 
 //Custom widgets
-import 'image_picker.dart';
+import 'image_picker_widget.dart';
 
 //State
 import '../state/subject_list_state.dart';
 
 //External packages
 import 'package:provider/provider.dart';
-
-
 
 class CustomPopUpSubject extends StatelessWidget {
   const CustomPopUpSubject({
@@ -19,7 +17,7 @@ class CustomPopUpSubject extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final subjectListState = Provider.of<SubjectListState>(context, listen: false);
+    final subjectListState = Provider.of<SubjectListState>(context);
 
     void addSubject() async {
       int? imgId = await subjectListState.saveAddImage();
@@ -73,7 +71,10 @@ class CustomPopUpSubject extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 16),
-              const ImagePicker(),
+              ImagePickerWidget(
+                image: subjectListState.imgFile,
+                imageFileChanged: subjectListState.setImage,
+              ),
             ],
           ),
         ),

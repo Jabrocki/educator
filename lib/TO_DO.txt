@@ -6,16 +6,15 @@ Implement log in page page + register page prototype
 * do some sha coding
 * connect it to the backend
 
+Implement some kind of themes;
+
 Implement flashcard menu 
-* make a file for global naviagtion keys that will allow me to access them in whole project,
-* 
+* make my image picker widget easier to use;
 * create database for flashcards and decks;
 * store number of flashcards you add to deck daily;
 * allow to edit number of flashcards you add daily;
 
 Play some anki and see how it works
-
-
 
 Fix animations on subject page
 

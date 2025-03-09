@@ -16,10 +16,8 @@ import '../layouts/menu_subject_page.dart';
 //State
 //import '../state/main_state.dart';
 
-// Navigators key
-final GlobalKey<NavigatorState> homeNavigatorKey = GlobalKey<NavigatorState>();
-final GlobalKey<NavigatorState> subjectsNavigatorKey =
-    GlobalKey<NavigatorState>();
+//Global variables
+import '../global_variables.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({

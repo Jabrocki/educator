@@ -8,8 +8,6 @@ import '../database/main_database.dart';
 import '../models/image_model.dart';
 import '../models/subject_model.dart';
 
-//External packages
-import 'package:image_picker/image_picker.dart';
 
 //Internal packages
 import 'dart:io';
@@ -26,8 +24,6 @@ class SubjectListState extends ChangeNotifier {
   //Subject add name text editing controller
   final TextEditingController _subjectNameController = TextEditingController();
 
-  //Image picker
-  final ImagePicker _picker = ImagePicker();
 
   //User data
   int? _userId;
@@ -129,13 +125,8 @@ class SubjectListState extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> pickAddImage(ImageSource source) async {
-    try {
-      final XFile? pickedImage = await _picker.pickImage(source: source);
-      if (pickedImage != null) _imgFile = File(pickedImage.path);
-    } catch (e) {
-      print("Error");
-    }
+  Future<void> setImage(File? imgFile) async {
+    _imgFile = imgFile;
     notifyListeners();
   }
 

@@ -7,7 +7,7 @@ class GridMenu extends StatefulWidget {
   const GridMenu(
       {super.key,
       required this.index,
-      required this. menuItemModel
+      required this.menuItemModel
     });
 
   @override

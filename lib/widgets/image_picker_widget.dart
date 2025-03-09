@@ -1,24 +1,40 @@
-//State
-import 'package:educator/state/subject_list_state.dart';
-
 //Material
 import 'package:flutter/material.dart';
 
 
 //Packages
 import 'package:image_picker/image_picker.dart';
-import 'package:provider/provider.dart';
+
+//Files
+import 'dart:io';
 
 
-class ImagePicker extends StatelessWidget {
-  const ImagePicker({
+class ImagePickerWidget extends StatefulWidget {
+
+  final File? image;
+  final ValueChanged<File> imageFileChanged;
+
+  const ImagePickerWidget({
     super.key,
+    required this.image,
+    required this.imageFileChanged
   });
-  
+
+  @override
+  State<ImagePickerWidget> createState() => _ImagePickerWidgetState();
+}
+
+class _ImagePickerWidgetState extends State<ImagePickerWidget> {
+
+   //Image picker
+  final ImagePicker _picker = ImagePicker();
+  File? _image;
 
   Widget _imagePreview(BuildContext context) {
     final _theme = Theme.of(context);
-    final _image = Provider.of<SubjectListState>(context).imgFile;
+
+    //Check if there is some _image
+    final localImage = _image ?? widget.image;
 
     return Container(
       width: 150,
@@ -28,12 +44,12 @@ class ImagePicker extends StatelessWidget {
         border: Border.all(color: _theme.colorScheme.primary, width: 2),
         color: _theme.colorScheme.onPrimary,
       ),
-      child: _image != null
+      child: localImage != null
           ? ClipRRect(
               //Zaokręglnie rogów
               borderRadius: BorderRadius.circular(12),
               child: Image.file(
-                _image,
+                localImage,
                 fit: BoxFit.cover,
                 width: 150,
                 height: 150,
@@ -63,7 +79,17 @@ class ImagePicker extends StatelessWidget {
         _imagePreview(context),
         const SizedBox(height: 8),
         TextButton(
-            onPressed: () => Provider.of<SubjectListState>(context, listen: false).pickAddImage(ImageSource.gallery),
+            onPressed: () async {
+              //Update state with image picker
+              final XFile? pickedImage = await _picker.pickImage(source: ImageSource.gallery);
+              if (pickedImage != null){
+                final File imageFile = File(pickedImage.path);
+                setState(() {
+                  _image = imageFile;
+                });
+                widget.imageFileChanged(imageFile);
+              }
+            },
             child: Text("Pick image"))
       ],
     );

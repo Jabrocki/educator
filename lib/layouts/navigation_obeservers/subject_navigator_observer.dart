@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import '../../widgets/custom_pop_up_subject.dart';
 
 //Navigator key
-import '../main_page.dart';
+import '../../global_variables.dart';
 
 class SubjectNavigatorObserver extends NavigatorObserver {
   final ValueChanged<bool> backButtonValChanged;
