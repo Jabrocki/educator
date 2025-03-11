@@ -99,13 +99,16 @@ class GridSubject extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final mainTheme = Theme.of(context);
+
     return LayoutBuilder(
       builder: (context, constraints) {
         return ClipRRect(
           borderRadius: BorderRadius.circular(16),
           child: Container(
             decoration: BoxDecoration(
-              color: Colors.grey[300],
+              color: mainTheme.colorScheme.primaryContainer,
             ),
             child: Column(
               children: [

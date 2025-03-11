@@ -1,4 +1,7 @@
+//Item model
 import 'package:educator/models/menu_item_model.dart';
+
+//Material
 import 'package:flutter/material.dart';
 
 class GridMenu extends StatefulWidget {
@@ -72,46 +75,53 @@ class _GridMenuState extends State<GridMenu> {
             // Calculate font size as 15% of the width, clamped between 12 and 20.
             double fontSize = (constraints.maxWidth * 0.09).clamp(12.0, 20.0);
 
-            return ClipRRect(
-              borderRadius: BorderRadius.circular(16),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  color: Colors.grey[300],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    // The icon scales responsively.
-                    Expanded(
-                      child: Center(
-                        child: Icon(
-                          widget.menuItemModel.icon,
-                          size: iconSize,
-                        ),
-                      ),
-                    ),
-                    // The text uses the computed font size.
-                    Container(
-                      padding: const EdgeInsets.symmetric(vertical: 8),
-                      child: Text(
-                        widget.menuItemModel.label,
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: fontSize,
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            );
+            //Theme
+            final mainTheme = Theme.of(context);
+
+            return _body(iconSize, fontSize, mainTheme);
           },
         ),
       ),
     );
+  }
+
+  Widget _body(double iconSize, double fontSize, ThemeData mainTheme) {
+    return ClipRRect(
+            borderRadius: BorderRadius.circular(16),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                color: mainTheme.colorScheme.primaryContainer,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  // The icon scales responsively.
+                  Expanded(
+                    child: Center(
+                      child: Icon(
+                        widget.menuItemModel.icon,
+                        size: iconSize,
+                      ),
+                    ),
+                  ),
+                  // The text uses the computed font size.
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: Text(
+                      widget.menuItemModel.label,
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: fontSize,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
   }
 }

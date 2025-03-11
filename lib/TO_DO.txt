@@ -6,7 +6,7 @@ Implement log in page page + register page prototype
 * do some sha coding
 * connect it to the backend
 
-Implement some kind of themes;
+Refactor a litle bit subject state
 
 Implement flashcard menu 
 * make my image picker widget easier to use;

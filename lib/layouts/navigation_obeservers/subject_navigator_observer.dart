@@ -1,11 +1,10 @@
 //Material
+import 'package:educator/widgets/custom_pop_up_deck.dart';
 import 'package:flutter/material.dart';
 
-//PopUP window
+//PopUP windows
 import '../../widgets/custom_pop_up_subject.dart';
 
-//Navigator key
-import '../../global_variables.dart';
 
 class SubjectNavigatorObserver extends NavigatorObserver {
   final ValueChanged<bool> backButtonValChanged;
@@ -30,18 +29,7 @@ class SubjectNavigatorObserver extends NavigatorObserver {
           addButton = null;
           break;
         case '/subjects/menu/decks':
-          addButton = FloatingActionButton(
-            onPressed: () {
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                subjectsNavigatorKey.currentState!
-                    .pushNamed('/subjects/menu/decks/deck_add');
-              });
-            },
-            child: const Icon(Icons.add),
-          );
-          break;
-        case '/subjects/menu/decks/deck_add':
-          addButton = null;
+          addButton = AddDeckButton();
           break;
         default:
           addButton = null;
@@ -76,6 +64,25 @@ class SubjectNavigatorObserver extends NavigatorObserver {
   void didRemove(Route route, Route? previousRoute) {
     super.didRemove(route, previousRoute);
     _notifyRoute(previousRoute);
+  }
+}
+
+class AddDeckButton extends StatelessWidget {
+  const AddDeckButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+      onPressed: () {
+        showDialog(context: context, 
+        builder: (context) {
+          return const CustomPopUpDeck();
+        });
+      },
+      child: const Icon(Icons.add),
+    );
   }
 }
 

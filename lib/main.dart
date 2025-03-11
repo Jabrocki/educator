@@ -1,5 +1,6 @@
 //Material
 import 'package:educator/layouts/main_page.dart';
+import 'package:educator/state/deck_list_state.dart';
 import 'package:flutter/material.dart';
 
 //State
@@ -28,7 +29,8 @@ Future<void> main() async {
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider<MainState>.value(value: mainState),
-      ChangeNotifierProvider<SubjectListState>.value(value: subjectState)
+      ChangeNotifierProvider<SubjectListState>.value(value: subjectState),
+      ChangeNotifierProvider(create: (_) => DeckListState())
     ],
     child: const MyApp(),
   ));
@@ -42,10 +44,33 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final mainState = Provider.of<MainState>(context);
-    return MaterialApp(home: 
+    return MaterialApp(
+      home: 
     mainState.rememberUser ?
     const MainPage() :
-    const LoginPage() 
+    const LoginPage() ,
+    theme: mainTheme
+  
     );
   }
 }
+
+//Main theme
+final mainTheme = ThemeData(
+  colorScheme: ColorScheme.fromSeed(
+     seedColor: Colors.blue,
+     primaryContainer: const Color.fromARGB(255, 219, 238, 255)
+  ),
+  inputDecorationTheme: InputDecorationTheme(
+    filled: true,
+    fillColor: const Color.fromARGB(255, 227, 246, 255),
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: const BorderSide(color: Colors.blueAccent, width: 2),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: const BorderSide(color: Colors.blue, width: 2)
+    ),
+  )
+);

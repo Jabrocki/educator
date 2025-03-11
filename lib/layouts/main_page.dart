@@ -1,5 +1,4 @@
 //Material
-import 'package:educator/layouts/deck_add_page.dart';
 import 'package:educator/layouts/decks_page.dart';
 import 'package:educator/layouts/login_page.dart';
 import 'package:educator/layouts/navigation_obeservers/subject_navigator_observer.dart';
@@ -185,9 +184,6 @@ class _MainPageState extends State<MainPage> {
                     break;
                   case '/subjects/menu/decks':
                     page = const DecksPage();
-                    break;
-                  case '/subjects/menu/decks/deck_add':
-                    page = const DeckAddPage();
                     break;
                   default:
                     page = const SubjectPage();

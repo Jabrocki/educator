@@ -82,6 +82,10 @@ class DatabaseService {
   static const String _deckIdCollumn = "deckId";
   static const String _deckSubjectIdCollumn = "subjectId";
   static const String _deckNameCollumn = "deckName";
+  static const String _deckMaximumNumberOfCardsToLearn =
+      "maximumNumberOfCardsToLearn";
+  static const String _deckMaximumNumberOfCardsToReview =
+      "maximumNumberOfCardsToReview";
   static const String _deckNumberOfCardsNewCollumn = "numberOfCardsNew";
   static const String _deckNumberOfCardsLearnCollumn = "numberOfCardsLearn";
   static const String _deckNumberOfCardsReviewCollumn = "numberOfCardsReview";
@@ -92,6 +96,8 @@ class DatabaseService {
     $_deckIdCollumn INTEGER PRIMARY KEY AUTOINCREMENT,
     $_deckSubjectIdCollumn INTEGER NOT NULL,
     $_deckNameCollumn TEXT NOT NULL,
+    $_deckMaximumNumberOfCardsToLearn INTEGER NOT NULL,
+    $_deckMaximumNumberOfCardsToReview INTEGER NOT NULL,
     $_deckNumberOfCardsNewCollumn INTEGER NOT NULL,
     $_deckNumberOfCardsLearnCollumn INTEGER NOT NULL,
     $_deckNumberOfCardsReviewCollumn INTEGER NOT NULL,
@@ -268,17 +274,20 @@ class DatabaseService {
   }
 
   //Decks
-  Future<int> insertDeck({
-    required int subjectId,
-    required String deckName,
-    required int numberOfCardsNew,
-    required int numberOfCardsLearn,
-    required int numberOfCardsReview,
-    int? imgId
-  }) async {
+  Future<int> insertDeck(
+      {required int subjectId,
+      required String deckName,
+      required int maximumNumberOfCardsToLearn,
+      required int maximumNumberOfCardsToReview,
+      required int numberOfCardsNew,
+      required int numberOfCardsLearn,
+      required int numberOfCardsReview,
+      int? imgId}) async {
     final database = await db;
     final deckId = database.insert(_decksTableName, {
       _deckNameCollumn: deckName,
+      _deckMaximumNumberOfCardsToLearn: maximumNumberOfCardsToLearn,
+      _deckMaximumNumberOfCardsToReview: maximumNumberOfCardsToReview,
       _deckNumberOfCardsNewCollumn: numberOfCardsNew,
       _deckNumberOfCardsLearnCollumn: numberOfCardsLearn,
       _deckNumberOfCardsReviewCollumn: numberOfCardsReview,
@@ -290,12 +299,34 @@ class DatabaseService {
 
   Future<List<DeckModel>> getDecks({required int subjectId}) async {
     final database = await db;
-    final data = await database.query(
-      _decksTableName, 
-      where:  "$_deckSubjectIdCollumn = ?",
-      whereArgs: [subjectId]
-    );
+    final data = await database.query(_decksTableName,
+        where: "$_deckSubjectIdCollumn = ?", whereArgs: [subjectId]);
     return data.map((e) => DeckModel.fromMap(e)).toList();
   }
 
+  Future<void> deleteDeck(DeckModel deck) async {
+    final database = await db;
+    await database.delete(_decksTableName,
+        where: '$_deckIdCollumn = ?', whereArgs: [deck.deckId]);
+
+    if (deck.imgId != null) {
+      await deleteImage((await deck.imgModel)!);
+    }
+  }
+
+  Future<void> editDeck(DeckModel deck) async {
+    final database = await db;
+
+    database.update(
+        _decksTableName,
+        {
+          _deckNameCollumn: deck.deckName,
+          _deckMaximumNumberOfCardsToLearn: deck.maximumNumberOfCardsToLearn,
+          _deckMaximumNumberOfCardsToReview: deck.maximumNumberOfCardsToReview,
+          _deckImgIdCollumn: deck.imgId
+        },
+        where: "$_deckIdCollumn = ?",
+        whereArgs: [deck.deckId]);
+  }
+  
 }

@@ -11,6 +11,8 @@ class DeckModel {
   final int deckId;
   final int subjectId;
   String deckName;
+  int maximumNumberOfCardsToLearn;
+  int maximumNumberOfCardsToReview;
   int numberOfCardsNew;
   int numberOfCardsLearn;
   int numberOfCardsReview;
@@ -20,6 +22,8 @@ class DeckModel {
       {required this.deckId,
       required this.subjectId,
       required this.deckName,
+      required this.maximumNumberOfCardsToLearn,
+      required this.maximumNumberOfCardsToReview,
       required this.numberOfCardsNew,
       required this.numberOfCardsLearn,
       required this.numberOfCardsReview,
@@ -42,6 +46,8 @@ class DeckModel {
         deckId: map["deckId"],
         subjectId: map["subjectId"],
         deckName: map["deckName"],
+        maximumNumberOfCardsToLearn: map["maximumNumberOfCardsToLearn"],
+        maximumNumberOfCardsToReview: map["maximumNumberOfCardsToReview"],
         numberOfCardsNew: map["numberOfCardsNew"],
         numberOfCardsLearn: map["numberOfCardsLearn"],
         numberOfCardsReview: map["numberOfCardsReview"],

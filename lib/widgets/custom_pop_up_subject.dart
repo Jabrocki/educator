@@ -17,6 +17,7 @@ class CustomPopUpSubject extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //State
     final subjectListState = Provider.of<SubjectListState>(context);
 
     void addSubject() async {
@@ -42,42 +43,8 @@ class CustomPopUpSubject extends StatelessWidget {
     }
 
     return AlertDialog(
-        title: const Text(
-          "Add Subject",
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        content: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                controller: subjectListState.subjectNameController,
-                decoration: InputDecoration(
-                  labelText: "Subject Name",
-                  hintText: "Enter subject name",
-                  filled: true,
-                  fillColor: Colors
-                      .grey[100], // Light background for better visibility
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide:
-                        const BorderSide(color: Colors.blueAccent, width: 2),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(color: Colors.blue, width: 2),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 16),
-              ImagePickerWidget(
-                image: subjectListState.imgFile,
-                imageFileChanged: subjectListState.setImage,
-              ),
-            ],
-          ),
-        ),
+        title: _title(),
+        content: _body(subjectListState),
         actions: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -113,5 +80,35 @@ class CustomPopUpSubject extends StatelessWidget {
             ],
           ),
         ]);
+  }
+
+   _title() {
+    return const Text(
+        "Add Subject",
+        style: TextStyle(fontWeight: FontWeight.bold),
+      );
+  }
+
+  Widget _body(SubjectListState subjectListState) {
+    return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              controller: subjectListState.subjectNameController,
+              decoration: const InputDecoration(
+                labelText: "Subject name",
+                hintText: "Enter subject name"
+              ),
+            ),
+            const SizedBox(height: 16),
+            ImagePickerWidget(
+              image: subjectListState.imgFile,
+              imageFileChanged: subjectListState.setImage,
+            ),
+          ],
+        ),
+      );
   }
 }
