@@ -243,7 +243,7 @@ class _MainPageState extends State<MainPage> {
                 // TODO: Perform the actual logout logic here
                 Navigator.of(context).pop();
                 Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (_) => LoginPage()));
+                    MaterialPageRoute(builder: (_) => const LoginPage()));
               },
               child: const Text('Yes'),
             ),

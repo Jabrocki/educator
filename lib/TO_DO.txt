@@ -13,6 +13,7 @@ Implement flashcard menu
 * create database for flashcards and decks;
 * store number of flashcards you add to deck daily;
 * allow to edit number of flashcards you add daily;
+* flashcards have to be editable, add colors idk add some text fiel
 
 Play some anki and see how it works
 

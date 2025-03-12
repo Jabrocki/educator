@@ -31,7 +31,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
   File? _image;
 
   Widget _imagePreview(BuildContext context) {
-    final _theme = Theme.of(context);
+    final theme = Theme.of(context);
 
     //Check if there is some _image
     final localImage = _image ?? widget.image;
@@ -41,8 +41,8 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
       height: 150,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: _theme.colorScheme.primary, width: 2),
-        color: _theme.colorScheme.onPrimary,
+        border: Border.all(color: theme.colorScheme.primary, width: 2),
+        color: theme.colorScheme.onPrimary,
       ),
       child: localImage != null
           ? ClipRRect(
@@ -62,7 +62,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
                   Icon(
                     Icons.image,
                     size: 40,
-                    color: _theme.colorScheme.primary,
+                    color: theme.colorScheme.primary,
                   ),
                   const SizedBox(height: 8),
                   const Text('No Image Selected'),
@@ -90,7 +90,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
                 widget.imageFileChanged(imageFile);
               }
             },
-            child: Text("Pick image"))
+            child: const Text("Pick image"))
       ],
     );
   }

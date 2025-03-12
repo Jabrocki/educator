@@ -105,6 +105,13 @@ class DatabaseService {
   )
   """;
 
+  //Flashcards
+  static const String _flashcardTableName = "flashcards";
+  static const String _flashcardIdCollumn = "flashcardId";
+  static const String _flashcardDeckIdCollumn = "deckId"; 
+  static const String _flashcardFrontTextCollumn = "flashcardFrontText";
+  static const String _flashcardBackTextCollumn = "flashcardBackText";
+
   //Drops all tables in the database
   Future<void> clearDatabase(Database database) async {
     await database.execute("DROP TABLE IF EXISTS $_subjectsTableName");
@@ -121,7 +128,7 @@ class DatabaseService {
 
     final database = await openDatabase(
       databasePath,
-      version: 5,
+      version: 6,
       onCreate: (db, version) {
         db.execute(_initSubjects);
         db.execute(_initImages);
@@ -285,6 +292,7 @@ class DatabaseService {
       int? imgId}) async {
     final database = await db;
     final deckId = database.insert(_decksTableName, {
+      _deckSubjectIdCollumn: subjectId,
       _deckNameCollumn: deckName,
       _deckMaximumNumberOfCardsToLearn: maximumNumberOfCardsToLearn,
       _deckMaximumNumberOfCardsToReview: maximumNumberOfCardsToReview,

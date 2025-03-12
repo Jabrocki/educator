@@ -29,11 +29,12 @@ class DeckListState extends ChangeNotifier {
   bool get isEditing => _isEditing;
 
   //Deck add name text editing controller
-  final TextEditingController deckNameController = TextEditingController();
+  final TextEditingController deckNameController = 
+      TextEditingController();
   final TextEditingController deckNumberLearnController =
-      TextEditingController();
+      TextEditingController.fromValue(const TextEditingValue(text: '0'));
   final TextEditingController deckNumberReviewController =
-      TextEditingController();
+      TextEditingController.fromValue(const TextEditingValue(text: '0'));
 
   //Deck edit getters
   String get deckName => deckNameController.text;
@@ -43,7 +44,7 @@ class DeckListState extends ChangeNotifier {
     notifyListeners();
   }
 
-  int get maximumNumberOfCardsToLearn => deckNumberLearnController.text as int;
+  int get maximumNumberOfCardsToLearn => int.parse(deckNumberLearnController.text);
 
   set maximumNumberOfCardsToLearn(int maximumNumberOfCardsToLearn) {
     deckNumberLearnController.text = maximumNumberOfCardsToLearn.toString();
@@ -51,7 +52,7 @@ class DeckListState extends ChangeNotifier {
   }
 
   int get maximumNumberOfCardsToReview =>
-      deckNumberReviewController.text as int;
+      int.parse(deckNumberReviewController.text);
 
   set maximumNumberOfCardsToReview(int maximumNumberOfCardsToReview) {
     deckNumberReviewController.text = maximumNumberOfCardsToReview.toString();
@@ -137,17 +138,19 @@ class DeckListState extends ChangeNotifier {
     //Get deck model to edit
     DeckModel deck = _decks.firstWhere((deck) => deck.deckId == _editedDeckId);
 
+    //Insert new image 
+    int? newImgId;
+    if(_imgFile != null) {
+      newImgId = await _instance.saveAndInsertImage(imgFile!);
+    }
     //Delete old image if exists
     if (deck.imgId != null) {
       ImageModel oldImage = (await deck.imgModel)!;
       await _instance.deleteImage(oldImage);
     }
 
-    //Upload new image
-    deck.imgId = null;
-    if (imgFile != null) {
-      deck.imgId = await _instance.saveAndInsertImage(imgFile!);
-    }
+    //Change img id
+    deck.imgId = newImgId;
 
     //Update rest of data
     deck.deckName = deckName;
@@ -179,6 +182,8 @@ class DeckListState extends ChangeNotifier {
     maximumNumberOfCardsToLearn = 0;
     maximumNumberOfCardsToReview = 0;
     imgFile = null;
+    imgId = null;
     isEditing = false;
+    notifyListeners();
   }
 }

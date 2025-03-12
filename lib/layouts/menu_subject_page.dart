@@ -1,6 +1,12 @@
+//Models
 import 'package:educator/models/menu_item_model.dart';
+
+//Widgets
 import 'package:educator/widgets/grid_menu.dart';
+
+//Material
 import 'package:flutter/material.dart';
+
 
 class MenuSubjectPage extends StatelessWidget {
   const MenuSubjectPage({
@@ -13,9 +19,10 @@ class MenuSubjectPage extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
     int crossAxisCount = (screenWidth / 200).floor().clamp(2, 6);
 
+
     //List of menu items
     final List<MenuItemModel> menuItems = [
-      const MenuItemModel(label: "FlashCards", icon: Icons.web_stories, navigation: "/subjects/menu/decks"),
+      const MenuItemModel(label: "FlashCards", icon: Icons.web_stories, navigation: "/subjects/menu/decks",),
       const MenuItemModel(label: "Quizes", icon: Icons.quiz, navigation: "/subjects/menu/quizes"),
       const MenuItemModel(label: "Notes", icon: Icons.note, navigation: "/subjects/menu/notes"),
       const MenuItemModel(label: "Files", icon: Icons.file_open, navigation: "/subjects/menu/files")

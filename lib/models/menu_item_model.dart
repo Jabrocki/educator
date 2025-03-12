@@ -1,3 +1,4 @@
+//Material
 import 'package:flutter/material.dart';
 
 class MenuItemModel {
@@ -7,7 +8,7 @@ class MenuItemModel {
   const MenuItemModel({
     required this.label, 
     required this.icon,
-    required this.navigation
+    required this.navigation,
     });
 }
 

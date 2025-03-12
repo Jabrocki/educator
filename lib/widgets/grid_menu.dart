@@ -7,11 +7,7 @@ import 'package:flutter/material.dart';
 class GridMenu extends StatefulWidget {
   final int index;
   final MenuItemModel menuItemModel;
-  const GridMenu(
-      {super.key,
-      required this.index,
-      required this.menuItemModel
-    });
+  const GridMenu({super.key, required this.index, required this.menuItemModel});
 
   @override
   State<GridMenu> createState() => _GridMenuState();
@@ -23,7 +19,6 @@ class _GridMenuState extends State<GridMenu> {
 
   // Combine both scale factors
   double get _combinedScale => _initScale * _pressedScale;
-
 
   @override
   void initState() {
@@ -45,7 +40,7 @@ class _GridMenuState extends State<GridMenu> {
       curve: Curves.easeOutBack,
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
-                // When the user presses down, shrink the widget
+        // When the user presses down, shrink the widget
         onTapDown: (details) {
           setState(() {
             _pressedScale = 0.95;
@@ -64,9 +59,9 @@ class _GridMenuState extends State<GridMenu> {
           });
         },
         onTap: () {
-                      Navigator.of(context).pushNamed(
-              widget.menuItemModel.navigation,
-            );
+          Navigator.of(context).pushNamed(
+            widget.menuItemModel.navigation,
+          );
         },
         child: LayoutBuilder(
           builder: (context, constraints) {
@@ -87,41 +82,41 @@ class _GridMenuState extends State<GridMenu> {
 
   Widget _body(double iconSize, double fontSize, ThemeData mainTheme) {
     return ClipRRect(
-            borderRadius: BorderRadius.circular(16),
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
-                color: mainTheme.colorScheme.primaryContainer,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  // The icon scales responsively.
-                  Expanded(
-                    child: Center(
-                      child: Icon(
-                        widget.menuItemModel.icon,
-                        size: iconSize,
-                      ),
-                    ),
-                  ),
-                  // The text uses the computed font size.
-                  Container(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    child: Text(
-                      widget.menuItemModel.label,
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: fontSize,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ],
+      borderRadius: BorderRadius.circular(16),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          color: mainTheme.colorScheme.primaryContainer,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            // The icon scales responsively.
+            Expanded(
+              child: Center(
+                child: Icon(
+                  widget.menuItemModel.icon,
+                  size: iconSize,
+                ),
               ),
             ),
-          );
+            // The text uses the computed font size.
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              child: Text(
+                widget.menuItemModel.label,
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: fontSize,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

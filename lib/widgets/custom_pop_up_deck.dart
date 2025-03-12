@@ -1,5 +1,6 @@
 //Material
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 //Custom widgets
 import 'image_picker_widget.dart';
@@ -17,7 +18,6 @@ class CustomPopUpDeck extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     final deckListState = Provider.of<DeckListState>(context);
     return AlertDialog(
         title: const Text(
@@ -42,14 +42,18 @@ class CustomPopUpDeck extends StatelessWidget {
 
                 //Image Picker
                 ImagePickerWidget(
-                    image: deckListState.imgFile, //subjectListState.imgFile,
-                    imageFileChanged: (imgFile) => deckListState.imgFile = imgFile, //subjectListState.setImage,
-                    ),
+                  image: deckListState.imgFile, //subjectListState.imgFile,
+                  imageFileChanged: (imgFile) => deckListState.imgFile =
+                      imgFile, //subjectListState.setImage,
+                ),
                 const SizedBox(height: 16),
 
                 //Cards to learn day
                 TextField(
                   controller: deckListState.deckNumberLearnController,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly
+                  ], // Blocks non-numeric input
                   decoration: const InputDecoration(
                     labelText: "Cards to learn a day",
                     hintText: "Enter number of cards to learn a day",
@@ -60,12 +64,14 @@ class CustomPopUpDeck extends StatelessWidget {
                 //Cards to review a day
                 TextField(
                   controller: deckListState.deckNumberReviewController,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly
+                  ], // Blocks non-numeric input
                   decoration: const InputDecoration(
                     labelText: "Cards to review a day",
                     hintText: "Enter number of cards to review a day",
                   ),
                 ),
-                
               ],
             ),
           ),
@@ -97,7 +103,6 @@ class CustomPopUpDeck extends StatelessWidget {
                       } else {
                         deckListState.addDeck();
                       }
-                      
                     },
                     child: const Text("Ok"),
                   ),

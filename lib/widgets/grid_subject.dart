@@ -1,4 +1,5 @@
 //Material
+import 'package:educator/state/main_state.dart';
 import 'package:flutter/material.dart';
 
 //Models
@@ -80,6 +81,7 @@ class _AnimatedGridSubjectState extends State<AnimatedGridSubject> {
             });
           },
           onTap: () {
+            Provider.of<MainState>(context, listen: false).subjectId = widget.subject.subjectId;
             Navigator.of(context).pushNamed(
               '/subjects/menu',
             );

@@ -29,7 +29,7 @@ class SubjectNavigatorObserver extends NavigatorObserver {
           addButton = null;
           break;
         case '/subjects/menu/decks':
-          addButton = AddDeckButton();
+          addButton = const AddDeckButton();
           break;
         default:
           addButton = null;

@@ -14,6 +14,16 @@ class MainState extends ChangeNotifier {
   int? _userId;
   String? _userName;
 
+  //Choosen subject in menu card
+  late int _subjectId;
+
+  set subjectId(int subjectId) {
+    _subjectId = subjectId;
+    notifyListeners();
+  }
+
+  int get subjectId => _subjectId;
+
   //Init of SharedPreferences
   Future<void> init() async {
     _prefs = await SharedPreferences.getInstance();
