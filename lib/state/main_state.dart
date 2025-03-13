@@ -32,6 +32,7 @@ class MainState extends ChangeNotifier {
     _userName = _prefs?.getString("userName");
     notifyListeners();
   }
+
   //Setters
   set userId(int? userId){
     _userId = userId;

@@ -128,12 +128,12 @@ class HelperMenu extends StatelessWidget {
         double minIconSize = 8; // Minimum icon size
         double maxIconSize = 28; // Maximum icon size
         double iconSize =
-            (constraints.maxWidth * 0.1).clamp(minIconSize, maxIconSize);
+            (constraints.maxWidth * 0.12).clamp(minIconSize, maxIconSize);
 
         // Define min & max text width
         double minTextWidth = 60; // Minimum width for text
         double maxTextWidth =
-            constraints.maxWidth * 0.6; // Maximum width for text
+            constraints.maxWidth * 0.45; // Maximum width for text
 
         return Container(
           padding: const EdgeInsets.symmetric(horizontal: 8),

@@ -1,3 +1,4 @@
+import 'package:educator/state/tab_state.dart';
 import 'package:flutter/material.dart';
 
 // Custom widgets
@@ -25,9 +26,7 @@ class SubjectPage extends StatelessWidget {
         if (snapshot.hasData) {
           List<SubjectModel> subjectList =
               Provider.of<SubjectListState>(context).subjects;
-          return _body(
-          context,
-          subjectList);
+          return _body(context, subjectList);
         } else {
           return const CircularProgressIndicator();
         }
@@ -35,14 +34,11 @@ class SubjectPage extends StatelessWidget {
     );
   }
 
-  Widget _body(
-    BuildContext context,
-    List<SubjectModel> subjectList
-    ) {
+  Widget _body(BuildContext context, List<SubjectModel> subjectList) {
     double screenWidth = MediaQuery.of(context).size.width;
-    
+
     // Dynamically calculate crossAxisCount based on screen width
-    int crossAxisCount = (screenWidth / 200).floor().clamp(2, 6); 
+    int crossAxisCount = (screenWidth / 200).floor().clamp(2, 6);
     // Ensures a minimum of 2 columns and a maximum of 6 columns
     return CustomScrollView(
       slivers: [
@@ -57,23 +53,33 @@ class SubjectPage extends StatelessWidget {
         ),
         SliverPadding(
           padding: const EdgeInsets.all(8),
-          sliver: SliverGrid(
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: crossAxisCount,
-              crossAxisSpacing: 10.0,
-              mainAxisSpacing: 10.0,
-              childAspectRatio: 1.0,
-            ),
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                return AnimatedGridSubject(
-                  subject: subjectList[index],
-                  index: index,
+          sliver: Consumer<TabState>(builder: (context, tabState, _) {
+            List<GlobalKey<AnimatedGridSubjectState>> animatedGridKeys =
+                List.generate(subjectList.length,
+                    (index) => GlobalKey<AnimatedGridSubjectState>());
+
+            return SliverGrid(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: crossAxisCount,
+                crossAxisSpacing: 10.0,
+                mainAxisSpacing: 10.0,
+                childAspectRatio: 1.0,
+              ),
+              delegate: SliverChildBuilderDelegate(
+                (context, index) {
+                  if(tabState.activeTabIndex == 1) {
+                    animatedGridKeys[index].currentState?.startAnimation();
+                  }
+                  return AnimatedGridSubject(
+                    key: animatedGridKeys[index],
+                    subject: subjectList[index],
+                    index: index,
                   );
-              },
-              childCount: subjectList.length,
-            ),
-          ),
+                },
+                childCount: subjectList.length,
+              ),
+            );
+          }),
         ),
       ],
     );

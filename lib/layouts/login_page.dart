@@ -29,13 +29,13 @@ class _LoginPageState extends State<LoginPage> {
   //TextEditingControlers
   final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _userPasswordController = TextEditingController();
-
+  bool rememberUser = false;
   @override
   Widget build(BuildContext context) {
     //States
     final mainState = Provider.of<MainState>(context);
     final subjectState = Provider.of<SubjectListState>(context, listen: false);
-    final bool rememberUser = mainState.rememberUser;
+
 
     void logIn() async {
       //User data
@@ -52,6 +52,9 @@ class _LoginPageState extends State<LoginPage> {
 
         //Subject State
         subjectState.userId = userId;
+
+        //Remeber user
+        mainState.rememberUser = rememberUser;
 
         //Clear Data on the controllers
         _userNameController.text = "";
@@ -149,7 +152,9 @@ class _LoginPageState extends State<LoginPage> {
                     controlAffinity: ListTileControlAffinity.leading,
                     value: rememberUser,
                     onChanged: (bool? value) {
-                      mainState.rememberUser = value!;
+                      setState(() {
+                        rememberUser = value!;
+                      });
                     },
                   ),
                   const SizedBox(height: 16),

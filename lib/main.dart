@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 //State
 import 'state/main_state.dart';
 import 'state/subject_list_state.dart';
+import 'state/tab_state.dart';
 
 //Packages
 import 'package:provider/provider.dart';
@@ -30,7 +31,8 @@ Future<void> main() async {
     providers: [
       ChangeNotifierProvider<MainState>.value(value: mainState),
       ChangeNotifierProvider<SubjectListState>.value(value: subjectState),
-      ChangeNotifierProvider(create: (_) => DeckListState())
+      ChangeNotifierProvider(create: (_) => DeckListState()),
+      ChangeNotifierProvider(create: (_) => TabState())
     ],
     child: const MyApp(),
   ));

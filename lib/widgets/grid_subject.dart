@@ -1,5 +1,6 @@
 //Material
 import 'package:educator/state/main_state.dart';
+import 'package:educator/state/tab_state.dart';
 import 'package:flutter/material.dart';
 
 //Models
@@ -29,10 +30,10 @@ class AnimatedGridSubject extends StatefulWidget {
   });
 
   @override
-  State<AnimatedGridSubject> createState() => _AnimatedGridSubjectState();
+  State<AnimatedGridSubject> createState() => AnimatedGridSubjectState();
 }
 
-class _AnimatedGridSubjectState extends State<AnimatedGridSubject> {
+class AnimatedGridSubjectState extends State<AnimatedGridSubject> {
   double _initScale = 0.0;
   double _pressedScale = 1.0;
 
@@ -42,10 +43,15 @@ class _AnimatedGridSubjectState extends State<AnimatedGridSubject> {
   @override
   void initState() {
     super.initState();
-    // Add a small delay for each item, so that item #0 starts immediately,
-    // item #1 starts 100ms later, item #2 starts 200ms later, etc.
+    startAnimation();
+  }
+
+  void startAnimation() {
+    setState(() {
+      _initScale = 0.0;
+    });
+
     Future.delayed(Duration(milliseconds: 100 * widget.index), () {
-      // Always check if the widget is still mounted before calling setState in an async gap
       if (mounted) {
         setState(() {
           _initScale = 1.0;
@@ -81,7 +87,8 @@ class _AnimatedGridSubjectState extends State<AnimatedGridSubject> {
             });
           },
           onTap: () {
-            Provider.of<MainState>(context, listen: false).subjectId = widget.subject.subjectId;
+            Provider.of<MainState>(context, listen: false).subjectId =
+                widget.subject.subjectId;
             Navigator.of(context).pushNamed(
               '/subjects/menu',
             );
@@ -101,7 +108,6 @@ class GridSubject extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final mainTheme = Theme.of(context);
 
     return LayoutBuilder(

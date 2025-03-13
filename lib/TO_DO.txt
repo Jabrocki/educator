@@ -1,37 +1,42 @@
+Refeactoring:
+* fix animations on subject page wtf is that bug try with global key
+* remeber you have succesful dialog in register page file, 
+move it to the dialog folder and make it more universal
+* split grid widgets into separate files to easier use
+* Refactor a litle bit subject state
+* fix overflow issues it may improve UX
+
+
 Implement Images
- * Make separte handler for subject related tesk in database
  * Ustawianie kadru w obrazkach
 
 Implement log in page page + register page prototype
 * do some sha coding
 * connect it to the backend
 
-Refactor a litle bit subject state
+
 
 Implement flashcard menu 
-* make my image picker widget easier to use;
-* create database for flashcards and decks;
-* store number of flashcards you add to deck daily;
-* allow to edit number of flashcards you add daily;
-* flashcards have to be editable, add colors idk add some text fiel
+* create database for flashcards;
+* flashcards + flutter quill/painter (user can choose)
+
 
 Play some anki and see how it works
 
-Fix animations on subject page
+
 
 Refactor code
 
 Add some kind of intro idk something shiny
 
-remeber you have succesful dialog in register page file, move it to the dialog folder and make it more universal
+
 
 Implement menu for subjects
-*flashcards
 *quizes;
 *storage of files (prefeably online but files should be stored ofline if needed);
 *notes;
 
 Implement main page
-    *   Implement tasks
-    *    Implement calendar
+    * Implement tasks
+    * Implement calendar with icalendar parser
 

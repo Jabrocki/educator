@@ -1,22 +1,24 @@
+//Provider
+import 'package:educator/state/tab_state.dart';
+import 'package:provider/provider.dart';
+
 //Material
-import 'package:educator/layouts/decks_page.dart';
-import 'package:educator/layouts/login_page.dart';
-import 'package:educator/layouts/navigation_obeservers/subject_navigator_observer.dart';
 import 'package:flutter/material.dart';
 
 //Layouts
 import '../layouts/home_page.dart';
 import '../layouts/subject_page.dart';
 import '../layouts/menu_subject_page.dart';
-
-//External packges
-//import 'package:provider/provider.dart';
-
-//State
-//import '../state/main_state.dart';
+import '../layouts/decks_page.dart';
+import '../layouts/login_page.dart';
+import '../layouts/navigation_obeservers/subject_navigator_observer.dart';
 
 //Global variables
 import '../global_variables.dart';
+
+//State
+import '../state/main_state.dart';
+import '../state/subject_list_state.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({
@@ -28,9 +30,6 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  // Which rail destination is selected
-  int _selectedIndex = 0;
-
   // Whether the user is hovering over the rail (to show the extended rail)
   bool _isHovered = false;
 
@@ -43,9 +42,11 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
+    //Tab State
+    final tabState = Provider.of<TabState>(context);
     // For AppBar leading: only show on Subjects tab when needed.
     Widget? buildNestedNavigatorBackButton() {
-      if (_selectedIndex == 1 && _showSubjectsBackButton) {
+      if (tabState.activeTabIndex == 1 && _showSubjectsBackButton) {
         return IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -86,24 +87,26 @@ class _MainPageState extends State<MainPage> {
             scale: animation,
             child: child,
           ),
-          child: _buildFab(),
+          child: _buildFab(context),
         ));
   }
 
-  Widget? _buildFab() {
-    switch(_selectedIndex) {
+  Widget? _buildFab(BuildContext context) {
+    final tabState = Provider.of<TabState>(context);
+    switch (tabState.activeTabIndex) {
       case 0:
-          return _homeFab;
+        return _homeFab;
       case 1:
-          return _subjectFab;
+        return _subjectFab;
       case 2:
-          return _searchFab;
+        return _searchFab;
       default:
-          return null;
+        return null;
     }
   }
 
   Widget _buildBody(BuildContext context) {
+    final tabState = Provider.of<TabState>(context);
     return Row(
       children: [
         //Navigation Rail
@@ -125,19 +128,17 @@ class _MainPageState extends State<MainPage> {
                 NavigationRailDestination(
                     icon: Icon(Icons.settings), label: Text("Settings"))
               ],
-              selectedIndex: _selectedIndex,
+              selectedIndex: tabState.activeTabIndex,
               onDestinationSelected: (value) {
                 //Change Navigation Page
-                setState(() {
-                  _selectedIndex = value;
-                });
+                tabState.activeTabIndex = value;
               },
             ),
           )),
         ),
         Expanded(
             child: IndexedStack(
-          index: _selectedIndex,
+          index: tabState.activeTabIndex,
           children: [
             // Home Tab Navigator
             Navigator(
@@ -240,7 +241,14 @@ class _MainPageState extends State<MainPage> {
             ),
             ElevatedButton(
               onPressed: () {
-                // TODO: Perform the actual logout logic here
+                final mainState =
+                    Provider.of<MainState>(context, listen: false);
+                mainState.rememberUser = false;
+                mainState.userId = 0;
+                mainState.userName = '';
+                Provider.of<SubjectListState>(context, listen: false).userId =
+                    0;
+
                 Navigator.of(context).pop();
                 Navigator.of(context).pushReplacement(
                     MaterialPageRoute(builder: (_) => const LoginPage()));
