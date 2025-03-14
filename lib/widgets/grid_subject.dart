@@ -1,6 +1,5 @@
 //Material
 import 'package:educator/state/main_state.dart';
-import 'package:educator/state/tab_state.dart';
 import 'package:flutter/material.dart';
 
 //Models
@@ -45,6 +44,7 @@ class AnimatedGridSubjectState extends State<AnimatedGridSubject> {
     super.initState();
     startAnimation();
   }
+
 
   void startAnimation() {
     setState(() {

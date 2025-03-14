@@ -172,6 +172,8 @@ class _MainPageState extends State<MainPage> {
                   setState(() {
                     _subjectFab = addButton;
                   });
+                }, routeNameValChanged: (String? routeName) {
+                  tabState.subjectRouteName = routeName;
                 })
               ],
               onGenerateRoute: (RouteSettings settings) {
@@ -189,6 +191,10 @@ class _MainPageState extends State<MainPage> {
                   default:
                     page = const SubjectPage();
                 }
+
+
+
+                
                 return MaterialPageRoute(
                   builder: (_) => page,
                   settings: settings,

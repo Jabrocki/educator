@@ -1,11 +1,15 @@
 //Models
 import 'package:educator/models/menu_item_model.dart';
+import 'package:educator/state/tab_state.dart';
 
 //Widgets
 import 'package:educator/widgets/grid_menu.dart';
 
 //Material
 import 'package:flutter/material.dart';
+
+//Provider
+import 'package:provider/provider.dart';
 
 
 class MenuSubjectPage extends StatelessWidget {
@@ -41,18 +45,24 @@ class MenuSubjectPage extends StatelessWidget {
         ),
         SliverPadding(
           padding: const EdgeInsets.all(8),
-          sliver: SliverGrid(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: crossAxisCount,
-                crossAxisSpacing: 10.0,
-                mainAxisSpacing: 10.0,
-                childAspectRatio: 1.0,
-              ),
-              delegate: SliverChildBuilderDelegate((context, index) {
-                return GridMenu(
-                    index: index,
-                    menuItemModel: menuItems[index],);
-              }, childCount: menuItems.length)),
+          sliver: Consumer<TabState>(
+            builder: (context, tabState, _) {
+              List<GlobalKey<GridMenuState>> gridMenuKeys = List.generate(menuItems.length, (_) => GlobalKey<GridMenuState>());
+              return SliverGrid(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: crossAxisCount,
+                    crossAxisSpacing: 10.0,
+                    mainAxisSpacing: 10.0,
+                    childAspectRatio: 1.0,
+                  ),
+                  delegate: SliverChildBuilderDelegate((context, index) {
+                    return GridMenu(
+                        key: gridMenuKeys[index],
+                        index: index,
+                        menuItemModel: menuItems[index],);
+                  }, childCount: menuItems.length));
+            }
+          ),
         ),
       ],
     );

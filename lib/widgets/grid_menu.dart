@@ -10,10 +10,10 @@ class GridMenu extends StatefulWidget {
   const GridMenu({super.key, required this.index, required this.menuItemModel});
 
   @override
-  State<GridMenu> createState() => _GridMenuState();
+  State<GridMenu> createState() => GridMenuState();
 }
 
-class _GridMenuState extends State<GridMenu> {
+class GridMenuState extends State<GridMenu> {
   double _initScale = 0.0;
   double _pressedScale = 1.0;
 

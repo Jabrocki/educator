@@ -1,6 +1,5 @@
 Refeactoring:
-* fix animations on subject page wtf is that bug try with global key
-* remeber you have succesful dialog in register page file, 
+ * remeber you have succesful dialog in register page file, 
 move it to the dialog folder and make it more universal
 * split grid widgets into separate files to easier use
 * Refactor a litle bit subject state

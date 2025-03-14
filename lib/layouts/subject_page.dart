@@ -67,9 +67,7 @@ class SubjectPage extends StatelessWidget {
               ),
               delegate: SliverChildBuilderDelegate(
                 (context, index) {
-                  if(tabState.activeTabIndex == 1) {
-                    animatedGridKeys[index].currentState?.startAnimation();
-                  }
+
                   return AnimatedGridSubject(
                     key: animatedGridKeys[index],
                     subject: subjectList[index],

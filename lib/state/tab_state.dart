@@ -10,5 +10,15 @@ class TabState extends ChangeNotifier {
     notifyListeners();
   }
 
+  //Subject navigator
+  
+  String? _subjectRouteName;
+
+  set subjectRouteName(String? subjectRouteName) {
+    _subjectRouteName = subjectRouteName;
+    notifyListeners();
+  }
+
+  String? get subjectRouteName => _subjectRouteName;
 
 }
