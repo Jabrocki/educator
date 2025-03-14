@@ -2,6 +2,7 @@
 import 'package:educator/dialogs/show_custom_alert_dialog.dart';
 import 'package:flutter/material.dart';
 import '../database/main_database.dart';
+import '../dialogs/show_custom_succesful_dialog.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -30,48 +31,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   final DatabaseService _instance = DatabaseService.instance;
 
-  void showSuccessfulRegistrationDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16.0),
-          ),
-          title: const Row(
-            children: [
-              Icon(
-                Icons.check_circle_outline,
-                size: 28,
-                color: Colors.green,
-              ),
-              SizedBox(width: 8.0),
-              Text(
-                'Registration Successful',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                ),
-              ),
-            ],
-          ),
-          content: const Text(
-            'Congratulations! Your account has been successfully created.',
-            style: TextStyle(fontSize: 16),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -180,7 +140,9 @@ class _RegisterPageState extends State<RegisterPage> {
                           _userNameController.text = "";
                           _userPasswordConfirmController.text = "";
                           _userPasswordController.text = "";
-                          showSuccessfulRegistrationDialog(context);
+                          showSuccessfulRegistrationDialog(context,
+                          "Succesful registration!",
+                          "You have been registerd succesfully!");
                         } else {
                           showCustomAlertDialog(
                               context: context,

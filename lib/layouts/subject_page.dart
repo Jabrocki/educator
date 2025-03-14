@@ -1,8 +1,6 @@
 import 'package:educator/state/tab_state.dart';
+import 'package:educator/widgets/grid_subject/animated_grid_subject.dart';
 import 'package:flutter/material.dart';
-
-// Custom widgets
-import 'package:educator/widgets/grid_subject.dart';
 
 // Models
 import 'package:educator/models/subject_model.dart';
