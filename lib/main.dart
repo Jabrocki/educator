@@ -1,18 +1,26 @@
+//Packages
+import 'package:provider/provider.dart';
+
+
 //Material
-import 'package:educator/layouts/main_page.dart';
-import 'package:educator/state/deck_list_state.dart';
 import 'package:flutter/material.dart';
 
 //State
 import 'state/main_state.dart';
 import 'state/subject_list_state.dart';
 import 'state/tab_state.dart';
-
-//Packages
-import 'package:provider/provider.dart';
+import 'state/deck_list_state.dart';
 
 //LogInPage
 import 'package:educator/layouts/login_page.dart';
+
+//MainPage
+import 'layouts/main_page.dart';
+
+
+//Database
+import 'database/database_config.dart';
+import 'package:educator/database/main_database.dart';
 
 Future<void> main() async {
   //Ensure the Flutter binding is initialized
@@ -21,6 +29,12 @@ Future<void> main() async {
   //Create and initialize main state
   final mainState = MainState();
   await mainState.init();
+  
+  //Config
+  await DatabaseConfig.configDb.initConfig();
+
+  //Database
+  await DatabaseService.instance.initDb();
 
   //Create subject state
   final subjectState = SubjectListState();

@@ -1,4 +1,6 @@
 //Libary name
+// ignore_for_file: depend_on_referenced_packages
+
 library main_database;
 
 //Models
@@ -23,6 +25,7 @@ part 'users_database.dart';
 part "subjects_database.dart";
 part "images_database.dart";
 part "decks_database.dart";
+part "flashcards_database.dart";
 
 class DatabaseService {
   //Singleton
@@ -30,66 +33,58 @@ class DatabaseService {
   DatabaseService._constructor();
 
   //Database instance
-  static Database? _db;
+  late Database db;
 
-  //Getter for database
-  Future<Database> get db async {
-    if (_db != null) {
-      return _db!;
-    }
-    _db = await initDb();
-    return _db!;
-  }
-
-  //Init Sql Commands
+  //Config
+  DatabaseConfig configDb = DatabaseConfig.configDb;
 
   //Drops all tables in the database
   Future<void> clearDatabase(Database database) async {
+    //Config names
+    String subjectsTableName = DatabaseConfig.subjectsTableName;
+    String imagesTableName = DatabaseConfig.imagesTableName;
+    String usersTableName = DatabaseConfig.usersTableName;
+    String decksTableName = DatabaseConfig.decksTableName;
+
     await database.execute("DROP TABLE IF EXISTS $subjectsTableName");
     await database.execute("DROP TABLE IF EXISTS $imagesTableName");
     await database.execute("DROP TABLE IF EXISTS $usersTableName");
     await database.execute("DROP TABLE IF EXISTS $decksTableName");
-    await database.execute("DROP TABLE IF EXISTS $flashcardTableName");
+    await database.execute("DROP TABLE IF EXISTS $decksTableName");
   }
 
   //Init database
-  Future<Database> initDb() async {
-    //Database path
-    final databaseDirPath = await getDatabasesPath();
-    final databasePath = join(databaseDirPath, databaseName);
-
-    final database = await openDatabase(
-      databasePath,
-      version: 6,
+  Future<void> initDb() async {
+    db = await openDatabase(
+      configDb.databasePath,
+      version: 8,
       onCreate: (db, version) {
-        db.execute(initSubjects);
-        db.execute(initImages);
-        db.execute(initUsers);
-        db.execute(initDecks);
-        db.execute(initFlashcards);
+        db.execute(configDb.initSubjects);
+        db.execute(configDb.initImages);
+        db.execute(configDb.initUsers);
+        db.execute(configDb.initDecks);
+        db.execute(configDb.initFlashcards);
       },
       onUpgrade: (db, oldVersion, newVersion) async {
         await clearDatabase(db);
-        await db.execute(initSubjects);
-        await db.execute(initImages);
-        await db.execute(initUsers);
-        await db.execute(initDecks);
-        await db.execute(initFlashcards);
+        await db.execute(configDb.initSubjects);
+        await db.execute(configDb.initImages);
+        await db.execute(configDb.initUsers);
+        await db.execute(configDb.initDecks);
+        await db.execute(configDb.initFlashcards);
         final SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setBool("rememberUser", false);
       },
       onDowngrade: (db, oldVersion, newVersion) async {
         await clearDatabase(db);
-        await db.execute(initSubjects);
-        await db.execute(initImages);
-        await db.execute(initUsers);
-        await db.execute(initDecks);
-        await db.execute(initFlashcards);
+        await db.execute(configDb.initSubjects);
+        await db.execute(configDb.initImages);
+        await db.execute(configDb.initUsers);
+        await db.execute(configDb.initDecks);
+        await db.execute(configDb.initFlashcards);
         final SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setBool("rememberUser", false);
       },
     );
-
-    return database;
   }
 }

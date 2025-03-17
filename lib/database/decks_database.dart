@@ -11,29 +11,34 @@ extension DecksDatabase on DatabaseService {
       required int numberOfCardsLearn,
       required int numberOfCardsReview,
       int? imgId}) async {
-    final database = await db;
-    return await database.insert(decksTableName, {
-      deckSubjectIdColumn: subjectId,
-      deckNameColumn: deckName,
-      deckMaximumNumberOfCardsToLearn: maximumNumberOfCardsToLearn,
-      deckMaximumNumberOfCardsToReview: maximumNumberOfCardsToReview,
-      deckNumberOfCardsNewColumn: numberOfCardsNew,
-      deckNumberOfCardsLearnColumn: numberOfCardsLearn,
-      deckNumberOfCardsReviewColumn: numberOfCardsReview,
-      deckImgIdColumn: imgId
+    return await db.insert(DatabaseConfig.decksTableName, {
+      DatabaseConfig.deckSubjectIdColumn: subjectId,
+      DatabaseConfig.deckNameColumn: deckName,
+      DatabaseConfig.deckMaximumNumberOfCardsToLearn:
+          maximumNumberOfCardsToLearn,
+      DatabaseConfig.deckMaximumNumberOfCardsToReview:
+          maximumNumberOfCardsToReview,
+      DatabaseConfig.deckNumberOfCardsNewColumn: numberOfCardsNew,
+      DatabaseConfig.deckNumberOfCardsLearnColumn: numberOfCardsLearn,
+      DatabaseConfig.deckNumberOfCardsReviewColumn: numberOfCardsReview,
+      DatabaseConfig.deckImgIdColumn: imgId
     });
   }
 
   Future<List<DeckModel>> getDecks({required int subjectId}) async {
-    final database = await db;
-    final data = await database.query(decksTableName,
+    //Subject id collumn
+    String deckSubjectIdColumn = DatabaseConfig.deckSubjectIdColumn;
+
+    final data = await db.query(DatabaseConfig.decksTableName,
         where: "$deckSubjectIdColumn = ?", whereArgs: [subjectId]);
     return data.map((e) => DeckModel.fromMap(e)).toList();
   }
 
   Future<void> deleteDeck(DeckModel deck) async {
-    final database = await db;
-    await database.delete(decksTableName,
+    //Deck id
+    String deckIdColumn = DatabaseConfig.deckIdColumn;
+
+    await db.delete(DatabaseConfig.decksTableName,
         where: '$deckIdColumn = ?', whereArgs: [deck.deckId]);
     if (deck.imgId != null) {
       await deleteImage((await deck.imgModel)!);
@@ -41,14 +46,16 @@ extension DecksDatabase on DatabaseService {
   }
 
   Future<void> editDeck(DeckModel deck) async {
-    final database = await db;
-    database.update(
-        decksTableName,
+    //Deck id
+    String deckIdColumn = DatabaseConfig.deckIdColumn;
+
+    db.update(
+        DatabaseConfig.decksTableName,
         {
-          deckNameColumn: deck.deckName,
-          deckMaximumNumberOfCardsToLearn: deck.maximumNumberOfCardsToLearn,
-          deckMaximumNumberOfCardsToReview: deck.maximumNumberOfCardsToReview,
-          deckImgIdColumn: deck.imgId
+          DatabaseConfig.deckNameColumn: deck.deckName,
+          DatabaseConfig.deckMaximumNumberOfCardsToLearn: deck.maximumNumberOfCardsToLearn,
+          DatabaseConfig.deckMaximumNumberOfCardsToReview: deck.maximumNumberOfCardsToReview,
+          DatabaseConfig.deckImgIdColumn: deck.imgId
         },
         where: "$deckIdColumn = ?",
         whereArgs: [deck.deckId]);

@@ -3,9 +3,8 @@ part of 'main_database.dart';
 extension ImagesDatabase on DatabaseService {
   //Images
   Future<int> insertImage(String imgFileName) async {
-    Database database = await db;
-    return await database.insert(imagesTableName, {
-      imagesFilePathColumn: imgFileName,
+    return await db.insert(DatabaseConfig.imagesTableName, {
+      DatabaseConfig.imagesFilePathColumn: imgFileName,
     });
   }
 
@@ -19,18 +18,19 @@ extension ImagesDatabase on DatabaseService {
   }
 
   Future<String> getImagePath(int imgId) async {
-    Database database = await db;
-    final data = await database.query(imagesTableName,
+    //Images id
+    String imagesIdColumn = DatabaseConfig.imagesIdColumn;
+    final data = await db.query(DatabaseConfig.imagesTableName,
         where: '$imagesIdColumn = ?', whereArgs: [imgId]);
-    return data[0][imagesFilePathColumn]! as String;
+    return data[0][DatabaseConfig.imagesFilePathColumn]! as String;
   }
 
   Future<void> deleteImage(ImageModel image) async {
-    Database database = await db;
-    final Directory appDocumentsDir = await getApplicationDocumentsDirectory();
-    File answerImgFile = File(join(appDocumentsDir.path, image.imgFileName));
+    File answerImgFile = File(join(configDb.imageFileFolder, image.imgFileName));
     answerImgFile.delete();
-    await database
-        .delete(imagesTableName, where: 'imgId = ?', whereArgs: [image.imgId]);
+    //Image id
+    String imagesIdColumn = DatabaseConfig.imagesIdColumn;
+    await db
+        .delete(DatabaseConfig.decksTableName, where: '$imagesIdColumn = ?', whereArgs: [image.imgId]);
   }
 }

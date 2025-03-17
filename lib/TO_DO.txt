@@ -1,9 +1,7 @@
 Refeactoring:
- * remeber you have succesful dialog in register page file, 
-move it to the dialog folder and make it more universal
-* split grid widgets into separate files to easier use
 * Refactor a litle bit subject state
 * fix overflow issues it may improve UX
+* fix bug when changing to decks page
 
 
 Implement Images

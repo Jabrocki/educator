@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 //Provider
 import 'package:provider/provider.dart';
 
-import '../widgets/grid_deck/grid_deck.dart';
 
 class DecksPage extends StatelessWidget {
   const DecksPage({
