@@ -1,8 +1,8 @@
 //Material
 import 'package:educator/dialogs/show_custom_alert_dialog.dart';
 import 'package:flutter/material.dart';
-import '../database/main_database.dart';
-import '../dialogs/show_custom_succesful_dialog.dart';
+import '../../database/main_database.dart';
+import '../../dialogs/show_custom_succesful_dialog.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});

@@ -8,11 +8,11 @@ import 'package:flutter/material.dart';
 //State
 import 'state/main_state.dart';
 import 'state/subject_list_state.dart';
-import 'state/tab_state.dart';
 import 'state/deck_list_state.dart';
+import 'state/layout_state.dart';
 
 //LogInPage
-import 'package:educator/layouts/login_page.dart';
+import 'package:educator/layouts/login_layouts/login_page.dart';
 
 //MainPage
 import 'layouts/main_page.dart';
@@ -46,7 +46,7 @@ Future<void> main() async {
       ChangeNotifierProvider<MainState>.value(value: mainState),
       ChangeNotifierProvider<SubjectListState>.value(value: subjectState),
       ChangeNotifierProvider(create: (_) => DeckListState()),
-      ChangeNotifierProvider(create: (_) => TabState())
+      ChangeNotifierProvider(create: (_) => LayoutState())
     ],
     child: const MyApp(),
   ));
@@ -66,7 +66,6 @@ class MyApp extends StatelessWidget {
     const MainPage() :
     const LoginPage() ,
     theme: mainTheme
-  
     );
   }
 }
@@ -88,5 +87,6 @@ final mainTheme = ThemeData(
       borderRadius: BorderRadius.circular(12),
       borderSide: const BorderSide(color: Colors.blue, width: 2)
     ),
+
   )
 );

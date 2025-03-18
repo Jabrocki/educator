@@ -1,7 +1,11 @@
 Refeactoring:
 * Refactor a litle bit subject state
-* fix overflow issues it may improve UX
-* fix bug when changing to decks page
+* fix bug when changing to decks page // fixed make it on all pages
+* remove all lalyout builders
+* review whole code and make it more usable
+* fix all blue problems and fix all issues in debug console
+* create non existent page in case of on issue
+
 
 
 Implement Images

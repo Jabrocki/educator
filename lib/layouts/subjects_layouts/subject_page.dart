@@ -1,45 +1,41 @@
-//Material
-import 'package:educator/models/deck_model.dart';
-import 'package:educator/state/deck_list_state.dart';
-import 'package:educator/state/main_state.dart';
-import 'package:educator/widgets/grid_deck/animated_grid_deck.dart';
+import 'package:educator/widgets/grid_subject/animated_grid_subject.dart';
 import 'package:flutter/material.dart';
 
-//Provider
+// Models
+import 'package:educator/models/subject_model.dart';
+
+//State
+import '../../state/subject_list_state.dart';
+
+//Packages
 import 'package:provider/provider.dart';
 
-
-class DecksPage extends StatelessWidget {
-  const DecksPage({
+class SubjectPage extends StatelessWidget {
+  const SubjectPage({
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    final mainState = Provider.of<MainState>(context);
-    final deckState = Provider.of<DeckListState>(context);
-
     return FutureBuilder(
-      future: deckState.decksInit(mainState.subjectId), 
+      future: Provider.of<SubjectListState>(context).subjectInit(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          List<DeckModel> deckList = deckState.decks;
-          return _body(context, deckList);
+          List<SubjectModel> subjectList =
+              Provider.of<SubjectListState>(context).subjects;
+          return _body(context, subjectList);
         } else {
           return const CircularProgressIndicator();
         }
-      }
+      },
     );
   }
 
-  Widget _body(
-    BuildContext context,
-    List<DeckModel> deckList
-  ) {
+  Widget _body(BuildContext context, List<SubjectModel> subjectList) {
     double screenWidth = MediaQuery.of(context).size.width;
-    
+
     // Dynamically calculate crossAxisCount based on screen width
-    int crossAxisCount = (screenWidth / 200).floor().clamp(2, 6); 
+    int crossAxisCount = (screenWidth / 200).floor().clamp(2, 6);
     // Ensures a minimum of 2 columns and a maximum of 6 columns
     return CustomScrollView(
       slivers: [
@@ -47,7 +43,7 @@ class DecksPage extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.all(16.0),
             child: Text(
-              "Decks",
+              "Subjects",
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
           ),
@@ -63,15 +59,15 @@ class DecksPage extends StatelessWidget {
             ),
             delegate: SliverChildBuilderDelegate(
               (context, index) {
-                return AnimatedGridDeck(
-                  deck: deckList[index],
+                return AnimatedGridSubject(
+                  subject: subjectList[index],
                   index: index,
-                  );
+                );
               },
-              childCount: deckList.length,
+              childCount: subjectList.length,
             ),
           ),
-        ),
+        )
       ],
     );
   }

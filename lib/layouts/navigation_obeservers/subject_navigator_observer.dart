@@ -9,13 +9,11 @@ import '../../widgets/custom_pop_up_subject.dart';
 class SubjectNavigatorObserver extends NavigatorObserver {
   final ValueChanged<bool> backButtonValChanged;
   final ValueChanged<Widget?> addButtonValChanged;
-  final ValueChanged<String?> routeNameValChanged;
 
   SubjectNavigatorObserver(
       {
         required this.backButtonValChanged, 
         required this.addButtonValChanged,
-        required this.routeNameValChanged
         });
 
   void _notifyRoute(Route? route) {
@@ -23,6 +21,7 @@ class SubjectNavigatorObserver extends NavigatorObserver {
 
     //If they want to show bak button
     bool shouldShowBackButton = routeName != null && routeName != '/subjects';
+    
     Widget? addButton;
     //FAB
     if (routeName != null) {
@@ -44,7 +43,6 @@ class SubjectNavigatorObserver extends NavigatorObserver {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       backButtonValChanged(shouldShowBackButton);
       addButtonValChanged(addButton);
-      routeNameValChanged(routeName);
     });
   }
 

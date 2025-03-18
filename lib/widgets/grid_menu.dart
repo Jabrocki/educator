@@ -58,8 +58,8 @@ class GridMenuState extends State<GridMenu> {
             _pressedScale = 1.0;
           });
         },
-        onTap: () {
-          Navigator.of(context).pushNamed(
+        onTap: () async {
+          await Navigator.of(context).pushNamed(
             widget.menuItemModel.navigation,
           );
         },

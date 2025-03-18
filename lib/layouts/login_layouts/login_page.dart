@@ -2,15 +2,15 @@
 import 'package:flutter/material.dart';
 
 //Database
-import '../database/main_database.dart';
+import '../../database/main_database.dart';
 
 //Layouts
 import 'register_page.dart';
-import 'main_page.dart';
+import '../main_page.dart';
 
 //States
-import '../state/main_state.dart';
-import '../state/subject_list_state.dart';
+import '../../state/main_state.dart';
+import '../../state/subject_list_state.dart';
 
 //External packges
 import 'package:provider/provider.dart';

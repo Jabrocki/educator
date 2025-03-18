@@ -1,5 +1,3 @@
-//Material
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:educator/models/subject_model.dart';
 import 'package:educator/state/subject_list_state.dart';
@@ -39,49 +37,39 @@ class HelperMenu extends StatelessWidget {
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        // Define min & max icon size
-        double minIconSize = 8; // Minimum icon size
-        double maxIconSize = 28; // Maximum icon size
-        double iconSize =
-            (constraints.maxWidth * 0.1).clamp(minIconSize, maxIconSize);
+        double iconSize = (constraints.maxWidth * 0.08).clamp(16.0, 32.0);
+        double fontSize = (constraints.maxWidth * 0.05).clamp(10.0, 30.0);
 
-        // Define min & max text width
-        double minTextWidth = 60; // Minimum width for text
-        double maxTextWidth =
-            constraints.maxWidth * 0.6; // Maximum width for text
-
-        return Container(
-          padding: const EdgeInsets.symmetric(horizontal: 8),
-          child: FittedBox(
-            child: Row(
-              children: [
-                SizedBox(
-                  width: maxTextWidth.clamp(
-                      minTextWidth, maxTextWidth), // Text takes up 60% of space
-                  child: AutoSizeText(
-                    subject.subjectName,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                    maxLines: 1,
-                    minFontSize: 10,
-                  ),
+        return Row(
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: AutoSizeText(
+                  subject.subjectName,
+                  style: TextStyle(
+                      fontSize: fontSize, fontWeight: FontWeight.bold),
+                  maxLines: 3,
+                  minFontSize: 8,
+                  overflow: TextOverflow.ellipsis,
                 ),
-                Row(
-                  children: [
-                    IconButton(
-                      onPressed: editSubject,
-                      icon: const Icon(Icons.edit),
-                      iconSize: iconSize,
-                    ),
-                    IconButton(
-                      onPressed: deleteSubject,
-                      icon: const Icon(Icons.delete),
-                      iconSize: iconSize,
-                    ),
-                  ],
+              ),
+            ),
+            Row(
+              children: [
+                IconButton(
+                  onPressed: editSubject,
+                  icon: const Icon(Icons.edit),
+                  iconSize: iconSize,
+                ),
+                IconButton(
+                  onPressed: deleteSubject,
+                  icon: const Icon(Icons.delete),
+                  iconSize: iconSize,
                 ),
               ],
             ),
-          ),
+          ],
         );
       },
     );

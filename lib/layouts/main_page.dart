@@ -1,24 +1,21 @@
 //Provider
-import 'package:educator/state/tab_state.dart';
+
+import 'package:educator/layouts/tab_navigators/home_navigator.dart';
+import 'package:educator/layouts/tab_navigators/search_navigator.dart';
+import 'package:educator/layouts/tab_navigators/settings_navigator.dart';
+import 'package:educator/layouts/tab_navigators/subject_navigator.dart';
 import 'package:provider/provider.dart';
 
 //Material
 import 'package:flutter/material.dart';
 
 //Layouts
-import '../layouts/home_page.dart';
-import '../layouts/subject_page.dart';
-import '../layouts/menu_subject_page.dart';
-import '../layouts/decks_page.dart';
-import '../layouts/login_page.dart';
-import '../layouts/navigation_obeservers/subject_navigator_observer.dart';
-
-//Global variables
-import '../global_variables.dart';
+import 'login_layouts/login_page.dart';
 
 //State
 import '../state/main_state.dart';
 import '../state/subject_list_state.dart';
+import '../state/layout_state.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({
@@ -33,53 +30,25 @@ class _MainPageState extends State<MainPage> {
   // Whether the user is hovering over the rail (to show the extended rail)
   bool _isHovered = false;
 
-  // This flag will determine if a back arrow should be shown for Subjects
-  bool _showSubjectsBackButton = false;
+  //Tab index
+  int _activeTabIndex = 0;
 
+  //Flag to check if we want to show back button
+  bool _showSubjectsBackButton = false;
+  bool _showHomeBackButton = false;
+  bool _showSearchBackButton = false;
+  bool _showSettingsBackButton = false;
+
+  //Fabs
   Widget? _subjectFab;
   Widget? _homeFab;
   Widget? _searchFab;
+  Widget? _settingsFab;
 
   @override
   Widget build(BuildContext context) {
-    //Tab State
-    final tabState = Provider.of<TabState>(context);
-    // For AppBar leading: only show on Subjects tab when needed.
-    Widget? buildNestedNavigatorBackButton() {
-      if (tabState.activeTabIndex == 1 && _showSubjectsBackButton) {
-        return IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            subjectsNavigatorKey.currentState?.pop();
-          },
-        );
-      }
-      return null;
-    }
-
     return Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          leading: SizedBox(
-            width: 56,
-            child: buildNestedNavigatorBackButton() ?? Container(),
-          ),
-          title: const Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.school),
-              SizedBox(width: 8.0),
-              Text(
-                "Educator",
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-          elevation: 2,
-          actions: [
-            IconButton(onPressed: _logOut, icon: const Icon(Icons.logout))
-          ],
-        ),
+        appBar: _buildAppBar(context),
         body: _buildBody(context),
         floatingActionButton: AnimatedSwitcher(
           duration: const Duration(milliseconds: 300),
@@ -91,9 +60,67 @@ class _MainPageState extends State<MainPage> {
         ));
   }
 
+  AppBar _buildAppBar(BuildContext context) {
+    Widget? nestedBackButton;
+
+    //Handling logic for bakc button
+    switch (_activeTabIndex) {
+      case 0:
+        if (_showHomeBackButton) {
+          nestedBackButton = IconButton(
+              onPressed: () => homeNavigatorKey.currentState?.pop(),
+              icon: const Icon(Icons.arrow_back));
+        }
+        break;
+      case 1:
+        if (_showSubjectsBackButton) {
+          nestedBackButton = IconButton(
+            onPressed: () => subjectsNavigatorKey.currentState?.pop(),
+            icon: const Icon(Icons.arrow_back),
+          );
+        }
+        break;
+      case 2:
+        if (_showSearchBackButton) {
+          nestedBackButton = IconButton(
+              onPressed: () => searchNavigatorKey.currentState?.pop(),
+              icon: const Icon(Icons.arrow_back));
+        }
+        break;
+      case 3:
+        if (_showSettingsBackButton) {
+          nestedBackButton = IconButton(
+              onPressed: () => settingsNavigatorKey.currentState?.pop(),
+              icon: const Icon(Icons.arrow_back));
+        }
+        break;
+      default:
+        nestedBackButton = null;
+    }
+    return AppBar(
+      automaticallyImplyLeading: false,
+      leading: SizedBox(
+        width: 56,
+        child: nestedBackButton ?? Container(),
+      ),
+      title: const Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.school),
+          SizedBox(width: 8.0),
+          Text(
+            "Educator",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ],
+      ),
+      elevation: 2,
+      actions: [IconButton(onPressed: _logOut, icon: const Icon(Icons.logout))],
+    );
+  }
+
   Widget? _buildFab(BuildContext context) {
-    final tabState = Provider.of<TabState>(context);
-    switch (tabState.activeTabIndex) {
+    switch (_activeTabIndex) {
       case 0:
         return _homeFab;
       case 1:
@@ -101,21 +128,23 @@ class _MainPageState extends State<MainPage> {
       case 2:
         return _searchFab;
       default:
-        return null;
+        return _settingsFab;
     }
   }
 
   Widget _buildBody(BuildContext context) {
-    final tabState = Provider.of<TabState>(context);
     return Row(
       children: [
         //Navigation Rail
         MouseRegion(
+          //Hovered handling
           onEnter: (_) => setState(() => _isHovered = true),
           onExit: (_) => setState(() => _isHovered = false),
+
+          //Navigation rail
           child: SafeArea(
               child: Material(
-            elevation: 4.0,
+                elevation: 4.0,
             child: NavigationRail(
               extended: _isHovered,
               destinations: const [
@@ -128,86 +157,52 @@ class _MainPageState extends State<MainPage> {
                 NavigationRailDestination(
                     icon: Icon(Icons.settings), label: Text("Settings"))
               ],
-              selectedIndex: tabState.activeTabIndex,
+              selectedIndex: _activeTabIndex,
               onDestinationSelected: (value) {
-                //Change Navigation Page
-                tabState.activeTabIndex = value;
+                setState(() => _activeTabIndex = value);
               },
             ),
           )),
         ),
-        Expanded(
-            child: IndexedStack(
-          index: tabState.activeTabIndex,
-          children: [
-            // Home Tab Navigator
-            Navigator(
-              key: homeNavigatorKey,
-              initialRoute: '/home',
-              onGenerateRoute: (RouteSettings settings) {
-                late Widget page;
-                switch (settings.name) {
-                  case '/home':
-                    page = const HomePage();
-                    break;
-                  default:
-                    page = const HomePage();
-                }
-                return MaterialPageRoute(
-                  builder: (_) => page,
-                  settings: settings,
-                );
-              },
-            ),
-            // Subjects Tab Navigator
-            Navigator(
-              key: subjectsNavigatorKey,
-              initialRoute: '/subjects',
-              observers: [
-                SubjectNavigatorObserver(backButtonValChanged: (bool canPop) {
-                  setState(() {
-                    _showSubjectsBackButton = canPop;
-                  });
-                }, addButtonValChanged: (Widget? addButton) {
-                  setState(() {
-                    _subjectFab = addButton;
-                  });
-                }, routeNameValChanged: (String? routeName) {
-                  tabState.subjectRouteName = routeName;
-                })
-              ],
-              onGenerateRoute: (RouteSettings settings) {
-                late Widget page;
-                switch (settings.name) {
-                  case '/subjects':
-                    page = const SubjectPage();
-                    break;
-                  case '/subjects/menu':
-                    page = const MenuSubjectPage();
-                    break;
-                  case '/subjects/menu/decks':
-                    page = const DecksPage();
-                    break;
-                  default:
-                    page = const SubjectPage();
-                }
+        Expanded(child: LayoutBuilder(builder: (context, constrains) {
+          final layoutState = Provider.of<LayoutState>(context, listen: false);
+          //Update width
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            layoutState.updateMaxWidth(constrains.maxWidth);
+          });
 
-
-
-                
-                return MaterialPageRoute(
-                  builder: (_) => page,
-                  settings: settings,
-                );
-              },
-            ),
-            //Search tab
-            //TODO:
-            const Text("Search"),
-            //TODO:
-            const Text("Settings")
-          ],
-        ))
+          return IndexedStack(
+            index: _activeTabIndex,
+            children: [
+              // Home Tab Navigator
+              HomeNavigator(
+                backButtonValChanged: (bool canPop) =>
+                    setState(() => _showHomeBackButton = canPop),
+                addButtonValChanged: (Widget? addButton) =>
+                    setState(() => _homeFab = addButton),
+              ),
+              //Subject Tab Navigator
+              SubjectNavigator(
+                backButtonValChanged: (bool canPop) =>
+                    setState(() => _showSubjectsBackButton = canPop),
+                addButtonValChanged: (Widget? addButton) =>
+                    setState(() => _subjectFab = addButton),
+              ),
+              //Search tab Navigator
+              SearchNavigator(
+                  backButtonValChanged: (bool canPop) =>
+                      setState(() => _showSearchBackButton = canPop),
+                  addButtonValChanged: (Widget? addButton) =>
+                      setState(() => _searchFab = addButton)),
+              //Settings tab Navigator
+              SettingsNavigator(
+                  backButtonValChanged: (bool canPop) =>
+                      setState(() => _showSettingsBackButton = canPop),
+                  addButtonValChanged: (Widget? addButton) =>
+                      setState(() => _settingsFab = addButton))
+            ],
+          );
+        }))
       ],
     );
   }
