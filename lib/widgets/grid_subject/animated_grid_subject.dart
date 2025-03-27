@@ -1,89 +1,43 @@
-//Material
-
+import 'package:flutter/material.dart';
 import 'package:educator/models/subject_model.dart';
 import 'package:educator/widgets/grid_subject/grid_subject.dart';
-import 'package:flutter/material.dart';
-import '../../state/main_state.dart';
-
 import 'package:provider/provider.dart';
+import '../../state/main_state.dart';
+import '../../state/layout_state.dart';
 
-class AnimatedGridSubject extends StatefulWidget {
+class AnimatedGridSubject extends StatelessWidget {
   final SubjectModel subject;
-  final int index; // to know the order in which this item appears
+  final Animation<double> animation;
 
   const AnimatedGridSubject({
     super.key,
     required this.subject,
-    required this.index,
+    required this.animation,
   });
 
   @override
-  State<AnimatedGridSubject> createState() => AnimatedGridSubjectState();
-}
-
-class AnimatedGridSubjectState extends State<AnimatedGridSubject> {
-  double _initScale = 0.0;
-  double _pressedScale = 1.0;
-
-  // Combine both scale factors
-  double get _combinedScale => _initScale * _pressedScale;
-
-  @override
-  void initState() {
-    super.initState();
-    startAnimation();
-  }
-
-
-  void startAnimation() {
-    setState(() {
-      _initScale = 0.0;
-    });
-
-    Future.delayed(Duration(milliseconds: 100 * widget.index), () {
-      if (mounted) {
-        setState(() {
-          _initScale = 1.0;
-        });
-      }
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return AnimatedScale(
-      scale: _combinedScale,
-      duration: const Duration(milliseconds: 500),
-      curve: Curves.easeOutBack,
-      child: InkWell(
-          borderRadius: BorderRadius.circular(16),
-          // When the user presses down, shrink the widget
-          onTapDown: (details) {
-            setState(() {
-              _pressedScale = 0.95;
-            });
-          },
-          // When the user lifts their finger, return to full scale
-          onTapUp: (details) {
-            setState(() {
-              _pressedScale = 1.0;
-            });
-          },
-          // If the tap is canceled, return to full scale
-          onTapCancel: () {
-            setState(() {
-              _pressedScale = 1.0;
-            });
-          },
+    return Consumer<LayoutState>(builder: (_, layoutState, __) {
+      //Calulate border radius
+      final double borderRadius = (layoutState.maxWidth/900)*16;
+      return AnimatedBuilder(
+        animation: animation,
+        builder: (context, child) {
+          return Transform.scale(
+            scale: animation.value,
+            child: child,
+          );
+        },
+        child: InkWell(
+          borderRadius: BorderRadius.circular(borderRadius),
           onTap: () {
             Provider.of<MainState>(context, listen: false).subjectId =
-                widget.subject.subjectId;
-            Navigator.of(context).pushNamed(
-              '/subjects/menu',
-            );
+                subject.subjectId;
+            Navigator.of(context).pushNamed('/subjects/menu');
           },
-          child: GridSubject(subject: widget.subject)),
-    );
+          child: GridSubject(subject: subject),
+        ),
+      );
+    });
   }
 }
-

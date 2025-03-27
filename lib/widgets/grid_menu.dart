@@ -16,6 +16,7 @@ class GridMenu extends StatefulWidget {
 class GridMenuState extends State<GridMenu> {
   double _initScale = 0.0;
   double _pressedScale = 1.0;
+  int _duration = 500;
 
   // Combine both scale factors
   double get _combinedScale => _initScale * _pressedScale;
@@ -32,11 +33,26 @@ class GridMenuState extends State<GridMenu> {
     });
   }
 
+  void reAnimate() {
+    setState(() {
+      _initScale = 0.0;
+      _duration = 500;
+    });
+    Future.delayed(Duration(milliseconds: 100 * widget.index), () {
+      if (mounted) {
+        setState(() {
+          _initScale = 1.0;
+          _duration = 0;
+        });
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return AnimatedScale(
       scale: _combinedScale,
-      duration: const Duration(milliseconds: 500),
+      duration: Duration(milliseconds: _duration),
       curve: Curves.easeOutBack,
       child: InkWell(
         borderRadius: BorderRadius.circular(16),

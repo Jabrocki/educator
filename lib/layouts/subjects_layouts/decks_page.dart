@@ -31,48 +31,41 @@ class DecksPage extends StatelessWidget {
   }
 
   Widget _body(BuildContext context, List<DeckModel> deckList) {
-    double screenWidth = MediaQuery.of(context).size.width;
-
-    // Dynamically calculate crossAxisCount based on screen width
-    int crossAxisCount = (screenWidth / 200).floor().clamp(1, 6);
-    // Ensures a minimum of 2 columns and a maximum of 6 columns
-    return LayoutBuilder(builder: (context, constraints) {
-      return Material(
-        color:  Theme.of(context).scaffoldBackgroundColor,
-        child: CustomScrollView(
-          slivers: [
-            const SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Text(
-                  "Decks",
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                ),
+    return Container(
+      color: Theme.of(context).scaffoldBackgroundColor,
+      child: CustomScrollView(
+        slivers: [
+          const SliverToBoxAdapter(
+            child: Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Text(
+                "Decks",
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
             ),
-            SliverPadding(
-              padding: const EdgeInsets.all(8),
-              sliver: SliverGrid(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: crossAxisCount,
-                  crossAxisSpacing: 10.0,
-                  mainAxisSpacing: 10.0,
-                  childAspectRatio: 1.0,
-                ),
-                delegate: SliverChildBuilderDelegate(
-                  (context, index) {
-                    return AnimatedGridDeck(
-                      deck: deckList[index],
-                      index: index,
-                    );
-                  },
-                  childCount: deckList.length,
-                ),
+          ),
+          SliverPadding(
+            padding: const EdgeInsets.all(8),
+            sliver: SliverGrid(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 6,
+                crossAxisSpacing: 10.0,
+                mainAxisSpacing: 10.0,
+                childAspectRatio: 1.0,
+              ),
+              delegate: SliverChildBuilderDelegate(
+                (context, index) {
+                  return AnimatedGridDeck(
+                    deck: deckList[index],
+                    index: index,
+                  );
+                },
+                childCount: deckList.length,
               ),
             ),
-          ],
-        ),
-      );
-    });
+          ),
+        ],
+      ),
+    );
   }
 }

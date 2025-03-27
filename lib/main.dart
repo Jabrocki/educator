@@ -10,6 +10,7 @@ import 'state/main_state.dart';
 import 'state/subject_list_state.dart';
 import 'state/deck_list_state.dart';
 import 'state/layout_state.dart';
+import 'state/animation_state.dart';
 
 //LogInPage
 import 'package:educator/layouts/login_layouts/login_page.dart';
@@ -39,6 +40,7 @@ Future<void> main() async {
   //Create subject state
   final subjectState = SubjectListState();
   subjectState.userId = mainState.userId!;
+  await subjectState.subjectInit();
 
   //Init shared preffernces instance
   runApp(MultiProvider(
@@ -46,7 +48,8 @@ Future<void> main() async {
       ChangeNotifierProvider<MainState>.value(value: mainState),
       ChangeNotifierProvider<SubjectListState>.value(value: subjectState),
       ChangeNotifierProvider(create: (_) => DeckListState()),
-      ChangeNotifierProvider(create: (_) => LayoutState())
+      ChangeNotifierProvider(create: (_) => LayoutState()),
+      ChangeNotifierProvider(create: (_) => AnimationState())
     ],
     child: const MyApp(),
   ));

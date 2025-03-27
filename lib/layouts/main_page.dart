@@ -4,6 +4,7 @@ import 'package:educator/layouts/tab_navigators/home_navigator.dart';
 import 'package:educator/layouts/tab_navigators/search_navigator.dart';
 import 'package:educator/layouts/tab_navigators/settings_navigator.dart';
 import 'package:educator/layouts/tab_navigators/subject_navigator.dart';
+import 'package:educator/state/animation_state.dart';
 import 'package:provider/provider.dart';
 
 //Material
@@ -29,9 +30,6 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   // Whether the user is hovering over the rail (to show the extended rail)
   bool _isHovered = false;
-
-  //Tab index
-  int _activeTabIndex = 0;
 
   //Flag to check if we want to show back button
   bool _showSubjectsBackButton = false;
@@ -63,19 +61,29 @@ class _MainPageState extends State<MainPage> {
   AppBar _buildAppBar(BuildContext context) {
     Widget? nestedBackButton;
 
+    //Animation state
+    final animationState = Provider.of<AnimationState>(context);
+
+
     //Handling logic for bakc button
-    switch (_activeTabIndex) {
+    switch (animationState.selectedIndex) {
       case 0:
         if (_showHomeBackButton) {
           nestedBackButton = IconButton(
-              onPressed: () => homeNavigatorKey.currentState?.pop(),
+              onPressed: () {
+                homeNavigatorKey.currentState?.pop();
+                animationState.reAnimate = true;
+              },
               icon: const Icon(Icons.arrow_back));
         }
         break;
       case 1:
         if (_showSubjectsBackButton) {
           nestedBackButton = IconButton(
-            onPressed: () => subjectsNavigatorKey.currentState?.pop(),
+            onPressed: () {
+              subjectsNavigatorKey.currentState?.pop();
+              animationState.reAnimate = true;
+            },
             icon: const Icon(Icons.arrow_back),
           );
         }
@@ -83,14 +91,20 @@ class _MainPageState extends State<MainPage> {
       case 2:
         if (_showSearchBackButton) {
           nestedBackButton = IconButton(
-              onPressed: () => searchNavigatorKey.currentState?.pop(),
+              onPressed: () {
+                searchNavigatorKey.currentState?.pop();
+                animationState.reAnimate = true;
+              },
               icon: const Icon(Icons.arrow_back));
         }
         break;
       case 3:
         if (_showSettingsBackButton) {
           nestedBackButton = IconButton(
-              onPressed: () => settingsNavigatorKey.currentState?.pop(),
+              onPressed: () {
+                settingsNavigatorKey.currentState?.pop();
+                animationState.reAnimate = true;
+              },
               icon: const Icon(Icons.arrow_back));
         }
         break;
@@ -120,7 +134,10 @@ class _MainPageState extends State<MainPage> {
   }
 
   Widget? _buildFab(BuildContext context) {
-    switch (_activeTabIndex) {
+    //Animation state
+    final animationState = Provider.of<AnimationState>(context);
+
+    switch (animationState.selectedIndex) {
       case 0:
         return _homeFab;
       case 1:
@@ -133,76 +150,88 @@ class _MainPageState extends State<MainPage> {
   }
 
   Widget _buildBody(BuildContext context) {
-    return Row(
+
+    final animationState = Provider.of<AnimationState>(context);
+
+    return Stack(
       children: [
-        //Navigation Rail
-        MouseRegion(
-          //Hovered handling
-          onEnter: (_) => setState(() => _isHovered = true),
-          onExit: (_) => setState(() => _isHovered = false),
-
-          //Navigation rail
-          child: SafeArea(
-              child: Material(
-                elevation: 4.0,
-            child: NavigationRail(
-              extended: _isHovered,
-              destinations: const [
-                NavigationRailDestination(
-                    icon: Icon(Icons.home), label: Text("Home")),
-                NavigationRailDestination(
-                    icon: Icon(Icons.book), label: Text("Subjects")),
-                NavigationRailDestination(
-                    icon: Icon(Icons.language), label: Text("Search")),
-                NavigationRailDestination(
-                    icon: Icon(Icons.settings), label: Text("Settings"))
-              ],
-              selectedIndex: _activeTabIndex,
-              onDestinationSelected: (value) {
-                setState(() => _activeTabIndex = value);
-              },
+        Row(
+          children: [
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              curve: Curves.fastOutSlowIn,
+              width: _isHovered ? 260 : 85,
             ),
-          )),
+            Expanded(
+              child: LayoutBuilder(builder: (context, constraints) {
+                final layoutState =
+                    Provider.of<LayoutState>(context, listen: false);
+                // Update width
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  layoutState.updateMaxWidth(constraints.maxWidth);
+                });
+                return IndexedStack(
+                  index: animationState.selectedIndex,
+                  children: [
+                    HomeNavigator(
+                      backButtonValChanged: (bool canPop) =>
+                          setState(() => _showHomeBackButton = canPop),
+                      addButtonValChanged: (Widget? addButton) =>
+                          setState(() => _homeFab = addButton),
+                    ),
+                    SubjectNavigator(
+                      backButtonValChanged: (bool canPop) =>
+                          setState(() => _showSubjectsBackButton = canPop),
+                      addButtonValChanged: (Widget? addButton) =>
+                          setState(() => _subjectFab = addButton),
+                    ),
+                    SearchNavigator(
+                      backButtonValChanged: (bool canPop) =>
+                          setState(() => _showSearchBackButton = canPop),
+                      addButtonValChanged: (Widget? addButton) =>
+                          setState(() => _searchFab = addButton),
+                    ),
+                    SettingsNavigator(
+                      backButtonValChanged: (bool canPop) =>
+                          setState(() => _showSettingsBackButton = canPop),
+                      addButtonValChanged: (Widget? addButton) =>
+                          setState(() => _settingsFab = addButton),
+                    ),
+                  ],
+                );
+              }),
+            ),
+          ],
         ),
-        Expanded(child: LayoutBuilder(builder: (context, constrains) {
-          final layoutState = Provider.of<LayoutState>(context, listen: false);
-          //Update width
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            layoutState.updateMaxWidth(constrains.maxWidth);
-          });
-
-          return IndexedStack(
-            index: _activeTabIndex,
-            children: [
-              // Home Tab Navigator
-              HomeNavigator(
-                backButtonValChanged: (bool canPop) =>
-                    setState(() => _showHomeBackButton = canPop),
-                addButtonValChanged: (Widget? addButton) =>
-                    setState(() => _homeFab = addButton),
+        Positioned(
+          left: 0,
+          top: 0,
+          bottom: 0,
+          child: MouseRegion(
+            onEnter: (_) => setState(() => _isHovered = true),
+            onExit: (_) => setState(() => _isHovered = false),
+            child: SafeArea(
+              child: Material(
+                elevation: 8.0,
+                child: NavigationRail(
+                  extended: _isHovered,
+                  destinations: const [
+                    NavigationRailDestination(
+                        icon: Icon(Icons.home), label: Text("Home")),
+                    NavigationRailDestination(
+                        icon: Icon(Icons.book), label: Text("Subjects")),
+                    NavigationRailDestination(
+                        icon: Icon(Icons.language), label: Text("Search")),
+                    NavigationRailDestination(
+                        icon: Icon(Icons.settings), label: Text("Settings"))
+                  ],
+                  selectedIndex: animationState.selectedIndex,
+                  onDestinationSelected: (value) => animationState.selectedIndex = value,
+                ),
               ),
-              //Subject Tab Navigator
-              SubjectNavigator(
-                backButtonValChanged: (bool canPop) =>
-                    setState(() => _showSubjectsBackButton = canPop),
-                addButtonValChanged: (Widget? addButton) =>
-                    setState(() => _subjectFab = addButton),
-              ),
-              //Search tab Navigator
-              SearchNavigator(
-                  backButtonValChanged: (bool canPop) =>
-                      setState(() => _showSearchBackButton = canPop),
-                  addButtonValChanged: (Widget? addButton) =>
-                      setState(() => _searchFab = addButton)),
-              //Settings tab Navigator
-              SettingsNavigator(
-                  backButtonValChanged: (bool canPop) =>
-                      setState(() => _showSettingsBackButton = canPop),
-                  addButtonValChanged: (Widget? addButton) =>
-                      setState(() => _settingsFab = addButton))
-            ],
-          );
-        }))
+            ),
+          ),
+        ),
       ],
     );
   }

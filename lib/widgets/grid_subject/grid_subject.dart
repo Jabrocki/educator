@@ -1,6 +1,8 @@
 //Material
+import 'package:educator/state/layout_state.dart';
 import 'package:educator/widgets/grid_subject/helper_menu.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 //Models
 import '../../models/subject_model.dart';
@@ -22,19 +24,23 @@ class GridSubject extends StatelessWidget {
   Widget build(BuildContext context) {
     final mainTheme = Theme.of(context);
 
-    return LayoutBuilder(
-      builder: (context, constraints) {
+    return Consumer<LayoutState>(
+      builder: (_, layoutState, __) {
+        int crossAxisCount = (MediaQuery.of(context).size.width/200).clamp(1,6).toInt();
+        double imageSize = (layoutState.maxWidth/900)*50*(7-crossAxisCount)/2;
+        double borderRadius = (layoutState.maxWidth/900)*16*(7-crossAxisCount)/2;
         return ClipRRect(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(borderRadius),
           child: Container(
             decoration: BoxDecoration(
               color: mainTheme.colorScheme.primaryContainer,
             ),
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Expanded(
                     child:
-                        _imagePreview()), // Image takes up all available space
+                        _imagePreview(imageSize)), // Image takes up all available space
                 HelperMenu(subject: subject), // Scalable menu at the bottom
               ],
             ),
@@ -44,7 +50,7 @@ class GridSubject extends StatelessWidget {
     );
   }
 
-  Widget _imagePreview() {
+  Widget _imagePreview(double imageSize) {
     return FutureBuilder(
         future: subject.imgPath,
         builder: (context, snapshot) {
@@ -57,7 +63,7 @@ class GridSubject extends StatelessWidget {
             );
           }
 
-          return const Center(child: Icon(Icons.image_not_supported, size: 50));
+          return Center(child: Icon(Icons.image_not_supported, size: imageSize));
         });
   }
 }

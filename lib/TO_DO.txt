@@ -5,6 +5,7 @@ Refeactoring:
 * review whole code and make it more usable
 * fix all blue problems and fix all issues in debug console
 * create non existent page in case of on issue
+* create prototype for settigs page and implement dark theme
 
 
 

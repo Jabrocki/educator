@@ -1,5 +1,6 @@
-import 'package:auto_size_text/auto_size_text.dart';
+
 import 'package:educator/models/subject_model.dart';
+import 'package:educator/state/layout_state.dart';
 import 'package:educator/state/subject_list_state.dart';
 import 'package:educator/widgets/custom_pop_up_subject.dart';
 import 'package:flutter/material.dart';
@@ -35,40 +36,54 @@ class HelperMenu extends StatelessWidget {
       }
     }
 
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        double iconSize = (constraints.maxWidth * 0.08).clamp(16.0, 32.0);
-        double fontSize = (constraints.maxWidth * 0.05).clamp(10.0, 30.0);
+    return Consumer<LayoutState>(
+      builder: (_, layoutState, __) {
+        int crossAxisCount =
+            (MediaQuery.of(context).size.width / 200).clamp(1, 6).toInt();
+        double iconSize =
+            (layoutState.maxWidth / 1700) * 25 * 6/crossAxisCount;
+        double iconDistance = iconSize * 1.5;
+        double fontSize =
+            (layoutState.maxWidth / 1700) * 15 * 6/crossAxisCount;
+        double textPadding =
+            (layoutState.maxWidth / 1700) * 10 * 6/crossAxisCount;
+        print(MediaQuery.of(context).size.width);
 
         return Row(
           children: [
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: AutoSizeText(
+                padding: EdgeInsets.all(textPadding),
+                child: Text(
                   subject.subjectName,
                   style: TextStyle(
                       fontSize: fontSize, fontWeight: FontWeight.bold),
-                  maxLines: 3,
-                  minFontSize: 8,
+                  maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
             ),
             Row(
+              mainAxisSize:
+                  MainAxisSize.min, // optional, keeps Row as small as possible
               children: [
                 IconButton(
                   onPressed: editSubject,
                   icon: const Icon(Icons.edit),
+                  padding: EdgeInsets.zero, // removes default padding
+                  constraints:
+                      const BoxConstraints(), // removes default 48x48 constraints
                   iconSize: iconSize,
                 ),
                 IconButton(
                   onPressed: deleteSubject,
                   icon: const Icon(Icons.delete),
+                  padding: EdgeInsets.zero,
+                  constraints: BoxConstraints(minWidth: iconDistance),
                   iconSize: iconSize,
                 ),
               ],
-            ),
+            )
           ],
         );
       },
