@@ -19,7 +19,7 @@ class AnimatedGridSubject extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<LayoutState>(builder: (_, layoutState, __) {
       //Calulate border radius
-      final double borderRadius = (layoutState.maxWidth/900)*16;
+      final double borderRadius = layoutState.refernceGridSize * 0.05;
       return AnimatedBuilder(
         animation: animation,
         builder: (context, child) {

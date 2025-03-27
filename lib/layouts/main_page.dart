@@ -166,9 +166,11 @@ class _MainPageState extends State<MainPage> {
               child: LayoutBuilder(builder: (context, constraints) {
                 final layoutState =
                     Provider.of<LayoutState>(context, listen: false);
-                // Update width
+                final int crossAxisCount = (MediaQuery.of(context).size.width/200).clamp(1, 6).toInt();;
+                // Update width and cross axis count
                 WidgetsBinding.instance.addPostFrameCallback((_) {
                   layoutState.updateMaxWidth(constraints.maxWidth);
+                  layoutState.updateCrossAxisCount(crossAxisCount);
                 });
                 return IndexedStack(
                   index: animationState.selectedIndex,

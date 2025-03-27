@@ -26,9 +26,9 @@ class GridSubject extends StatelessWidget {
 
     return Consumer<LayoutState>(
       builder: (_, layoutState, __) {
-        int crossAxisCount = (MediaQuery.of(context).size.width/200).clamp(1,6).toInt();
-        double imageSize = (layoutState.maxWidth/900)*50*(7-crossAxisCount)/2;
-        double borderRadius = (layoutState.maxWidth/900)*16*(7-crossAxisCount)/2;
+        double imageSize = layoutState.refernceGridSize * 0.3;
+        double borderRadius = layoutState.refernceGridSize * 0.07;
+        double menuHeight = layoutState.refernceGridSize * 0.18;
         return ClipRRect(
           borderRadius: BorderRadius.circular(borderRadius),
           child: Container(
@@ -41,7 +41,9 @@ class GridSubject extends StatelessWidget {
                 Expanded(
                     child:
                         _imagePreview(imageSize)), // Image takes up all available space
-                HelperMenu(subject: subject), // Scalable menu at the bottom
+                SizedBox(
+                  height: menuHeight,
+                  child: HelperMenu(subject: subject)), // Scalable menu at the bottom
               ],
             ),
           ),

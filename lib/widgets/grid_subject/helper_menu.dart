@@ -38,53 +38,61 @@ class HelperMenu extends StatelessWidget {
 
     return Consumer<LayoutState>(
       builder: (_, layoutState, __) {
-        int crossAxisCount =
-            (MediaQuery.of(context).size.width / 200).clamp(1, 6).toInt();
-        double iconSize =
-            (layoutState.maxWidth / 1700) * 25 * 6/crossAxisCount;
+        double iconSize = layoutState.refernceGridSize * 0.08;
         double iconDistance = iconSize * 1.5;
-        double fontSize =
-            (layoutState.maxWidth / 1700) * 15 * 6/crossAxisCount;
-        double textPadding =
-            (layoutState.maxWidth / 1700) * 10 * 6/crossAxisCount;
-        print(MediaQuery.of(context).size.width);
+        double fontSize = layoutState.refernceGridSize * 0.05;
+        double textPadding =layoutState.refernceGridSize * 0.05;
 
-        return Row(
-          children: [
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.all(textPadding),
-                child: Text(
-                  subject.subjectName,
-                  style: TextStyle(
-                      fontSize: fontSize, fontWeight: FontWeight.bold),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
+        return Expanded(
+          child: Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.primaryContainer,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.2),
+                  blurRadius: 3,
+                  spreadRadius: 1,
+                )
+              ]
             ),
-            Row(
-              mainAxisSize:
-                  MainAxisSize.min, // optional, keeps Row as small as possible
+            child: Row(
               children: [
-                IconButton(
-                  onPressed: editSubject,
-                  icon: const Icon(Icons.edit),
-                  padding: EdgeInsets.zero, // removes default padding
-                  constraints:
-                      const BoxConstraints(), // removes default 48x48 constraints
-                  iconSize: iconSize,
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.all(textPadding),
+                    child: Text(
+                      subject.subjectName,
+                      style: TextStyle(
+                          fontSize: fontSize, fontWeight: FontWeight.bold),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
                 ),
-                IconButton(
-                  onPressed: deleteSubject,
-                  icon: const Icon(Icons.delete),
-                  padding: EdgeInsets.zero,
-                  constraints: BoxConstraints(minWidth: iconDistance),
-                  iconSize: iconSize,
-                ),
+                Row(
+                  mainAxisSize:
+                      MainAxisSize.min, // optional, keeps Row as small as possible
+                  children: [
+                    IconButton(
+                      onPressed: editSubject,
+                      icon: const Icon(Icons.edit),
+                      padding: EdgeInsets.zero, // removes default padding
+                      constraints:
+                          const BoxConstraints(), // removes default 48x48 constraints
+                      iconSize: iconSize,
+                    ),
+                    IconButton(
+                      onPressed: deleteSubject,
+                      icon: const Icon(Icons.delete),
+                      padding: EdgeInsets.zero,
+                      constraints: BoxConstraints(minWidth: iconDistance),
+                      iconSize: iconSize,
+                    ),
+                  ],
+                )
               ],
-            )
-          ],
+            ),
+          ),
         );
       },
     );

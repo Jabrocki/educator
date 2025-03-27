@@ -14,11 +14,10 @@ class SubjectPage extends StatefulWidget {
 }
 
 class _SubjectPageState extends State<SubjectPage>
-    with TickerProviderStateMixin {
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   bool _isInitialized = false;
   int _subjectsCount = 0;
-  Timer? _updateTimer;
 
   // Configuration for staggered animations.
   final int _itemAnimationDuration = 500; // in milliseconds
@@ -29,8 +28,8 @@ class _SubjectPageState extends State<SubjectPage>
     super.initState();
     // Delay initialization until after the first frame.
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-
-      final subjectListState = Provider.of<SubjectListState>(context, listen: false);
+      final subjectListState =
+          Provider.of<SubjectListState>(context, listen: false);
       await subjectListState.subjectInit();
       final subjects = subjectListState.subjects;
 
@@ -54,7 +53,6 @@ class _SubjectPageState extends State<SubjectPage>
 
   @override
   void dispose() {
-    _updateTimer?.cancel();
     if (_isInitialized) {
       _controller.dispose();
     }
@@ -68,20 +66,14 @@ class _SubjectPageState extends State<SubjectPage>
 
   /// Dispose the old controller and create a new one based on the updated subject list.
   void _updateController(List<SubjectModel> subjects) {
-
     int newCount = subjects.length;
-  
+
     int totalDuration = newCount > 0
         ? _itemDelay * (newCount - 1) + _itemAnimationDuration
         : _itemAnimationDuration;
-    
-    _controller.dispose();
-    _controller = AnimationController(
-      vsync: this,
-      duration: Duration(milliseconds: totalDuration),
-    );
 
-    _controller.forward();
+    _controller.duration = Duration(milliseconds: totalDuration);
+
     setState(() {
       _subjectsCount = newCount;
     });
@@ -94,14 +86,10 @@ class _SubjectPageState extends State<SubjectPage>
       return const Center(child: CircularProgressIndicator());
     }
 
-    
     if (subjects.length != _subjectsCount) {
-      _updateTimer?.cancel();
-      _updateTimer = Timer(const Duration(milliseconds: 100), () {
-        if (mounted) {
-          _updateController(subjects);
-        }
-      });
+      if (mounted) {
+        _updateController(subjects);
+      }
     }
 
     return Consumer<AnimationState>(
@@ -123,7 +111,8 @@ class _SubjectPageState extends State<SubjectPage>
             }
           });
         }
-        int crossAxisCount = (MediaQuery.of(context).size.width/200).clamp(1,6).toInt();
+        int crossAxisCount =
+            (MediaQuery.of(context).size.width / 200).clamp(1, 6).toInt();
         return Container(
           color: Theme.of(context).scaffoldBackgroundColor,
           child: CustomScrollView(
@@ -161,7 +150,8 @@ class _SubjectPageState extends State<SubjectPage>
                       ).animate(
                         CurvedAnimation(
                           parent: _controller,
-                          curve: Interval(start, end, curve: Curves.easeOutBack),
+                          curve:
+                              Interval(start, end, curve: Curves.easeOutBack),
                         ),
                       );
                       return AnimatedGridSubject(
@@ -180,5 +170,3 @@ class _SubjectPageState extends State<SubjectPage>
     );
   }
 }
-
-

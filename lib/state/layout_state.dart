@@ -2,14 +2,27 @@ import "package:flutter/material.dart";
 
 class LayoutState extends ChangeNotifier {
   //Width
-  double _maxWidth = 0.0;
+  double _width = 0.0;
+  int _crossAxisCount = 0;
 
   void updateMaxWidth(double newWidth)  {
-    if (_maxWidth != newWidth) {
-      _maxWidth = newWidth;
+    if (_width != newWidth) {
+      _width = newWidth;
       notifyListeners();
     }
   }
 
-  double get maxWidth => _maxWidth;
+  void updateCrossAxisCount(int crossAxisCount) {
+    if (_crossAxisCount != crossAxisCount) {
+      _crossAxisCount = crossAxisCount;
+      notifyListeners();
+    }
+  }
+
+
+  double get width => _width;
+  double get refernceGridSize {
+    return _width/_crossAxisCount;
+  }
+  int get crossAxisCount => _crossAxisCount;
 }
