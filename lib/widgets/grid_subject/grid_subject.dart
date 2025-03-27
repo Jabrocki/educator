@@ -1,8 +1,6 @@
 //Material
-import 'package:educator/state/layout_state.dart';
 import 'package:educator/widgets/grid_subject/helper_menu.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 //Models
 import '../../models/subject_model.dart';
@@ -24,11 +22,11 @@ class GridSubject extends StatelessWidget {
   Widget build(BuildContext context) {
     final mainTheme = Theme.of(context);
 
-    return Consumer<LayoutState>(
-      builder: (_, layoutState, __) {
-        double imageSize = layoutState.refernceGridSize * 0.3;
-        double borderRadius = layoutState.refernceGridSize * 0.07;
-        double menuHeight = layoutState.refernceGridSize * 0.18;
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        double imageSize = constraints.maxWidth * 0.3;
+        double borderRadius = constraints.maxWidth * 0.07;
+        double menuHeight = constraints.maxWidth * 0.18;
         return ClipRRect(
           borderRadius: BorderRadius.circular(borderRadius),
           child: Container(

@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:educator/widgets/grid_subject/animated_grid_subject.dart';
 import 'package:flutter/material.dart';
 import 'package:educator/models/subject_model.dart';
@@ -19,18 +18,15 @@ class _SubjectPageState extends State<SubjectPage>
   bool _isInitialized = false;
   int _subjectsCount = 0;
 
-  // Configuration for staggered animations.
-  final int _itemAnimationDuration = 500; // in milliseconds
-  final int _itemDelay = 100; // delay between items in milliseconds
+  final int _itemAnimationDuration = 500; 
+  final int _itemDelay = 100; 
 
   @override
   void initState() {
     super.initState();
-    // Delay initialization until after the first frame.
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       final subjectListState =
           Provider.of<SubjectListState>(context, listen: false);
-      await subjectListState.subjectInit();
       final subjects = subjectListState.subjects;
 
       int count = subjects.length;

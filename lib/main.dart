@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'state/main_state.dart';
 import 'state/subject_list_state.dart';
 import 'state/deck_list_state.dart';
-import 'state/layout_state.dart';
 import 'state/animation_state.dart';
 
 //LogInPage
@@ -48,7 +47,6 @@ Future<void> main() async {
       ChangeNotifierProvider<MainState>.value(value: mainState),
       ChangeNotifierProvider<SubjectListState>.value(value: subjectState),
       ChangeNotifierProvider(create: (_) => DeckListState()),
-      ChangeNotifierProvider(create: (_) => LayoutState()),
       ChangeNotifierProvider(create: (_) => AnimationState())
     ],
     child: const MyApp(),

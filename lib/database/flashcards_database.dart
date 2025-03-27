@@ -1,7 +1,7 @@
 part of 'main_database.dart';
 
 extension FlashcardsDatabase on DatabaseService {
-  Future<String> _saveFlashcardFile(String flashCard) async {
+  Future<String> saveFlashcardFile(String flashCard) async {
     return '';
   }
 

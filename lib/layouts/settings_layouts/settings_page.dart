@@ -7,6 +7,6 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text("Settings");
+    return const Text("Settings");
   }
 }

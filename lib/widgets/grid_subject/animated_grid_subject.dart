@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:educator/models/subject_model.dart';
 import 'package:educator/widgets/grid_subject/grid_subject.dart';
+import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import '../../state/main_state.dart';
-import '../../state/layout_state.dart';
 
 class AnimatedGridSubject extends StatelessWidget {
   final SubjectModel subject;
@@ -17,9 +17,9 @@ class AnimatedGridSubject extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<LayoutState>(builder: (_, layoutState, __) {
+    return LayoutBuilder(builder: (context, constraints) {
       //Calulate border radius
-      final double borderRadius = layoutState.refernceGridSize * 0.05;
+      final double borderRadius = constraints.maxWidth * 0.05;
       return AnimatedBuilder(
         animation: animation,
         builder: (context, child) {

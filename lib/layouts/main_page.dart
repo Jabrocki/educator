@@ -16,7 +16,6 @@ import 'login_layouts/login_page.dart';
 //State
 import '../state/main_state.dart';
 import '../state/subject_list_state.dart';
-import '../state/layout_state.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({
@@ -63,7 +62,6 @@ class _MainPageState extends State<MainPage> {
 
     //Animation state
     final animationState = Provider.of<AnimationState>(context);
-
 
     //Handling logic for bakc button
     switch (animationState.selectedIndex) {
@@ -150,7 +148,6 @@ class _MainPageState extends State<MainPage> {
   }
 
   Widget _buildBody(BuildContext context) {
-
     final animationState = Provider.of<AnimationState>(context);
 
     return Stack(
@@ -163,46 +160,35 @@ class _MainPageState extends State<MainPage> {
               width: _isHovered ? 260 : 85,
             ),
             Expanded(
-              child: LayoutBuilder(builder: (context, constraints) {
-                final layoutState =
-                    Provider.of<LayoutState>(context, listen: false);
-                final int crossAxisCount = (MediaQuery.of(context).size.width/200).clamp(1, 6).toInt();;
-                // Update width and cross axis count
-                WidgetsBinding.instance.addPostFrameCallback((_) {
-                  layoutState.updateMaxWidth(constraints.maxWidth);
-                  layoutState.updateCrossAxisCount(crossAxisCount);
-                });
-                return IndexedStack(
-                  index: animationState.selectedIndex,
-                  children: [
-                    HomeNavigator(
-                      backButtonValChanged: (bool canPop) =>
-                          setState(() => _showHomeBackButton = canPop),
-                      addButtonValChanged: (Widget? addButton) =>
-                          setState(() => _homeFab = addButton),
-                    ),
-                    SubjectNavigator(
-                      backButtonValChanged: (bool canPop) =>
-                          setState(() => _showSubjectsBackButton = canPop),
-                      addButtonValChanged: (Widget? addButton) =>
-                          setState(() => _subjectFab = addButton),
-                    ),
-                    SearchNavigator(
-                      backButtonValChanged: (bool canPop) =>
-                          setState(() => _showSearchBackButton = canPop),
-                      addButtonValChanged: (Widget? addButton) =>
-                          setState(() => _searchFab = addButton),
-                    ),
-                    SettingsNavigator(
-                      backButtonValChanged: (bool canPop) =>
-                          setState(() => _showSettingsBackButton = canPop),
-                      addButtonValChanged: (Widget? addButton) =>
-                          setState(() => _settingsFab = addButton),
-                    ),
-                  ],
-                );
-              }),
-            ),
+                child: IndexedStack(
+              index: animationState.selectedIndex,
+              children: [
+                HomeNavigator(
+                  backButtonValChanged: (bool canPop) =>
+                      setState(() => _showHomeBackButton = canPop),
+                  addButtonValChanged: (Widget? addButton) =>
+                      setState(() => _homeFab = addButton),
+                ),
+                SubjectNavigator(
+                  backButtonValChanged: (bool canPop) =>
+                      setState(() => _showSubjectsBackButton = canPop),
+                  addButtonValChanged: (Widget? addButton) =>
+                      setState(() => _subjectFab = addButton),
+                ),
+                SearchNavigator(
+                  backButtonValChanged: (bool canPop) =>
+                      setState(() => _showSearchBackButton = canPop),
+                  addButtonValChanged: (Widget? addButton) =>
+                      setState(() => _searchFab = addButton),
+                ),
+                SettingsNavigator(
+                  backButtonValChanged: (bool canPop) =>
+                      setState(() => _showSettingsBackButton = canPop),
+                  addButtonValChanged: (Widget? addButton) =>
+                      setState(() => _settingsFab = addButton),
+                ),
+              ],
+            )),
           ],
         ),
         Positioned(
@@ -228,7 +214,8 @@ class _MainPageState extends State<MainPage> {
                         icon: Icon(Icons.settings), label: Text("Settings"))
                   ],
                   selectedIndex: animationState.selectedIndex,
-                  onDestinationSelected: (value) => animationState.selectedIndex = value,
+                  onDestinationSelected: (value) =>
+                      animationState.selectedIndex = value,
                 ),
               ),
             ),

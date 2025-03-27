@@ -1,6 +1,4 @@
-
 import 'package:educator/models/subject_model.dart';
-import 'package:educator/state/layout_state.dart';
 import 'package:educator/state/subject_list_state.dart';
 import 'package:educator/widgets/custom_pop_up_subject.dart';
 import 'package:flutter/material.dart';
@@ -36,16 +34,15 @@ class HelperMenu extends StatelessWidget {
       }
     }
 
-    return Consumer<LayoutState>(
-      builder: (_, layoutState, __) {
-        double iconSize = layoutState.refernceGridSize * 0.08;
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        double iconSize = constraints.maxHeight * 0.5; 
         double iconDistance = iconSize * 1.5;
-        double fontSize = layoutState.refernceGridSize * 0.05;
-        double textPadding =layoutState.refernceGridSize * 0.05;
+        double fontSize = constraints.maxHeight * 0.35;
+        double textPadding = constraints.maxHeight * 0.2;
 
-        return Expanded(
-          child: Container(
-            decoration: BoxDecoration(
+        return Container(
+          decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.primaryContainer,
               boxShadow: [
                 BoxShadow(
@@ -53,45 +50,43 @@ class HelperMenu extends StatelessWidget {
                   blurRadius: 3,
                   spreadRadius: 1,
                 )
-              ]
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.all(textPadding),
-                    child: Text(
-                      subject.subjectName,
-                      style: TextStyle(
-                          fontSize: fontSize, fontWeight: FontWeight.bold),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
+              ]),
+          child: Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.all(textPadding),
+                  child: Text(
+                    subject.subjectName,
+                    style: TextStyle(
+                        fontSize: fontSize, fontWeight: FontWeight.bold),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                Row(
-                  mainAxisSize:
-                      MainAxisSize.min, // optional, keeps Row as small as possible
-                  children: [
-                    IconButton(
-                      onPressed: editSubject,
-                      icon: const Icon(Icons.edit),
-                      padding: EdgeInsets.zero, // removes default padding
-                      constraints:
-                          const BoxConstraints(), // removes default 48x48 constraints
-                      iconSize: iconSize,
-                    ),
-                    IconButton(
-                      onPressed: deleteSubject,
-                      icon: const Icon(Icons.delete),
-                      padding: EdgeInsets.zero,
-                      constraints: BoxConstraints(minWidth: iconDistance),
-                      iconSize: iconSize,
-                    ),
-                  ],
-                )
-              ],
-            ),
+              ),
+              Row(
+                mainAxisSize: MainAxisSize
+                    .min, // optional, keeps Row as small as possible
+                children: [
+                  IconButton(
+                    onPressed: editSubject,
+                    icon: const Icon(Icons.edit),
+                    padding: EdgeInsets.zero, // removes default padding
+                    constraints:
+                        const BoxConstraints(), // removes default 48x48 constraints
+                    iconSize: iconSize,
+                  ),
+                  IconButton(
+                    onPressed: deleteSubject,
+                    icon: const Icon(Icons.delete),
+                    padding: EdgeInsets.zero,
+                    constraints: BoxConstraints(minWidth: iconDistance),
+                    iconSize: iconSize,
+                  ),
+                ],
+              )
+            ],
           ),
         );
       },
