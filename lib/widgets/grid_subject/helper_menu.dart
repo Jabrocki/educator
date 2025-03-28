@@ -72,7 +72,7 @@ class HelperMenu extends StatelessWidget {
                   IconButton(
                     onPressed: editSubject,
                     icon: const Icon(Icons.edit),
-                    padding: EdgeInsets.zero, // removes default padding
+                    padding: EdgeInsets.zero, 
                     constraints:
                         const BoxConstraints(), // removes default 48x48 constraints
                     iconSize: iconSize,

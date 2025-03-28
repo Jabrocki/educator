@@ -9,14 +9,14 @@ class SubjectPage extends StatefulWidget {
   const SubjectPage({super.key});
 
   @override
-  _SubjectPageState createState() => _SubjectPageState();
+  SubjectPageState createState() => SubjectPageState();
 }
 
-class _SubjectPageState extends State<SubjectPage>
+class SubjectPageState extends State<SubjectPage>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
-  bool _isInitialized = false;
   int _subjectsCount = 0;
+  bool _isInitialized = false;
 
   final int _itemAnimationDuration = 500; 
   final int _itemDelay = 100; 
@@ -41,8 +41,8 @@ class _SubjectPageState extends State<SubjectPage>
 
       _controller.forward();
       setState(() {
-        _isInitialized = true;
         _subjectsCount = count;
+        _isInitialized = true;
       });
     });
   }
@@ -50,7 +50,7 @@ class _SubjectPageState extends State<SubjectPage>
   @override
   void dispose() {
     if (_isInitialized) {
-      _controller.dispose();
+     _controller.dispose();
     }
     super.dispose();
   }
@@ -60,7 +60,6 @@ class _SubjectPageState extends State<SubjectPage>
     _controller.forward();
   }
 
-  /// Dispose the old controller and create a new one based on the updated subject list.
   void _updateController(List<SubjectModel> subjects) {
     int newCount = subjects.length;
 
@@ -77,10 +76,13 @@ class _SubjectPageState extends State<SubjectPage>
 
   @override
   Widget build(BuildContext context) {
-    final subjects = Provider.of<SubjectListState>(context).subjects;
+
     if (!_isInitialized) {
       return const Center(child: CircularProgressIndicator());
     }
+
+    final subjects = Provider.of<SubjectListState>(context).subjects;
+
 
     if (subjects.length != _subjectsCount) {
       if (mounted) {
@@ -90,7 +92,6 @@ class _SubjectPageState extends State<SubjectPage>
 
     return Consumer<AnimationState>(
       builder: (_, animationState, __) {
-        // Schedule reanimation if requested.
         if (animationState.reAnimate) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             if (mounted) {
@@ -99,70 +100,70 @@ class _SubjectPageState extends State<SubjectPage>
             }
           });
         }
-        // If this page isn’t active and the animation is running, schedule a reset.
         if (animationState.selectedIndex != 1 && _controller.isAnimating) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            if (mounted) {
-              _controller.reset();
-            }
+            if (mounted) _controller.reset();
+
           });
         }
         int crossAxisCount =
             (MediaQuery.of(context).size.width / 200).clamp(1, 6).toInt();
-        return Container(
-          color: Theme.of(context).scaffoldBackgroundColor,
-          child: CustomScrollView(
-            slivers: [
-              const SliverToBoxAdapter(
-                child: Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: Text(
-                    "Subjects",
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ),
-              SliverPadding(
-                padding: const EdgeInsets.all(8),
-                sliver: SliverGrid(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: crossAxisCount,
-                    crossAxisSpacing: 10.0,
-                    mainAxisSpacing: 10.0,
-                    childAspectRatio: 1.0,
-                  ),
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                      int delay = _itemDelay * index;
-                      double start =
-                          delay / _controller.duration!.inMilliseconds;
-                      double end = (delay + _itemAnimationDuration) /
-                          _controller.duration!.inMilliseconds;
-                      // Clamp end to 1.0.
-                      if (end > 1.0) end = 1.0;
-                      Animation<double> childAnimation = Tween<double>(
-                        begin: 0.0,
-                        end: 1.0,
-                      ).animate(
-                        CurvedAnimation(
-                          parent: _controller,
-                          curve:
-                              Interval(start, end, curve: Curves.easeOutBack),
-                        ),
-                      );
-                      return AnimatedGridSubject(
-                        subject: subjects[index],
-                        animation: childAnimation,
-                      );
-                    },
-                    childCount: subjects.length,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        );
+        return _body(context, crossAxisCount, subjects);
       },
     );
+  }
+
+  Widget _body(BuildContext context, int crossAxisCount, List<SubjectModel> subjects) {
+    return Container(
+        color: Theme.of(context).scaffoldBackgroundColor,
+        child: CustomScrollView(
+          slivers: [
+            const SliverToBoxAdapter(
+              child: Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Text(
+                  "Subjects",
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+            SliverPadding(
+              padding: const EdgeInsets.all(8),
+              sliver: SliverGrid(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: crossAxisCount,
+                  crossAxisSpacing: 10.0,
+                  mainAxisSpacing: 10.0,
+                  childAspectRatio: 1.0,
+                ),
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) {
+                    int delay = _itemDelay * index;
+                    double start =
+                        delay / _controller.duration!.inMilliseconds;
+                    double end = (delay + _itemAnimationDuration) /
+                        _controller.duration!.inMilliseconds;
+                    Animation<double> childAnimation = Tween<double>(
+                      begin: 0.0,
+                      end: 1.0,
+                    ).animate(
+                      CurvedAnimation(
+                        parent: _controller,
+                        curve:
+                            Interval(start, end, curve: Curves.easeOutBack),
+                      ),
+                    );
+                    return AnimatedGridSubject(
+                      subject: subjects[index],
+                      animation: childAnimation,
+                    );
+                  },
+                  childCount: subjects.length,
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
   }
 }

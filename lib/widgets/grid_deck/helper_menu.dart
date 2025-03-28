@@ -26,7 +26,8 @@ class HelperMenu extends StatelessWidget {
       deckState.deckName = deck.deckName;
       deckState.editedDeckId = deck.deckId;
       deckState.maximumNumberOfCardsToLearn = deck.maximumNumberOfCardsToLearn;
-      deckState.maximumNumberOfCardsToReview = deck.maximumNumberOfCardsToReview;
+      deckState.maximumNumberOfCardsToReview =
+          deck.maximumNumberOfCardsToReview;
       deckState.isEditing = true;
 
       showDialog(
@@ -38,51 +39,75 @@ class HelperMenu extends StatelessWidget {
         deckState.imgFile = (await deck.imgFile)!;
       }
     }
+
     return LayoutBuilder(
       builder: (context, constraints) {
-        double iconSize = (constraints.maxWidth * 0.08).clamp(16.0, 32.0);
-        double fontSize = (constraints.maxWidth * 0.05).clamp(10.0, 30.0);
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            // LEFT (text)
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: AutoSizeText(
-                  deck.deckName,
-                  style: TextStyle(
-                    fontSize: fontSize,
-                    fontWeight: FontWeight.bold,
-                  ), 
-                  maxLines: 3,
-                  minFontSize: 8,
-                  overflow: TextOverflow.ellipsis,
+        double iconSize = constraints.maxHeight * 0.5;
+        double iconDistance = iconSize * 1.5;
+        double fontSize = constraints.maxHeight * 0.35;
+        double textPadding = constraints.maxHeight * 0.2;
+        return Container(
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.primaryContainer,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                blurRadius: 3,
+                spreadRadius: 1,
+              )
+            ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              // LEFT (text)
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.all(textPadding),
+                  child: AutoSizeText(
+                    deck.deckName,
+                    style: TextStyle(
+                      fontSize: fontSize,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    maxLines: 3,
+                    minFontSize: 8,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
               ),
-            ),
 
-            // RIGHT (icons)
-            Row(
-              children: [
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.add),
-                  iconSize: iconSize,
-                ),
-                IconButton(
-                  onPressed: editDeck,
-                  icon: const Icon(Icons.edit),
-                  iconSize: iconSize,
-                ),
-                IconButton(
-                  onPressed: deleteDeck,
-                  icon: const Icon(Icons.delete),
-                  iconSize: iconSize,
-                ),
-              ],
-            ),
-          ],
+              // RIGHT (icons)
+              Row(
+                children: [
+                  IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.add),
+                    iconSize: iconSize,
+                    padding: EdgeInsets.zero,
+                    constraints:
+                        BoxConstraints(minWidth: iconDistance), 
+                  ),
+                  IconButton(
+                    onPressed: editDeck,
+                    icon: const Icon(Icons.edit),
+                    iconSize: iconSize,
+                    padding: EdgeInsets.zero,
+                    constraints:
+                         BoxConstraints(minWidth: iconDistance), 
+                  ),
+                  IconButton(
+                    onPressed: deleteDeck,
+                    icon: const Icon(Icons.delete),
+                    iconSize: iconSize,
+                    padding: EdgeInsets.zero,
+                    constraints:
+                        BoxConstraints(minWidth: iconDistance), 
+                  ),
+                ],
+              ),
+            ],
+          ),
         );
       },
     );

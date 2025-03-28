@@ -18,8 +18,9 @@ class AnimatedGridSubject extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
-      //Calulate border radius
+
       final double borderRadius = constraints.maxWidth * 0.05;
+      
       return AnimatedBuilder(
         animation: animation,
         builder: (context, child) {

@@ -4,7 +4,7 @@ import 'package:educator/state/animation_state.dart';
 import 'package:provider/provider.dart';
 
 //Widgets
-import 'package:educator/widgets/grid_menu.dart';
+import 'package:educator/widgets/grid_menu/animated_grid_menu.dart';
 
 //Material
 import 'package:flutter/material.dart';
@@ -18,8 +18,9 @@ class MenuSubjectPage extends StatefulWidget {
   State<MenuSubjectPage> createState() => _MenuSubjectPageState();
 }
 
-class _MenuSubjectPageState extends State<MenuSubjectPage> {
-  late final List<GlobalKey<GridMenuState>> gridMenuKeys;
+class _MenuSubjectPageState extends State<MenuSubjectPage>
+    with SingleTickerProviderStateMixin {
+  //List of menu items
   final List<MenuItemModel> menuItems = [
     const MenuItemModel(
       label: "FlashCards",
@@ -36,51 +37,117 @@ class _MenuSubjectPageState extends State<MenuSubjectPage> {
         navigation: "/subjects/menu/files")
   ];
 
+  //Animation data
+  late AnimationController _controller;
+  bool _isInitialized = false;
+
+  final int _itemAnimationDuration = 500;
+  final int _itemDelay = 100;
+
   @override
   void initState() {
     super.initState();
-    gridMenuKeys =
-        List.generate(menuItems.length, (_) => GlobalKey<GridMenuState>());
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      int count = menuItems.length;
+      int totalDuration = count > 0
+          ? _itemDelay * (count - 1) + _itemAnimationDuration
+          : _itemAnimationDuration;
+
+      _controller = AnimationController(
+          vsync: this, duration: Duration(milliseconds: totalDuration));
+
+      _controller.forward();
+      setState(() {
+        _isInitialized = true;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    if (_isInitialized) {
+      _controller.dispose();
+    }
+    super.dispose();
+  }
+
+  void _reAnimate() {
+    _controller.reset();
+    _controller.forward();
   }
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      slivers: [
-        const SliverToBoxAdapter(
-          child: Padding(
-            padding: EdgeInsets.all(16.0),
-            child: Text(
-              "Menu",
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+    return Consumer<AnimationState>(builder: (_, animationState, __) {
+      if (!_isInitialized) {
+        return const Center(child: CircularProgressIndicator());
+      }
+      if (animationState.reAnimate) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) {
+            _reAnimate();
+            animationState.reAnimate = false;
+          }
+        });
+      }
+
+      if (animationState.selectedIndex != 1 && _controller.isAnimating) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) {
+            _controller.reset();
+          }
+        });
+      }
+
+      int crossAxisCount =
+          (MediaQuery.of(context).size.width / 200).clamp(1, 6).toInt();
+      return Container(
+        color: Theme.of(context).scaffoldBackgroundColor,
+        child: CustomScrollView(
+          slivers: [
+            const SliverToBoxAdapter(
+              child: Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Text(
+                  "Menu",
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+              ),
             ),
-          ),
+            SliverPadding(
+                padding: const EdgeInsets.all(8),
+                sliver: SliverGrid(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: crossAxisCount,
+                      crossAxisSpacing: 10.0,
+                      mainAxisSpacing: 10.0,
+                      childAspectRatio: 1.0,
+                    ),
+                    delegate: SliverChildBuilderDelegate((context, index) {
+                      int delay = _itemDelay * index;
+                      double start =
+                          delay / _controller.duration!.inMilliseconds;
+                      double end = (delay + _itemAnimationDuration) /
+                          _controller.duration!.inMilliseconds;
+
+                      Animation<double> childAnimation = Tween<double>(
+                        begin: 0.0,
+                        end: 1.0,
+                      ).animate(
+                        CurvedAnimation(
+                          parent: _controller,
+                          curve:
+                              Interval(start, end, curve: Curves.easeOutBack),
+                        ),
+                      );
+
+                      return AnimatedGridMenu(
+                          menuItemModel: menuItems[index],
+                          animation: childAnimation);
+                    }, childCount: menuItems.length))),
+          ],
         ),
-        Consumer<AnimationState>(builder: (_, animationState, ___) {
-          if (animationState.reAnimate) {
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              animationState.reAnimate = false;
-            });
-          } 
-          return SliverPadding(
-              padding: const EdgeInsets.all(8),
-              sliver: SliverGrid(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 6,
-                    crossAxisSpacing: 10.0,
-                    mainAxisSpacing: 10.0,
-                    childAspectRatio: 1.0,
-                  ),
-                  delegate: SliverChildBuilderDelegate((context, index) {
-                    gridMenuKeys[index].currentState?.reAnimate();
-                    return GridMenu(
-                      key: gridMenuKeys[index],
-                      index: index,
-                      menuItemModel: menuItems[index],
-                    );
-                  }, childCount: menuItems.length)));
-        }),
-      ],
-    );
+      );
+    });
   }
 }

@@ -10,10 +10,6 @@ import 'dart:io';
 //Models
 import '../../models/deck_model.dart';
 
-
-
-
-
 class GridDeck extends StatelessWidget {
   final DeckModel deck;
 
@@ -28,12 +24,16 @@ class GridDeck extends StatelessWidget {
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        double containerWidth = constraints.maxWidth * 0.4; // Scales with screen
-        double containerHeight = constraints.maxHeight * 0.12; // Scales with screen
-        double fontSize = constraints.maxWidth * 0.06; // Text scales dynamically
+        double imageSize = constraints.maxWidth * 0.3;
+        double borderRadius = constraints.maxWidth * 0.07;
+        double menuHeight = constraints.maxWidth * 0.18;
+        double fontSize = constraints.maxWidth * 0.05;
+
+        double numbersHeight = constraints.maxWidth * 0.1;
+        double numbersWidth = constraints.maxWidth * 0.35;
 
         return ClipRRect(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(borderRadius),
           child: Stack(
             children: [
               // Background Container
@@ -44,32 +44,43 @@ class GridDeck extends StatelessWidget {
                 child: Column(
                   children: [
                     Expanded(
-                      child: _imagePreview(),
+                      child: _imagePreview(imageSize),
                     ),
-                    HelperMenu(deck: deck),
+                    SizedBox(height: menuHeight, child: HelperMenu(deck: deck)),
                   ],
                 ),
               ),
 
-              // Floating Number Menu (Top-Left)
               Positioned(
                 top: 8,
                 left: 8,
                 child: Container(
-                  width: containerWidth,
-                  height: containerHeight,
-                  padding: EdgeInsets.symmetric(horizontal: containerWidth * 0.05),
+                  width: numbersWidth,
+                  height: numbersHeight,
+                  padding:
+                      EdgeInsets.symmetric(horizontal: numbersWidth * 0.08),
                   decoration: BoxDecoration(
-                    color: mainTheme.colorScheme.primaryContainer, // Blended background
+                    color: mainTheme
+                        .colorScheme.primaryContainer,
                     borderRadius: const BorderRadius.all(Radius.circular(16)),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.2),
+                        blurRadius: 2,
+                        spreadRadius: 1
+                      )
+                    ]  
                   ),
                   child: Center(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        _buildNumber(deck.numberOfCardsReview.toString(), Colors.blue, fontSize),
-                        _buildNumber(deck.numberOfCardsLearn.toString(), Colors.red, fontSize),
-                        _buildNumber(deck.numberOfCardsNew.toString(), Colors.green, fontSize),
+                        _buildNumber(deck.numberOfCardsReview.toString(),
+                            Colors.blue, fontSize),
+                        _buildNumber(deck.numberOfCardsLearn.toString(),
+                            Colors.red, fontSize),
+                        _buildNumber(deck.numberOfCardsNew.toString(),
+                            Colors.green, fontSize),
                       ],
                     ),
                   ),
@@ -82,7 +93,7 @@ class GridDeck extends StatelessWidget {
     );
   }
 
-  Widget _imagePreview() {
+  Widget _imagePreview(double imageSize) {
     return FutureBuilder(
       future: deck.imgPath,
       builder: (context, snapshot) {
@@ -94,8 +105,8 @@ class GridDeck extends StatelessWidget {
             height: double.infinity,
           );
         }
-        return const Center(
-          child: Icon(Icons.image_not_supported, size: 50),
+        return Center(
+          child: Icon(Icons.image_not_supported, size: imageSize),
         );
       },
     );

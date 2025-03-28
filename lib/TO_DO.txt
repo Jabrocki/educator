@@ -1,11 +1,10 @@
 Refeactoring:
 * Refactor a litle bit subject state
-* fix bug when changing to decks page // fixed make it on all pages
-* remove all lalyout builders
 * review whole code and make it more usable
 * fix all blue problems and fix all issues in debug console
 * create non existent page in case of on issue
 * create prototype for settigs page and implement dark theme
+* Add some kind of intro idk something shiny
 
 
 
@@ -24,14 +23,6 @@ Implement flashcard menu
 
 
 Play some anki and see how it works
-
-
-
-Refactor code
-
-Add some kind of intro idk something shiny
-
-
 
 Implement menu for subjects
 *quizes;
