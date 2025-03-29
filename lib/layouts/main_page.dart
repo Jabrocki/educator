@@ -1,11 +1,13 @@
 //Provider
-
-import 'package:educator/layouts/tab_navigators/home_navigator.dart';
-import 'package:educator/layouts/tab_navigators/search_navigator.dart';
-import 'package:educator/layouts/tab_navigators/settings_navigator.dart';
-import 'package:educator/layouts/tab_navigators/subject_navigator.dart';
-import 'package:educator/state/animation_state.dart';
 import 'package:provider/provider.dart';
+
+//Nested navigators
+import '../layouts/tab_navigators/home_navigator.dart';
+import '../layouts/tab_navigators/search_navigator.dart';
+import '../layouts/tab_navigators/settings_navigator.dart';
+import '../layouts/tab_navigators/subject_navigator.dart';
+
+
 
 //Material
 import 'package:flutter/material.dart';
@@ -16,6 +18,7 @@ import 'login_layouts/login_page.dart';
 //State
 import '../state/main_state.dart';
 import '../state/subject_list_state.dart';
+import '../state/animation_state.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({

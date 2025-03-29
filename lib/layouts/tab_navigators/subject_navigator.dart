@@ -44,6 +44,9 @@ class SubjectNavigator extends StatelessWidget {
           case '/subjects/menu/decks':
             page = const DecksPage();
             break;
+          case '/subjects/menu/decks/add_flashcards':
+            page = const Text("Add Flashcards");
+            break;
           default:
             page = const SubjectPage();
         }

@@ -112,12 +112,17 @@ class DatabaseConfig {
     databaseDirPath = await getDatabasesPath();
     databasePath = join(databaseDirPath, databaseName);
 
+    print(documentsPath);
+
     //Init paths
-    imageFileFolder = "$documentsPath/images/";
-    flascardsFileDirectory = "$documentsPath/flashcards/";
-    notesFileDirectory = "$documentsPath/notes/";
-    otherFilesDirectory = "$documentsPath/other/";
+    imageFileFolder = "$documentsPath/images";
+    flascardsFileDirectory = "$documentsPath/flashcards";
+    notesFileDirectory = "$documentsPath/notes";
+    otherFilesDirectory = "$documentsPath/other";
 
     await Directory(imageFileFolder).create();
+    await Directory(flascardsFileDirectory).create();
+    await Directory(notesFileDirectory).create();
+    await Directory(otherFilesDirectory).create();
   }
 }

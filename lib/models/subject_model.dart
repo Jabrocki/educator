@@ -1,6 +1,10 @@
-import 'package:educator/models/image_model.dart';
+//Image model
+import '../models/image_model.dart';
 
+//Database
 import '../database/main_database.dart';
+
+//Files
 import 'dart:io';
 
 class SubjectModel {

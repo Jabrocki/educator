@@ -5,23 +5,21 @@ import 'package:flutter/material.dart';
 //PopUP windows
 import '../../widgets/custom_pop_up_subject.dart';
 
-
 class SubjectNavigatorObserver extends NavigatorObserver {
   final ValueChanged<bool> backButtonValChanged;
   final ValueChanged<Widget?> addButtonValChanged;
 
-  SubjectNavigatorObserver(
-      {
-        required this.backButtonValChanged, 
-        required this.addButtonValChanged,
-        });
+  SubjectNavigatorObserver({
+    required this.backButtonValChanged,
+    required this.addButtonValChanged,
+  });
 
   void _notifyRoute(Route? route) {
     final routeName = route?.settings.name;
 
     //If they want to show bak button
     bool shouldShowBackButton = routeName != null && routeName != '/subjects';
-    
+
     Widget? addButton;
     //FAB
     if (routeName != null) {
@@ -34,6 +32,9 @@ class SubjectNavigatorObserver extends NavigatorObserver {
           break;
         case '/subjects/menu/decks':
           addButton = const AddDeckButton();
+          break;
+        case '/subjects/menu/decks/add_flashcards':
+          addButton = null;
           break;
         default:
           addButton = null;
@@ -80,10 +81,11 @@ class AddDeckButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return FloatingActionButton(
       onPressed: () {
-        showDialog(context: context, 
-        builder: (context) {
-          return const CustomPopUpDeck();
-        });
+        showDialog(
+            context: context,
+            builder: (context) {
+              return const CustomPopUpDeck();
+            });
       },
       child: const Icon(Icons.add),
     );

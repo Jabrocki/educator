@@ -7,11 +7,10 @@ library main_database;
 import '../models/deck_model.dart';
 import '../models/image_model.dart';
 import '../models/subject_model.dart';
+import '../models/flashcard_model.dart';
 
 //External packges
-import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 //Internal packages

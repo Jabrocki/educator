@@ -5,6 +5,7 @@ Refeactoring:
 * create non existent page in case of on issue
 * create prototype for settigs page and implement dark theme
 * Add some kind of intro idk something shiny
+* add recursive deletion to sqllite database
 
 
 
@@ -19,6 +20,7 @@ Implement log in page page + register page prototype
 
 Implement flashcard menu 
 * create database for flashcards;
+* learn how to handle json files in dart
 * flashcards + flutter quill/painter (user can choose)
 
 

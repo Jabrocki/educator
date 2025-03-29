@@ -9,7 +9,9 @@ extension ImagesDatabase on DatabaseService {
   }
 
   Future<int> saveAndInsertImage(File imgFile) async {
-    final String path = (await getApplicationDocumentsDirectory()).path;
+
+    final String path = configDb.imageFileFolder;
+
     final String imgFileName = DateTime.now().toString();
     final String imgFilePath = "$path/$imgFileName.png";
 
@@ -26,7 +28,7 @@ extension ImagesDatabase on DatabaseService {
   }
 
   Future<void> deleteImage(ImageModel image) async {
-    File answerImgFile = File(join(configDb.imageFileFolder, image.imgFileName));
+    File answerImgFile = File(image.imgFileName);
     answerImgFile.delete();
     //Image id
     String imagesIdColumn = DatabaseConfig.imagesIdColumn;

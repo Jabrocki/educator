@@ -29,7 +29,8 @@ Future<void> main() async {
   //Create and initialize main state
   final mainState = MainState();
   await mainState.init();
-  
+
+  print('test');
   //Config
   await DatabaseConfig.configDb.initConfig();
 
