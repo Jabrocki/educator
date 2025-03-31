@@ -136,8 +136,8 @@ class _FlashcardEditPageState extends State<FlashcardEditPage>
                 sliver: SliverGrid(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: crossAxisCount,
-                    crossAxisSpacing: 10.0,
-                    mainAxisSpacing: 10.0,
+                    crossAxisSpacing: 40.0,
+                    mainAxisSpacing: 20.0,
                     childAspectRatio: 1.0,
                   ),
                   delegate: SliverChildBuilderDelegate(
