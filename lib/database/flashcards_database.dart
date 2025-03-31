@@ -64,4 +64,13 @@ extension FlashcardsDatabase on DatabaseService {
     await deleteFlashcardFile(flashcard.flashcardFrontPath);
     await deleteFlashcardFile(flashcard.flashcardBackPath);
   }
+
+  Future<void> editFlashcard({
+    required FlashcardModel flashcard,
+    required String newFlashcardFrontContent,
+    required String newFlashcardBackContent,
+  }) async {
+    await updateFlashcardFile(flashcard.flashcardFrontPath, newFlashcardFrontContent);
+    await updateFlashcardFile(flashcard.flashcardBackPath, newFlashcardBackContent);
+  }
 }

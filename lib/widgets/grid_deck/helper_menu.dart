@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:educator/models/deck_model.dart';
 import 'package:educator/state/deck_list_state.dart';
+import 'package:educator/state/flashcard_list_state.dart';
 import 'package:educator/widgets/custom_pop_up_deck.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -40,10 +41,17 @@ class HelperMenu extends StatelessWidget {
       }
     }
 
+    void addFlashcards() {
+      final flashcardListState =
+          Provider.of<FlashcardListState>(context, listen: false);
+      flashcardListState.deckId = deck.deckId;
+      Navigator.of(context).pushNamed('/subjects/menu/decks/edit_flashcards');
+    }
+
     return LayoutBuilder(
       builder: (context, constraints) {
         double iconSize = constraints.maxHeight * 0.5;
-        double iconDistance = iconSize * 1.5;
+        double iconDistance = iconSize * 2;
         double fontSize = constraints.maxHeight * 0.35;
         double textPadding = constraints.maxHeight * 0.2;
         return Container(
@@ -81,29 +89,25 @@ class HelperMenu extends StatelessWidget {
               Row(
                 children: [
                   IconButton(
-                    onPressed: () {                    
-                    },
+                    onPressed: addFlashcards,
                     icon: const Icon(Icons.add),
                     iconSize: iconSize,
                     padding: EdgeInsets.zero,
-                    constraints:
-                        BoxConstraints(minWidth: iconDistance), 
+                    constraints: BoxConstraints(minWidth: iconDistance),
                   ),
                   IconButton(
                     onPressed: editDeck,
                     icon: const Icon(Icons.edit),
                     iconSize: iconSize,
                     padding: EdgeInsets.zero,
-                    constraints:
-                         BoxConstraints(minWidth: iconDistance), 
+                    constraints: BoxConstraints(minWidth: iconDistance),
                   ),
                   IconButton(
                     onPressed: deleteDeck,
                     icon: const Icon(Icons.delete),
                     iconSize: iconSize,
                     padding: EdgeInsets.zero,
-                    constraints:
-                        BoxConstraints(minWidth: iconDistance), 
+                    constraints: BoxConstraints(minWidth: iconDistance),
                   ),
                 ],
               ),

@@ -1,4 +1,6 @@
 //Provider
+import 'package:educator/layouts/subjects_layouts/flashcard_edit_page.dart';
+
 import '../subjects_layouts/subject_page.dart';
 import '../subjects_layouts/decks_page.dart';
 import '../subjects_layouts/menu_subject_page.dart';
@@ -44,8 +46,8 @@ class SubjectNavigator extends StatelessWidget {
           case '/subjects/menu/decks':
             page = const DecksPage();
             break;
-          case '/subjects/menu/decks/add_flashcards':
-            page = const Text("Add Flashcards");
+          case '/subjects/menu/decks/edit_flashcards':
+            page = const FlashcardEditPage();
             break;
           default:
             page = const SubjectPage();

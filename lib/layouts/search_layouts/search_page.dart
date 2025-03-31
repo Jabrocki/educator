@@ -9,6 +9,6 @@ class SearchPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text("search");
+    return const Text("search");
   }
 }

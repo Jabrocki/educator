@@ -6,7 +6,7 @@ Refeactoring:
 * create prototype for settigs page and implement dark theme
 * Add some kind of intro idk something shiny
 * add recursive deletion to sqllite database
-
+* less lines of code
 
 
 Implement Images

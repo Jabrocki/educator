@@ -5,6 +5,12 @@ import 'package:flutter/material.dart';
 //PopUP windows
 import '../../widgets/custom_pop_up_subject.dart';
 
+//State 
+import '../../state/flashcard_list_state.dart';
+
+//Provider
+import 'package:provider/provider.dart';
+
 class SubjectNavigatorObserver extends NavigatorObserver {
   final ValueChanged<bool> backButtonValChanged;
   final ValueChanged<Widget?> addButtonValChanged;
@@ -33,8 +39,8 @@ class SubjectNavigatorObserver extends NavigatorObserver {
         case '/subjects/menu/decks':
           addButton = const AddDeckButton();
           break;
-        case '/subjects/menu/decks/add_flashcards':
-          addButton = null;
+        case '/subjects/menu/decks/edit_flashcards':
+          addButton = AddFlashcardButton();
           break;
         default:
           addButton = null;
@@ -69,6 +75,23 @@ class SubjectNavigatorObserver extends NavigatorObserver {
   void didRemove(Route route, Route? previousRoute) {
     super.didRemove(route, previousRoute);
     _notifyRoute(previousRoute);
+  }
+}
+
+class AddFlashcardButton extends StatelessWidget {
+  const AddFlashcardButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+      onPressed: () {
+        final flashcardListState = Provider.of<FlashcardListState>(context, listen: false);
+        flashcardListState.addFlashcard();
+      },
+      child: const Icon(Icons.add),
+    );
   }
 }
 

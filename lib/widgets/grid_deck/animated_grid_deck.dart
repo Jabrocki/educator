@@ -71,7 +71,7 @@ class _AnimatedGridDeckState extends State<AnimatedGridDeck>
           child: InkWell(
             borderRadius: BorderRadius.circular(borderRadius),
             onTap: () {
-              //TODO transiton to flashcard page
+
             },
             onTapDown: _onTapDown,
             onTapUp: _onTapUp,

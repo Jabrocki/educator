@@ -1,4 +1,3 @@
-
 import 'dart:io';
 
 class FlashcardModel {
@@ -32,4 +31,11 @@ class FlashcardModel {
     );
   }
 
+  Future<String> getFrontContent() async {
+    return await File(flashcardFrontPath).readAsString();
+  }
+
+  Future<String> getBackContent() async {
+    return await File(flashcardBackPath).readAsString();
+  }
 }

@@ -1,4 +1,5 @@
 //Packages
+import 'package:educator/state/flashcard_list_state.dart';
 import 'package:provider/provider.dart';
 
 
@@ -22,6 +23,10 @@ import 'layouts/main_page.dart';
 import 'database/database_config.dart';
 import 'package:educator/database/main_database.dart';
 
+//Quill
+import 'package:flutter_quill/flutter_quill.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+
 Future<void> main() async {
   //Ensure the Flutter binding is initialized
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,7 +35,6 @@ Future<void> main() async {
   final mainState = MainState();
   await mainState.init();
 
-  print('test');
   //Config
   await DatabaseConfig.configDb.initConfig();
 
@@ -48,7 +52,8 @@ Future<void> main() async {
       ChangeNotifierProvider<MainState>.value(value: mainState),
       ChangeNotifierProvider<SubjectListState>.value(value: subjectState),
       ChangeNotifierProvider(create: (_) => DeckListState()),
-      ChangeNotifierProvider(create: (_) => AnimationState())
+      ChangeNotifierProvider(create: (_) => AnimationState()),
+      ChangeNotifierProvider(create: (_) => FlashcardListState()),
     ],
     child: const MyApp(),
   ));
@@ -63,6 +68,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final mainState = Provider.of<MainState>(context);
     return MaterialApp(
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        FlutterQuillLocalizations.delegate,
+      ],
       home: 
     mainState.rememberUser ?
     const MainPage() :

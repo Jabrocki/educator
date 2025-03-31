@@ -91,12 +91,11 @@ class DeckListState extends ChangeNotifier {
   int get subjectId => _subjectId;
 
   //Downloads all decks and inits userId
-  Future<bool> decksInit(int subjectId) async {
+  Future<void> decksInit(int subjectId) async {
     //Inits subjects
     _subjectId = subjectId;
     _decks = await _instance.getDecks(subjectId: subjectId);
     notifyListeners();
-    return true;
   }
 
   //Deck handle methods

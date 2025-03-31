@@ -78,9 +78,7 @@ class _DecksPageState extends State<DecksPage>
 
     _controller.duration = Duration(milliseconds: totalDuration);
 
-    setState(() {
-      _decksCount = newCount;
-    });
+    setState(() => _decksCount = newCount);
   }
 
   @override
@@ -88,12 +86,11 @@ class _DecksPageState extends State<DecksPage>
     if (!_isInitialized) {
       return const Center(child: CircularProgressIndicator());
     }
+
     final decks = Provider.of<DeckListState>(context).decks;
 
     if (decks.length != _decksCount) {
-      if (mounted) {
-        _updateController(decks);
-      }
+      if (mounted) _updateController(decks);
     }
 
     return Consumer<AnimationState>(
@@ -150,21 +147,18 @@ class _DecksPageState extends State<DecksPage>
                   double start = delay / _controller.duration!.inMilliseconds;
                   double end = (delay + _itemAnimationDuration) /
                       _controller.duration!.inMilliseconds;
-                  
-                    Animation<double> childAnimation = Tween<double>(
-                      begin: 0.0,
-                      end: 1.0,
-                    ).animate(
-                      CurvedAnimation(
-                        parent: _controller,
-                        curve:
-                            Interval(start, end, curve: Curves.easeOutBack),
-                      ),
-                    );
-                  return AnimatedGridDeck(
-                    deck: deckList[index],
-                    animation: childAnimation
+
+                  Animation<double> childAnimation = Tween<double>(
+                    begin: 0.0,
+                    end: 1.0,
+                  ).animate(
+                    CurvedAnimation(
+                      parent: _controller,
+                      curve: Interval(start, end, curve: Curves.easeOutBack),
+                    ),
                   );
+                  return AnimatedGridDeck(
+                      deck: deckList[index], animation: childAnimation);
                 },
                 childCount: deckList.length,
               ),
