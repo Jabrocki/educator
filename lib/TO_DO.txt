@@ -7,8 +7,6 @@ Refeactoring:
 * Add some kind of intro idk something shiny
 * add recursive deletion to sqllite database
 * add stream in my aplication
-* reduce lines of code to 3500
-* quill icons scale 
 * see animated sliver grid an maybe refactor code later
 
 

@@ -146,7 +146,7 @@ class _AnimatedMenuPageState extends State<AnimatedMenuPage>
             ),
             SliverPadding(
                 padding: EdgeInsets.all(gridPadding),
-                sliver: SliverGrid(
+                sliver: SliverAnimtedGrid(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: crossAxisCount,
                     crossAxisSpacing: gridAxisSpacing,

@@ -32,4 +32,10 @@ class FlashcardListState extends ChangeNotifier {
     _flashcards.add(flashcard);
     notifyListeners();
   }
+
+  Future<void> deleteFlashcard({required FlashcardModel flashcard}) async {
+    _flashcards.removeWhere((item) => item.flashcardId == flashcard.flashcardId);
+    await _instance.deleteFlashcard(flashcard);
+    notifyListeners();
+  }
 }
