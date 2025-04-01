@@ -26,7 +26,7 @@ class AnimatedFlashcardEdit extends StatelessWidget {
               child: child,
             );
           },
-          child: FlashcardEdit()
+          child: const FlashcardEdit()
         );
       }
     );

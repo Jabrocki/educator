@@ -40,7 +40,7 @@ class SubjectNavigatorObserver extends NavigatorObserver {
           addButton = const AddDeckButton();
           break;
         case '/subjects/menu/decks/edit_flashcards':
-          addButton = AddFlashcardButton();
+          addButton = const AddFlashcardButton();
           break;
         default:
           addButton = null;

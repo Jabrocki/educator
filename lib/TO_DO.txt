@@ -7,6 +7,13 @@ Refeactoring:
 * Add some kind of intro idk something shiny
 * add recursive deletion to sqllite database
 * less lines of code
+* add in right top corner of flashcard_edit widget menu to delate clear and refresh 
+* add stream in my aplication
+* reduce lines of code to 4000
+* quill icons scale 
+* see animated sliver grid an maybe refactor code later
+
+
 
 
 Implement Images

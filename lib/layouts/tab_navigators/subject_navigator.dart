@@ -1,7 +1,13 @@
 //Provider
 import 'package:educator/layouts/subjects_layouts/flashcard_edit_page.dart';
+import 'package:educator/state/subject_list_state.dart';
 
-import '../subjects_layouts/subject_page.dart';
+//import '../subjects_layouts/subject_page.dart';
+import '../subjects_layouts/animated_menu_page.dart';
+import 'package:provider/provider.dart';
+import '../../widgets/grid_subject/grid_subject.dart';
+import '../../state/main_state.dart';
+
 import '../subjects_layouts/decks_page.dart';
 import '../subjects_layouts/menu_subject_page.dart';
 
@@ -38,7 +44,7 @@ class SubjectNavigator extends StatelessWidget {
         late Widget page;
         switch (settings.name) {
           case '/subjects':
-            page = const SubjectPage();
+            page = _subjectsPage();
             break;
           case '/subjects/menu':
             page = const MenuSubjectPage();
@@ -50,13 +56,41 @@ class SubjectNavigator extends StatelessWidget {
             page = const FlashcardEditPage();
             break;
           default:
-            page = const SubjectPage();
+            page = _subjectsPage();
         }
         return MaterialPageRoute(
           builder: (_) => page,
           settings: settings,
         );
       },
+    );
+  }
+
+  Widget _subjectsPage(
+
+  ) {
+    return Builder(
+      builder: (context) {
+        return Consumer<SubjectListState>(
+          builder: (_,subjectListState,___) {
+            final subjects = subjectListState.subjects;
+            void onTap(int index) {
+              //TODO: Move subject id to subject state
+              Provider.of<MainState>(context, listen: false).subjectId = subjects[index].subjectId;
+              Navigator.of(context).pushNamed('/subjects/menu');
+            }
+            
+            return AnimatedMenuPage(
+                    items: subjects, 
+                    stackCard: 1, 
+                    maxCrossAxisExtent: 250, 
+                    title: 'Subjects', 
+                    childBuilder: (index) => GridSubject(subject: subjects[index]), 
+                    onTap: onTap
+            );
+          }
+        );
+      }
     );
   }
 }

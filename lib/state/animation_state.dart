@@ -11,9 +11,9 @@ class AnimationState extends ChangeNotifier {
   }
 
   set selectedIndex(int selectedIndex) {
-    _reAnimate = true;
     if (_selectedIndex != selectedIndex) {
       _selectedIndex = selectedIndex;
+      _reAnimate = true;
       notifyListeners();
     }
   }

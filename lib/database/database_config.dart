@@ -112,7 +112,6 @@ class DatabaseConfig {
     databaseDirPath = await getDatabasesPath();
     databasePath = join(databaseDirPath, databaseName);
 
-    print(documentsPath);
 
     //Init paths
     imageFileFolder = "$documentsPath/images";

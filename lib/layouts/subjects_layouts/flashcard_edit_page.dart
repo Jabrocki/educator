@@ -86,7 +86,6 @@ class _FlashcardEditPageState extends State<FlashcardEditPage>
     }
 
     final flashcards = Provider.of<FlashcardListState>(context).flashcards;
-    print(flashcards);
     if (flashcards.length != _flashcardCount) {
       if (mounted) _updateController(flashcards);
     }
@@ -138,7 +137,6 @@ class _FlashcardEditPageState extends State<FlashcardEditPage>
                     crossAxisCount: crossAxisCount,
                     crossAxisSpacing: 40.0,
                     mainAxisSpacing: 20.0,
-                    childAspectRatio: 1.0,
                   ),
                   delegate: SliverChildBuilderDelegate(
                     (context, index) {
