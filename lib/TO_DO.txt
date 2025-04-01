@@ -1,15 +1,13 @@
 Refeactoring:
-* Refactor a litle bit subject state
+* Refactor a litle bit subject state and register state
 * review whole code and make it more usable
 * fix all blue problems and fix all issues in debug console
 * create non existent page in case of on issue
 * create prototype for settigs page and implement dark theme
 * Add some kind of intro idk something shiny
 * add recursive deletion to sqllite database
-* less lines of code
-* add in right top corner of flashcard_edit widget menu to delate clear and refresh 
 * add stream in my aplication
-* reduce lines of code to 4000
+* reduce lines of code to 3500
 * quill icons scale 
 * see animated sliver grid an maybe refactor code later
 
@@ -26,7 +24,6 @@ Implement log in page page + register page prototype
 
 
 Implement flashcard menu 
-* create database for flashcards;
 * learn how to handle json files in dart
 * flashcards + flutter quill/painter (user can choose)
 

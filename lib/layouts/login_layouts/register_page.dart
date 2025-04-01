@@ -31,7 +31,6 @@ class _RegisterPageState extends State<RegisterPage> {
 
   final DatabaseService _instance = DatabaseService.instance;
 
-  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -140,16 +139,21 @@ class _RegisterPageState extends State<RegisterPage> {
                           _userNameController.text = "";
                           _userPasswordConfirmController.text = "";
                           _userPasswordController.text = "";
-                          showSuccessfulRegistrationDialog(context,
-                          "Succesful registration!",
-                          "You have been registerd succesfully!");
+                          if (context.mounted) {
+                            showSuccessfulRegistrationDialog(
+                                context,
+                                "Succesful registration!",
+                                "You have been registerd succesfully!");
+                          }
                         } else {
+                          if (context.mounted) {
                           showCustomAlertDialog(
                               context: context,
                               title:
                                   "A user with this username already exists.",
                               message:
                                   'A user with this username already exists. Please choose another.');
+                          }
                         }
                       },
                       child: const Text('Register'),

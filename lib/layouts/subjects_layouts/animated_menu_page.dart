@@ -5,19 +5,19 @@ import '../../state/animation_state.dart';
 class AnimatedMenuPage extends StatefulWidget {
   final List items;
   final int stackCard;
-  final double maxCrossAxisExtent;
+  final int crossAxisCount;
   final String title;
   final Widget Function(int) childBuilder;
-  final Function(int) onTap;
+  final void Function(int)? onTap;
 
   const AnimatedMenuPage({
     super.key,
     required this.items,
     required this.stackCard,
-    required this.maxCrossAxisExtent,
+    required this.crossAxisCount,
     required this.title,
     required this.childBuilder,
-    required this.onTap
+    this.onTap,
   });
 
   @override
@@ -109,87 +109,123 @@ class _AnimatedMenuPageState extends State<AnimatedMenuPage>
           });
         }
 
-        return _body(context, widget.maxCrossAxisExtent, widget.items,
+        return _body(context, widget.crossAxisCount, widget.items,
             widget.childBuilder, widget.title);
       },
     );
   }
 
-  Widget _body(BuildContext context, double maxCrossAxisExtent, List items,
+  Widget _body(BuildContext context, int crossAxisCount, List items,
       Widget Function(int) childBuilder, String title) {
     final mainTheme = Theme.of(context);
-    return Container(
-      color: mainTheme.scaffoldBackgroundColor,
-      child: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text(
-                title,
-                style:
-                    const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+    return LayoutBuilder(builder: (context, constraints) {
+
+      //Title
+      final titlePadding = constraints.maxWidth * 0.01;
+      final titleFontSize = constraints.maxWidth * 0.02;
+
+      //SliverGrid
+      final gridPadding = constraints.maxWidth * 0.005;
+      final gridAxisSpacing = constraints.maxWidth * 0.015;
+
+
+      return Container(
+        color: mainTheme.scaffoldBackgroundColor,
+        child: CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: EdgeInsets.all(titlePadding),
+                child: Text(
+                  title,
+                  style: TextStyle(
+                      fontSize: titleFontSize, 
+                      fontWeight: FontWeight.bold),
+                ),
               ),
             ),
-          ),
-          SliverPadding(
-              padding: const EdgeInsets.all(8.0),
-              sliver: SliverGrid(
-                gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: maxCrossAxisExtent,
-                  crossAxisSpacing: 40.0,
-                  mainAxisSpacing: 20.0,
-                  
-                ),
-                delegate: SliverChildBuilderDelegate((context, index) {
-                  int delay = _itemDelay * index;
+            SliverPadding(
+                padding: EdgeInsets.all(gridPadding),
+                sliver: SliverGrid(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: crossAxisCount,
+                    crossAxisSpacing: gridAxisSpacing,
+                    mainAxisSpacing: gridAxisSpacing,
+                  ),
+                  delegate: SliverChildBuilderDelegate((context, index) {
+                    int delay = _itemDelay * index;
 
-                  double start = delay / _controller.duration!.inMilliseconds;
-                  double end = (delay + _itemAnimationDuration) /
-                      _controller.duration!.inMilliseconds;
+                    double start = delay / _controller.duration!.inMilliseconds;
+                    double end = (delay + _itemAnimationDuration) /
+                        _controller.duration!.inMilliseconds;
 
-                  Animation<double> gridAnimation =
-                      Tween<double>(begin: 0.0, end: 1.0).animate(
-                    CurvedAnimation(
-                      parent: _controller,
-                      curve: Interval(start, end, curve: Curves.easeOutBack),
-                    ),
-                  );
+                    Animation<double> gridAnimation =
+                        Tween<double>(begin: 0.0, end: 1.0).animate(
+                      CurvedAnimation(
+                        parent: _controller,
+                        curve: Interval(start, end, curve: Curves.easeOutBack),
+                      ),
+                    );
 
-                  return CustomAnimatedGrid(
-                      animation: gridAnimation,
-                      onTap: () => widget.onTap(index), 
-                      child: childBuilder(index),
-                      );
-                },
-                childCount: items.length
-                ),
-                
-              ))
-        ],
-      ),
+                    return widget.onTap != null
+                        ? CustomAnimatedGridWithTap(
+                            animation: gridAnimation,
+                            onTap: () => widget.onTap!(index),
+                            child: childBuilder(index),
+                          )
+                        : CustomAnimatedGrid(
+                            animation: gridAnimation,
+                            child: childBuilder(index));
+                  }, childCount: items.length),
+                ))
+          ],
+        ),
+      );
+    });
+  }
+}
+
+class CustomAnimatedGrid extends StatelessWidget {
+  final Animation animation;
+  final Widget child;
+
+  const CustomAnimatedGrid(
+      {super.key, required this.animation, required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: animation,
+      builder: (context, child) {
+        return Transform.scale(
+          scale: animation.value,
+          child: child,
+        );
+      },
+      child: child,
     );
   }
 }
 
-class CustomAnimatedGrid extends StatefulWidget {
+class CustomAnimatedGridWithTap extends StatefulWidget {
   final Animation<double> animation;
   final VoidCallback onTap;
   final Widget child;
 
-  const CustomAnimatedGrid({
+  const CustomAnimatedGridWithTap({
     super.key,
     required this.animation,
     required this.onTap,
-      required this.child,
+    required this.child,
   });
 
   @override
-  State<CustomAnimatedGrid> createState() => _CustomAnimatedGridState();
+  State<CustomAnimatedGridWithTap> createState() =>
+      _CustomAnimatedGridWithTapState();
 }
 
-class _CustomAnimatedGridState extends State<CustomAnimatedGrid> 
-with SingleTickerProviderStateMixin {
+class _CustomAnimatedGridWithTapState extends State<CustomAnimatedGridWithTap>
+    with SingleTickerProviderStateMixin {
   late AnimationController _pressController;
   late Animation<double> _pressAnimation;
 
@@ -198,13 +234,10 @@ with SingleTickerProviderStateMixin {
     super.initState();
 
     _pressController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 150)
-    );
+        vsync: this, duration: const Duration(milliseconds: 150));
 
     _pressAnimation = Tween<double>(begin: 1.0, end: 0.95).animate(
-      CurvedAnimation(parent: _pressController, curve: Curves.easeInBack)
-    );
+        CurvedAnimation(parent: _pressController, curve: Curves.easeInBack));
   }
 
   @override
@@ -230,7 +263,8 @@ with SingleTickerProviderStateMixin {
     return AnimatedBuilder(
       animation: Listenable.merge([widget.animation, _pressAnimation]),
       builder: (context, child) {
-        final double combinedScale = widget.animation.value * _pressAnimation.value;
+        final double combinedScale =
+            widget.animation.value * _pressAnimation.value;
         return Transform.scale(
           scale: combinedScale,
           child: child,

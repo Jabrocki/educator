@@ -1,17 +1,16 @@
 //Provider
-import 'package:educator/layouts/subjects_layouts/flashcard_edit_page.dart';
 import 'package:educator/state/deck_list_state.dart';
+import 'package:educator/state/flashcard_list_state.dart';
 import 'package:educator/state/subject_list_state.dart';
+import 'package:educator/widgets/flashcard_edit/flashcard_edit.dart';
 import 'package:educator/widgets/grid_deck/grid_deck.dart';
-import 'package:path/path.dart';
 
-//import '../subjects_layouts/subject_page.dart';
+
 import '../subjects_layouts/animated_menu_page.dart';
 import 'package:provider/provider.dart';
 import '../../widgets/grid_subject/grid_subject.dart';
 import '../../state/main_state.dart';
 
-import '../subjects_layouts/decks_page.dart';
 
 import '../../models/menu_item_model.dart';
 import '../../widgets/grid_menu/grid_menu.dart';
@@ -57,7 +56,7 @@ class SubjectNavigator extends StatelessWidget {
             page = _decksPage();
             break;
           case '/subjects/menu/decks/edit_flashcards':
-            page = const FlashcardEditPage();
+            page = _flashcardEditPage();
             break;
           default:
             page = _subjectsPage();
@@ -81,10 +80,12 @@ class SubjectNavigator extends StatelessWidget {
         Navigator.of(context).pushNamed('/subjects/menu');
       }
 
+      final int crossAxisCount = (MediaQuery.of(context).size.width/200).clamp(1, 6).toInt();
+
       return AnimatedMenuPage(
           items: subjects,
           stackCard: 1,
-          maxCrossAxisExtent: 250,
+          crossAxisCount: crossAxisCount,
           title: 'Subjects',
           childBuilder: (index) => GridSubject(subject: subjects[index]),
           onTap: onTap);
@@ -113,10 +114,12 @@ class SubjectNavigator extends StatelessWidget {
             navigation: "/subjects/menu/files")
       ];
 
+      final int crossAxisCount = (MediaQuery.of(context).size.width/200).clamp(1, 6).toInt();
+
       return AnimatedMenuPage(
         items: items,
         stackCard: 1,
-        maxCrossAxisExtent: 250,
+        crossAxisCount: crossAxisCount,
         title: 'Menu',
         childBuilder: (index) => GridMenu(menuItemModel: items[index]),
         onTap: (index) {
@@ -136,13 +139,37 @@ class SubjectNavigator extends StatelessWidget {
 
         final decks = deckListState.decks;
 
+        final int crossAxisCount = (MediaQuery.of(context).size.width/200).clamp(1, 6).toInt();
+
         return AnimatedMenuPage(
           items: decks, 
           stackCard: 1, 
-          maxCrossAxisExtent: 250, 
+          crossAxisCount: crossAxisCount, 
           title: 'Decks', 
           childBuilder: (index) => GridDeck(deck: decks[index]), 
           onTap: (index) {}
+        );
+      },
+    );
+  }
+
+  Widget _flashcardEditPage() {
+    return Consumer<FlashcardListState>(
+      builder: (context, flashcardListState, __) {
+        WidgetsBinding.instance.addPostFrameCallback((_) async {
+          await flashcardListState.flashcardsInit();
+        });
+
+        final flashcards = flashcardListState.flashcards;
+
+        final int crossAxisCount = (MediaQuery.of(context).size.width/800).clamp(1, 2).toInt();
+
+        return AnimatedMenuPage(
+          items: flashcards, 
+          stackCard: 1, 
+          crossAxisCount: crossAxisCount, 
+          title: 'Edit flashcards', 
+          childBuilder: (index) => const FlashcardEdit(),
         );
       },
     );
