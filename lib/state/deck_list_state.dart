@@ -11,9 +11,9 @@ import 'dart:io';
 
 class DeckListState extends ChangeNotifier {
   //List of flashcard decks
-  late List<DeckModel> _decks;
+  List<DeckModel>? _decks;
 
-  List<DeckModel> get decks => _decks;
+  List<DeckModel>? get decks => _decks;
 
   //Database service
   final DatabaseService _instance = DatabaseService.instance;
@@ -112,7 +112,7 @@ class DeckListState extends ChangeNotifier {
         numberOfCardsLearn: 0,
         numberOfCardsReview: 0,
         imgId: imgId);
-    _decks.add(DeckModel(
+    _decks!.add(DeckModel(
         deckId: deckId,
         subjectId: subjectId,
         deckName: deckName,
@@ -128,14 +128,14 @@ class DeckListState extends ChangeNotifier {
 
   void deleteDeck({required int deckId}) async {
     await _instance
-        .deleteDeck(_decks.firstWhere((deck) => deck.deckId == deckId));
-    _decks.removeWhere((deck) => deck.deckId == deckId);
+        .deleteDeck(_decks!.firstWhere((deck) => deck.deckId == deckId));
+    _decks!.removeWhere((deck) => deck.deckId == deckId);
     notifyListeners();
   }
 
   void editDeck() async {
     //Get deck model to edit
-    DeckModel deck = _decks.firstWhere((deck) => deck.deckId == _editedDeckId);
+    DeckModel deck = _decks!.firstWhere((deck) => deck.deckId == _editedDeckId);
 
     //Insert new image 
     int? newImgId;

@@ -45,6 +45,11 @@ class _MainPageState extends State<MainPage> {
   Widget? _searchFab;
   Widget? _settingsFab;
 
+  //Naviagtor keys
+  final GlobalKey<NavigatorState> subjectsNavigatorKey =
+    GlobalKey<NavigatorState>();
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -173,6 +178,7 @@ class _MainPageState extends State<MainPage> {
                       setState(() => _homeFab = addButton),
                 ),
                 SubjectNavigator(
+                  subjectsNavigatorKey: subjectsNavigatorKey,
                   backButtonValChanged: (bool canPop) =>
                       setState(() => _showSubjectsBackButton = canPop),
                   addButtonValChanged: (Widget? addButton) =>

@@ -119,7 +119,6 @@ class _AnimatedMenuPageState extends State<AnimatedMenuPage>
       Widget Function(int) childBuilder, String title) {
     final mainTheme = Theme.of(context);
     return LayoutBuilder(builder: (context, constraints) {
-
       //Title
       final titlePadding = constraints.maxWidth * 0.01;
       final titleFontSize = constraints.maxWidth * 0.02;
@@ -127,7 +126,6 @@ class _AnimatedMenuPageState extends State<AnimatedMenuPage>
       //SliverGrid
       final gridPadding = constraints.maxWidth * 0.005;
       final gridAxisSpacing = constraints.maxWidth * 0.015;
-
 
       return Container(
         color: mainTheme.scaffoldBackgroundColor,
@@ -139,14 +137,13 @@ class _AnimatedMenuPageState extends State<AnimatedMenuPage>
                 child: Text(
                   title,
                   style: TextStyle(
-                      fontSize: titleFontSize, 
-                      fontWeight: FontWeight.bold),
+                      fontSize: titleFontSize, fontWeight: FontWeight.bold),
                 ),
               ),
             ),
             SliverPadding(
                 padding: EdgeInsets.all(gridPadding),
-                sliver: SliverAnimtedGrid(
+                sliver: SliverGrid(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: crossAxisCount,
                     crossAxisSpacing: gridAxisSpacing,
@@ -225,24 +222,34 @@ class CustomAnimatedGridWithTap extends StatefulWidget {
 }
 
 class _CustomAnimatedGridWithTapState extends State<CustomAnimatedGridWithTap>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
+  //Press
   late AnimationController _pressController;
   late Animation<double> _pressAnimation;
+
 
   @override
   void initState() {
     super.initState();
 
     _pressController = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 150));
+      vsync: this,
+      duration: const Duration(milliseconds: 600),
+    );
 
     _pressAnimation = Tween<double>(begin: 1.0, end: 0.95).animate(
-        CurvedAnimation(parent: _pressController, curve: Curves.easeInBack));
+      CurvedAnimation(parent: _pressController, curve: Curves.easeInBack),
+    );
+
+
+
+    
   }
 
   @override
   void dispose() {
     _pressController.dispose();
+
     super.dispose();
   }
 

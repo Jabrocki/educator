@@ -12,6 +12,7 @@ import '../../state/main_state.dart';
 
 import '../../models/menu_item_model.dart';
 import '../../widgets/grid_menu/grid_menu.dart';
+import '../subjects_layouts/cards_stacked_page.dart';
 
 //Naviagtor observers
 import '../navigation_obeservers/subject_navigator_observer.dart';
@@ -19,17 +20,18 @@ import '../navigation_obeservers/subject_navigator_observer.dart';
 //Material
 import 'package:flutter/material.dart';
 
-final GlobalKey<NavigatorState> subjectsNavigatorKey =
-    GlobalKey<NavigatorState>();
 
 class SubjectNavigator extends StatelessWidget {
   final ValueChanged<bool> backButtonValChanged;
   final ValueChanged<Widget?> addButtonValChanged;
+  final GlobalKey<NavigatorState> subjectsNavigatorKey;
 
   const SubjectNavigator(
       {super.key,
       required this.backButtonValChanged,
-      required this.addButtonValChanged});
+      required this.addButtonValChanged,
+      required this.subjectsNavigatorKey,
+      });
 
   @override
   Widget build(BuildContext context) {
@@ -132,10 +134,15 @@ class SubjectNavigator extends StatelessWidget {
   Widget _decksPage() {
     return Consumer<DeckListState>(
       builder: (context, deckListState, _) {
+
         WidgetsBinding.instance.addPostFrameCallback((_) async {
           final mainState = Provider.of<MainState>(context, listen: false);
           await deckListState.decksInit(mainState.subjectId);
         });
+        
+        if (deckListState.decks == null) {
+          return const Center(child: CircularProgressIndicator());
+        }
 
         final decks = deckListState.decks;
 
@@ -143,12 +150,13 @@ class SubjectNavigator extends StatelessWidget {
             (MediaQuery.of(context).size.width / 200).clamp(1, 6).toInt();
 
         return AnimatedMenuPage(
-            items: decks,
-            stackCard: 1,
-            crossAxisCount: crossAxisCount,
-            title: 'Decks',
-            childBuilder: (index) => GridDeck(deck: decks[index]),
-            onTap: (index) {});
+          items: decks!,
+          stackCard: 1,
+          crossAxisCount: crossAxisCount,
+          title: 'Decks',
+          childBuilder: (index) => GridDeck(deck: decks[index]),
+          onTap: (index) {},
+        );
       },
     );
   }
@@ -160,15 +168,14 @@ class SubjectNavigator extends StatelessWidget {
           await flashcardListState.flashcardsInit();
         });
 
+        if (flashcardListState.flashcards == null) {
+          return Center(child: CircularProgressIndicator());
+        }
+
         final flashcards = flashcardListState.flashcards;
 
-        final int crossAxisCount =
-            (MediaQuery.of(context).size.width / 800).clamp(1, 2).toInt();
-
-        return AnimatedMenuPage(
-          items: flashcards,
-          stackCard: 1,
-          crossAxisCount: crossAxisCount,
+        return CardsStackedPage(
+          items: flashcards!,
           title: 'Edit flashcards',
           childBuilder: (index) => FlashcardEdit(
             flashcard: flashcards[index],

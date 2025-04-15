@@ -1,4 +1,5 @@
 Refeactoring:
+* refactor states they are the mess
 * Refactor a litle bit subject state and register state
 * review whole code and make it more usable
 * fix all blue problems and fix all issues in debug console
@@ -7,7 +8,9 @@ Refeactoring:
 * Add some kind of intro idk something shiny
 * add recursive deletion to sqllite database
 * add stream in my aplication
-* see animated sliver grid an maybe refactor code later
+* reduce lines of code to 3500
+* quill icons scale 
+* need to implement animated grid subject
 
 
 
