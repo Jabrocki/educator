@@ -1,8 +1,8 @@
 //Provider
+import 'package:educator/layouts/subjects_layouts/stacked_card_deck.dart';
 import 'package:educator/state/deck_list_state.dart';
 import 'package:educator/state/flashcard_list_state.dart';
 import 'package:educator/state/subject_list_state.dart';
-import 'package:educator/widgets/flashcard_edit/flashcard_edit.dart';
 import 'package:educator/widgets/grid_deck/grid_deck.dart';
 
 import '../subjects_layouts/animated_menu_page.dart';
@@ -12,7 +12,6 @@ import '../../state/main_state.dart';
 
 import '../../models/menu_item_model.dart';
 import '../../widgets/grid_menu/grid_menu.dart';
-import '../subjects_layouts/cards_stacked_page.dart';
 
 //Naviagtor observers
 import '../navigation_obeservers/subject_navigator_observer.dart';
@@ -74,7 +73,6 @@ class SubjectNavigator extends StatelessWidget {
         builder: (context, subjectListState, ___) {
       final subjects = subjectListState.subjects;
       void onTap(int index) {
-        //TODO: Move subject id to subject state
         Provider.of<MainState>(context, listen: false).subjectId =
             subjects[index].subjectId;
         Navigator.of(context).pushNamed('/subjects/menu');
@@ -169,18 +167,12 @@ class SubjectNavigator extends StatelessWidget {
         });
 
         if (flashcardListState.flashcards == null) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         }
 
         final flashcards = flashcardListState.flashcards;
 
-        return CardsStackedPage(
-          items: flashcards!,
-          title: 'Edit flashcards',
-          childBuilder: (index) => FlashcardEdit(
-            flashcard: flashcards[index],
-          ),
-        );
+        return StackedCardDeck();
       },
     );
   }

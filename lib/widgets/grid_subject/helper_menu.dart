@@ -46,7 +46,7 @@ class HelperMenu extends StatelessWidget {
               color: Theme.of(context).colorScheme.primaryContainer,
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.2),
+                  color: Colors.black.withValues(alpha: 0.2),
                   blurRadius: 3,
                   spreadRadius: 1,
                 )

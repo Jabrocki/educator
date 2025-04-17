@@ -51,7 +51,7 @@ class _LoginPageState extends State<LoginPage> {
         mainState.userName = userName;
 
         //Subject State
-        subjectState.userId = userId;
+        await subjectState.subjectInit(userId);
 
         //Remeber user
         mainState.rememberUser = rememberUser;

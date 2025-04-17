@@ -7,8 +7,6 @@ import '../layouts/tab_navigators/search_navigator.dart';
 import '../layouts/tab_navigators/settings_navigator.dart';
 import '../layouts/tab_navigators/subject_navigator.dart';
 
-
-
 //Material
 import 'package:flutter/material.dart';
 
@@ -47,8 +45,13 @@ class _MainPageState extends State<MainPage> {
 
   //Naviagtor keys
   final GlobalKey<NavigatorState> subjectsNavigatorKey =
-    GlobalKey<NavigatorState>();
-
+      GlobalKey<NavigatorState>();
+  final GlobalKey<NavigatorState> settingsNavigatorKey =
+      GlobalKey<NavigatorState>();
+  final GlobalKey<NavigatorState> searchNavigatorKey =
+      GlobalKey<NavigatorState>();
+  final GlobalKey<NavigatorState> homeNavigatorKey =
+      GlobalKey<NavigatorState>();
 
   @override
   Widget build(BuildContext context) {
@@ -172,6 +175,7 @@ class _MainPageState extends State<MainPage> {
               index: animationState.selectedIndex,
               children: [
                 HomeNavigator(
+                  homeNavigatorKey: homeNavigatorKey,
                   backButtonValChanged: (bool canPop) =>
                       setState(() => _showHomeBackButton = canPop),
                   addButtonValChanged: (Widget? addButton) =>
@@ -185,12 +189,14 @@ class _MainPageState extends State<MainPage> {
                       setState(() => _subjectFab = addButton),
                 ),
                 SearchNavigator(
+                  searchNavigatorKey: searchNavigatorKey,
                   backButtonValChanged: (bool canPop) =>
                       setState(() => _showSearchBackButton = canPop),
                   addButtonValChanged: (Widget? addButton) =>
                       setState(() => _searchFab = addButton),
                 ),
                 SettingsNavigator(
+                  settingsNavigatorKey: settingsNavigatorKey,
                   backButtonValChanged: (bool canPop) =>
                       setState(() => _showSettingsBackButton = canPop),
                   addButtonValChanged: (Widget? addButton) =>

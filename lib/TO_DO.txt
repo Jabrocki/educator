@@ -1,16 +1,14 @@
 Refeactoring:
-* refactor states they are the mess
-* Refactor a litle bit subject state and register state
+* Refactor a litle bit subject state and register state (get rid of all text controllers)
 * review whole code and make it more usable
-* fix all blue problems and fix all issues in debug console
 * create non existent page in case of on issue
 * create prototype for settigs page and implement dark theme
 * Add some kind of intro idk something shiny
 * add recursive deletion to sqllite database
 * add stream in my aplication
-* reduce lines of code to 3500
-* quill icons scale 
 * need to implement animated grid subject
+* make all font scaling depending on height not width
+
 
 
 

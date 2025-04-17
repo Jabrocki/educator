@@ -5,11 +5,8 @@ import 'package:flutter/material.dart';
 //PopUP windows
 import '../../widgets/custom_pop_up_subject.dart';
 
-//State 
-import '../../state/flashcard_list_state.dart';
 
-//Provider
-import 'package:provider/provider.dart';
+
 
 class SubjectNavigatorObserver extends NavigatorObserver {
   final ValueChanged<bool> backButtonValChanged;
@@ -40,7 +37,7 @@ class SubjectNavigatorObserver extends NavigatorObserver {
           addButton = const AddDeckButton();
           break;
         case '/subjects/menu/decks/edit_flashcards':
-          addButton = const AddFlashcardButton();
+          addButton = null;
           break;
         default:
           addButton = null;
@@ -78,22 +75,7 @@ class SubjectNavigatorObserver extends NavigatorObserver {
   }
 }
 
-class AddFlashcardButton extends StatelessWidget {
-  const AddFlashcardButton({
-    super.key,
-  });
 
-  @override
-  Widget build(BuildContext context) {
-    return FloatingActionButton(
-      onPressed: () {
-        final flashcardListState = Provider.of<FlashcardListState>(context, listen: false);
-        flashcardListState.addFlashcard();
-      },
-      child: const Icon(Icons.add),
-    );
-  }
-}
 
 class AddDeckButton extends StatelessWidget {
   const AddDeckButton({

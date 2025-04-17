@@ -1,7 +1,6 @@
 //Material
 import 'package:flutter/material.dart';
 
-
 //Packages
 import 'package:image_picker/image_picker.dart';
 
@@ -80,7 +79,6 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
         const SizedBox(height: 8),
         TextButton(
             onPressed: () async {
-              //Update state with image picker
               final XFile? pickedImage = await _picker.pickImage(source: ImageSource.gallery);
               if (pickedImage != null){
                 final File imageFile = File(pickedImage.path);

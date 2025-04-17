@@ -34,10 +34,11 @@ class GridDeck extends StatelessWidget {
 
         return Container(
           decoration: BoxDecoration(
+              color: mainTheme.colorScheme.primaryContainer,
               borderRadius: BorderRadius.circular(borderRadius),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.2),
+                  color: Colors.black.withValues(alpha: 0.2),
                   blurRadius: 1,
                   spreadRadius: 1,
                 )
@@ -47,19 +48,14 @@ class GridDeck extends StatelessWidget {
             child: Stack(
               children: [
                 // Background Container
-                Container(
-                  decoration: BoxDecoration(
-                    color: mainTheme.colorScheme.primaryContainer,
-                  ),
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: _imagePreview(imageSize),
-                      ),
-                      SizedBox(
-                          height: menuHeight, child: HelperMenu(deck: deck)),
-                    ],
-                  ),
+                Column(
+                  children: [
+                    Expanded(
+                      child: _imagePreview(imageSize),
+                    ),
+                    SizedBox(
+                        height: menuHeight, child: HelperMenu(deck: deck)),
+                  ],
                 ),
 
                 Positioned(
@@ -76,7 +72,7 @@ class GridDeck extends StatelessWidget {
                             const BorderRadius.all(Radius.circular(16)),
                         boxShadow: [
                           BoxShadow(
-                              color: Colors.black.withOpacity(0.2),
+                              color: Colors.black.withValues(alpha: 0.2),
                               blurRadius: 2,
                               spreadRadius: 1)
                         ]),

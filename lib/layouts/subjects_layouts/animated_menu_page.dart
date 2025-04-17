@@ -137,7 +137,9 @@ class _AnimatedMenuPageState extends State<AnimatedMenuPage>
                 child: Text(
                   title,
                   style: TextStyle(
-                      fontSize: titleFontSize, fontWeight: FontWeight.bold),
+                    fontSize: titleFontSize,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ),
@@ -227,7 +229,6 @@ class _CustomAnimatedGridWithTapState extends State<CustomAnimatedGridWithTap>
   late AnimationController _pressController;
   late Animation<double> _pressAnimation;
 
-
   @override
   void initState() {
     super.initState();
@@ -240,10 +241,6 @@ class _CustomAnimatedGridWithTapState extends State<CustomAnimatedGridWithTap>
     _pressAnimation = Tween<double>(begin: 1.0, end: 0.95).animate(
       CurvedAnimation(parent: _pressController, curve: Curves.easeInBack),
     );
-
-
-
-    
   }
 
   @override

@@ -4,18 +4,18 @@ import 'package:flutter/material.dart';
 //Layouts
 import '../search_layouts/search_page.dart';
 
-final GlobalKey<NavigatorState> searchNavigatorKey =
-    GlobalKey<NavigatorState>();
-
 class SearchNavigator extends StatelessWidget {
   //Value changed callbacks
   final ValueChanged<bool> backButtonValChanged;
   final ValueChanged<Widget?> addButtonValChanged;
+  final GlobalKey<NavigatorState> searchNavigatorKey;
 
-  const SearchNavigator(
-      {super.key,
-      required this.backButtonValChanged,
-      required this.addButtonValChanged});
+  const SearchNavigator({
+    super.key,
+    required this.backButtonValChanged,
+    required this.addButtonValChanged,
+    required this.searchNavigatorKey,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -31,10 +31,7 @@ class SearchNavigator extends StatelessWidget {
           default:
             page = const SearchPage();
         }
-        return MaterialPageRoute(
-          builder: (_) => page, 
-          settings: settings
-        );
+        return MaterialPageRoute(builder: (_) => page, settings: settings);
       },
     );
   }

@@ -26,18 +26,20 @@ class SubjectListState extends ChangeNotifier {
 
 
   //User data
-  int? _userId;
+  late int _userId;
 
   set userId(int userId) {
     _userId = userId;
     notifyListeners();
   }
 
-  int get userId => _userId!;
+  int get userId => _userId;
 
   //Downloads all subjects of login user
-  Future<bool> subjectInit() async {
+  Future<bool> subjectInit(int userId) async {
+    _userId = userId;
     _subjects = await _instance.getSubjects(userId: userId);
+    notifyListeners();
     return true;
   }
 

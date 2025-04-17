@@ -44,7 +44,7 @@ Future<void> main() async {
   //Create subject state
   final subjectState = SubjectListState();
   subjectState.userId = mainState.userId!;
-  await subjectState.subjectInit();
+  await subjectState.subjectInit(subjectState.userId);
 
   //Init shared preffernces instance
   runApp(MultiProvider(

@@ -1,7 +1,7 @@
 import 'package:educator/layouts/home_layouts/home_page.dart';
 import 'package:flutter/material.dart';
 
-final GlobalKey<NavigatorState> homeNavigatorKey = GlobalKey<NavigatorState>();
+
 
 
 class HomeNavigator extends StatelessWidget { 
@@ -9,11 +9,13 @@ class HomeNavigator extends StatelessWidget {
   //Value changed callbacks
   final ValueChanged<bool> backButtonValChanged;
   final ValueChanged<Widget?> addButtonValChanged;
+  final GlobalKey<NavigatorState> homeNavigatorKey;
 
   const HomeNavigator({
     super.key,
     required this.backButtonValChanged,
-    required this.addButtonValChanged
+    required this.addButtonValChanged,
+    required this.homeNavigatorKey,
   });
 
   @override

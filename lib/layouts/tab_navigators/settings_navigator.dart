@@ -2,18 +2,20 @@ import 'package:educator/layouts/settings_layouts/settings_page.dart';
 import 'package:flutter/material.dart';
 
 
-final GlobalKey<NavigatorState> settingsNavigatorKey = GlobalKey<NavigatorState>();
+
 
 class SettingsNavigator extends StatelessWidget {
   
   //Value changed callbacks
   final ValueChanged<bool> backButtonValChanged;
   final ValueChanged<Widget?> addButtonValChanged;
+  final GlobalKey<NavigatorState> settingsNavigatorKey;
 
   const SettingsNavigator({
     super.key,
     required this.backButtonValChanged,
-    required this.addButtonValChanged
+    required this.addButtonValChanged,
+    required this.settingsNavigatorKey,
   });
 
   @override
