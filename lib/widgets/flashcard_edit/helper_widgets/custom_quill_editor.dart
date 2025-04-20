@@ -36,7 +36,7 @@ class _CustomQuillEditorState extends State<CustomQuillEditor> {
       final double toolbarBorderRadius = constraints.maxWidth * 0.01;
 
       //Textfield
-      final double textFieldHeight = constraints.maxHeight * 0.63;
+      final double textFieldHeight = constraints.maxHeight * 0.6;
       final double textFieldWidth = toolbarWidth;
       final double textFieldPadding = borderRadius/2;
 
