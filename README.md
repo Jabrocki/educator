@@ -1,47 +1,47 @@
 # Educator
 
-Prototyp aplikacji edukacyjnej stworzonej we Flutterze. Pozwala użytkownikowi
-założyć lokalne konto, logować się, organizować naukę według przedmiotów i talii
-oraz tworzyć i edytować fiszki.
+An educational app prototype built with Flutter. It lets users create a local
+account, sign in, organize learning by subject and deck, and create and edit
+flashcards.
 
-## Obecne możliwości
+## Current features
 
-- rejestracja i logowanie użytkownika;
-- opcja zapamiętania zalogowanego użytkownika;
-- lokalne przechowywanie danych w SQLite;
-- zarządzanie przedmiotami, taliami, fiszkami i obrazami;
-- edycja zawartości fiszek z użyciem Flutter Quill;
-- nawigacja między widokami: Home, Subjects, Search i Settings;
-- animowane siatki elementów w widoku przedmiotów i talii.
+- user registration and sign-in;
+- an option to remember the signed-in user;
+- local data storage with SQLite;
+- management of subjects, decks, flashcards, and images;
+- flashcard content editing with Flutter Quill;
+- navigation between the Home, Subjects, Search, and Settings views;
+- animated grids in the subjects and decks views.
 
-## Technologie
+## Technologies
 
-- Flutter i Dart;
-- `provider` do zarządzania stanem;
-- `sqflite` do lokalnej bazy danych;
-- `shared_preferences` do zachowania sesji użytkownika;
-- `flutter_quill` do edycji sformatowanego tekstu.
+- Flutter and Dart;
+- `provider` for state management;
+- `sqflite` for the local database;
+- `shared_preferences` for persisting user sessions;
+- `flutter_quill` for rich-text editing.
 
-## Struktura katalogów
+## Directory structure
 
 ```text
 lib/
-├── database/   # konfiguracja i obsługa lokalnej bazy danych
-├── dialogs/    # okna dialogowe
-├── layouts/    # ekrany i nawigacja aplikacji
-├── models/     # modele danych
-├── state/      # stany używane przez Provider
-└── widgets/    # komponenty interfejsu
+├── database/   # local database configuration and access
+├── dialogs/    # dialogs
+├── layouts/    # application screens and navigation
+├── models/     # data models
+├── state/      # Provider state classes
+└── widgets/    # user-interface components
 ```
 
-Punktem wejścia aplikacji jest `lib/main.dart`.
+The application entry point is `lib/main.dart`.
 
-## Uruchomienie
+## Running the project
 
-W tym repozytorium znajduje się obecnie kod źródłowy z katalogu `lib`, bez
-pliku `pubspec.yaml` i konfiguracji platform Fluttera. Aby uruchomić projekt,
-należy uzupełnić pełny szkielet aplikacji Flutter, dodać zależności wymienione
-wyżej, a następnie wykonać:
+The repository currently contains the source from the `lib` directory, but no
+`pubspec.yaml` file or Flutter platform configuration. To run the project,
+first restore a complete Flutter project scaffold and add the dependencies
+listed above, then run:
 
 ```bash
 flutter pub get
@@ -50,6 +50,5 @@ flutter run
 
 ## Status
 
-Projekt jest w fazie prototypu. Planowane kierunki rozwoju obejmują m.in.
-tryb ciemny, quizy, notatki, zadania i kalendarz oraz bezpieczniejsze
-uwierzytelnianie.
+The project is at the prototype stage. Planned improvements include dark mode,
+quizzes, notes, tasks and a calendar, as well as more secure authentication.
